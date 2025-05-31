@@ -103,9 +103,9 @@ function Header() {
           </div>
         </div>
         <div className="bottom-line">
-          <a href="index.html" className="logo">
+          <Link href={SITE_URL.HOME} className="logo">
             <img src="img/logo.svg" alt="" />
-          </a>
+          </Link>
           <ul className="main-menu">
             {menuItems.map((menuItem, i) => (
               <li

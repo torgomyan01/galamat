@@ -8,52 +8,14 @@
 }
 
 
-.fa-plus:before {
-    content: "\2b"
-}
-.fa-minus:before {
-    content: "\f068"
-}
-.fa-chevron-down:before {
-    content: "\f078"
-}
-.fa-upload:before {
-    content: "\f093"
-}
-.fa-pen:before {
-    content: "\f304"
-}
-.fa-trash:before {
-    content: "\f1f8"
-}
-.fa-upload:before {
-    content: "\f093"
-}
-.fa-regular:before {
-    content: "\f019"
-}
-.fa-magnifying-glass:before {
-    content: "\f002"
+.fa-play:before {
+    content: "\f04b"
 }
 
-.fa-xmark-large:before {
-    content: "\e59b"
+.fa-pause:before {
+    content: "\f04c"
 }
-.fa-heart:before {
-    content: "\f004";
-}
-.fa-arrow-up-right:before {
-    content: "\e09f";
-}
-.fa-chevron-left:before {
-    content: "\f053";
-}
-.fa-ellipsis:before {
-    content: "\f141";
-}
-.fa-paper-plane:before {
-    content: "\f1d8";
-}
+
 
 
 /*---------------------------------*/

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.scss";
+import "../icons/icons.css";
 import NextTopLoader from "nextjs-toploader";
 
 import { Providers } from "@/app/providers";
