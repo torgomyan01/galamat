@@ -1,0 +1,99 @@
+.why-us{
+  margin: 20px 0;
+  @media(max-width: 767px) {
+    margin-top: 10px;
+  }
+  .main-title{
+    margin-bottom: 30px;
+    @media(max-width: 767px) {
+      margin-bottom: 20px;
+    }
+  }
+  .info{
+    @include flex;
+    @include justify-between;
+    @media(max-width: 1200px){
+      @include dir-col;
+    }
+    .info-sect{
+      width: 33%;
+      background: #132C5E;
+      padding: 20px;
+      border-radius: 16px;
+      @media(max-width: 1200px){
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      @media(max-width: 767px) {
+        padding: 20px 15px;
+      }
+      h4{
+        margin-bottom: 15px;
+        font-size: 24px;
+        font-weight: 500;
+        color: white;
+      }
+      p{
+        font-size: 14px;
+        color: white;
+        margin-bottom: 15px;
+      }
+      .more{
+        border-radius: 4px;
+        padding: 6px 20px;
+        font-size: 10px;
+        color: white;
+        font-weight: 500;
+        border: 1px solid #fff;
+      }
+    }
+    .info-items{
+      width: 66%;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 10px;
+      @media(max-width: 1200px){
+        width: 100%;
+      }
+      @media(max-width: 767px){
+        grid-template-columns: 1fr 1fr;
+      }
+      @media(max-width: 475px){
+        grid-template-columns: 1fr;
+      }
+      .info-item{
+        padding: 20px;
+        border-radius: 16px;
+        background: white;
+        @media(max-width: 767px) {
+          padding: 20px 15px;
+        }
+        h3{
+          margin-bottom: 10px;
+          font-size: 44px;
+          font-weight: 500;
+          color: #DB1D31;
+          @media(max-width: 767px) {
+            font-size: 36px;
+          }
+        }
+        b{
+          display: block;
+          margin-bottom: 10px;
+          font-size: 24px;
+          font-weight: 500;
+          color: #132C5E;
+          @media(max-width: 767px) {
+            font-size: 22px;
+          }
+        }
+        span{
+          font-size: 15px;
+          color: #132C5E;
+          max-width: 145px;
+          display: inline-block;
+        }
+      }
+    }
+  }
+}
