@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
 import "swiper/css/pagination";
-import { Pagination } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
 import { RandomKey } from "@/utils/helpers";
 
 function AdsSlider() {
@@ -25,9 +25,14 @@ function AdsSlider() {
             </div>
           </div>
           <Swiper
-            modules={[Pagination]}
+            modules={[Pagination, Autoplay]}
             spaceBetween={50}
             slidesPerView={1}
+            loop={true}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false, // Keep autoplay on user interaction
+            }}
             pagination={{ clickable: true }}
             className="info-swiper rounded-[16px] overflow-hidden"
           >

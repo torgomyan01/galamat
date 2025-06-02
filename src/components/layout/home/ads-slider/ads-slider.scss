@@ -118,6 +118,12 @@
   }
 }
 
+.swiper-pagination-bullet{
+  &:hover{
+   opacity: 0.5;
+  }
+}
+
 .swiper-pagination-bullet-active{
   background: #132C5E;
 }
