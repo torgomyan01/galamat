@@ -15,8 +15,8 @@ const nextConfig = {
     additionalData: ``,
     includePaths: [path.join(__dirname, "src/access/css")],
     prependData: `
-      @import "mixins"; 
-      @import "fonts"; 
+      @use "mixins" as *;
+      @use "fonts" as *;
     `,
   },
   images: {

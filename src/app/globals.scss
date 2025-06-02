@@ -14,6 +14,7 @@
 body,
 html {
   overflow-x: hidden;
+
   &.overflow {
     overflow: hidden !important;
   }
@@ -37,6 +38,7 @@ body {
 input,
 textarea {
   border: none;
+
   &:focus {
     outline: none;
   }
@@ -57,6 +59,7 @@ button {
   border: none;
   transition: 0.3s;
   background: none;
+
   &:focus {
     outline: none;
     border: none;
@@ -83,15 +86,13 @@ a {
   }
 }
 
-select{
+select {
   cursor: pointer;
-  &:focus{
+
+  &:focus {
     outline: none;
   }
 }
-
-
-
 
 
 .wrapper {
@@ -108,6 +109,7 @@ select{
     cursor: pointer;
     position: relative;
     font-size: 11px;
+
     input {
       position: absolute;
       top: 0;
@@ -117,6 +119,7 @@ select{
       overflow: hidden;
       opacity: 0;
     }
+
     input:checked ~ span {
       background: #004F36;
       border-color: #004F36;
@@ -159,19 +162,20 @@ select{
   }
 }
 
-.border-btn{
+.border-btn {
   padding: 10px 24px;
   border-radius: 8px;
   border: 1px solid #B2B2B2;
   font-size: 15px;
   color: rgba(black, .65);
-  &:hover{
+
+  &:hover {
     background: #B2B2B2;
     color: white;
   }
 }
 
-.main-title{
+.main-title {
   font-size: 50px;
   color: #132C5E;
   font-weight: 500;
@@ -183,7 +187,7 @@ select{
   }
 }
 
-.blue-btn{
+.blue-btn {
   @include flex;
   @include align-center;
   @include justify-center;
@@ -264,7 +268,7 @@ select{
   color: #fff;
 }
 
-#yandex-map{
+#yandex-map {
   height: 500px;
   width: 100%;
   border-radius: 4px;
@@ -280,11 +284,37 @@ select{
   padding: 20px;
   background: #132C5E;
   border-radius: 16px;
-  p{
+
+  p {
     color: white;
   }
 }
 
 .tab-content.active {
   display: block;
+}
+
+select {
+  height: 40px;
+  appearance: none; /* убрать стандартную стрелку */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border-radius: 8px;
+  border: 1px solid #B2B2B2;
+  font-size: 15px;
+  min-width: 66px;
+  color: rgba(black, .65);
+  padding: 0 10px;
+  cursor: pointer;
+  background-image: url('../../public/img/polygon.svg'); /* путь к иконке */
+  background-repeat: no-repeat;
+  background-position: right 15px center; /* сдвиг стрелки влево (увеличивай отступ) */
+  background-size: 9px 9px; /* подгони под свою иконку */
+  @media(max-width: 767px) {
+    display: none;
+  }
+
+  &:focus {
+    outline: none;
+  }
 }

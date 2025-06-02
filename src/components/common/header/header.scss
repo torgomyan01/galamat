@@ -176,6 +176,7 @@
           @include flex;
           @include align-center;
           @include justify-between;
+          margin-top: 20px;
         }
         select{
           display: block;
@@ -195,12 +196,10 @@
         .order-call{
           @include flex;
           color: white;
-          margin: 20px 0;
-          max-width: 300px;
+          max-width: 190px;
           text-align: center;
           width: 100%;
           @include justify-center;
-          margin-top: auto;
         }
       }
     }

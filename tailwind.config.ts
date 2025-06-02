@@ -72,13 +72,16 @@ export default {
         transparent: "transparent",
         white: "#FFF",
         black: "#11181C",
-        blue: "#1AB1BA",
+        blue: "#132C5E",
       },
       transitionDuration: {
         DEFAULT: "300ms",
       },
       borderColor: {
-        DEFAULT: "#e7e9ee",
+        DEFAULT: "#b2b2b2",
+      },
+      outlineColor: {
+        DEFAULT: "#b2b2b2",
       },
       keyframes: {
         pop: {

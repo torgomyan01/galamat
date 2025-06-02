@@ -6,6 +6,7 @@ import { SITE_URL } from "@/utils/consts";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { Select, SelectItem } from "@heroui/react";
 
 const menuItems = [
   {
@@ -63,10 +64,14 @@ function Header() {
           <a href="#" className="border-btn order-call">
             Заказать звонок
           </a>
-          <select>
-            <option value="1">RU</option>
-            <option value="2">KZ</option>
-          </select>
+          <Select
+            selectedKeys={["RU"]}
+            className="w-[80px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2]"
+            variant="bordered"
+          >
+            <SelectItem key="RU">RU</SelectItem>
+            <SelectItem key="KZ">KZ</SelectItem>
+          </Select>
           <div
             className={clsx("drop-menu", { "is-active": mobileMenu })}
             onClick={() => setMobileMenu(!mobileMenu)}
@@ -87,17 +92,13 @@ function Header() {
                 </li>
               ))}
             </ul>
-            <a href="#" className="border-btn order-call">
-              Заказать звонок
-            </a>
             <div className="btns">
-              <select>
+              <select className="min-h-[43px]">
                 <option value="1">RU</option>
                 <option value="2">KZ</option>
               </select>
-              <a href="#" className="login">
-                <img src="img/login-icon.svg" alt="" />
-                Войти
+              <a href="#" className="border-btn order-call">
+                Заказать звонок
               </a>
             </div>
           </div>

@@ -1,4 +1,6 @@
 import "./footer.scss";
+import { SITE_URL } from "@/utils/consts";
+import Link from "next/link";
 
 function Footer() {
   return (
@@ -25,9 +27,9 @@ function Footer() {
           </li>
         </ul>
         <div className="footer-info">
-          <a href="index.html" className="footer-logo">
+          <Link href={SITE_URL.HOME} className="footer-logo">
             <img src="img/footer-logo.svg" alt="" />
-          </a>
+          </Link>
           <p>
             Все материалы, размещённые на данном сайте, являются
             интеллектуальной собственностью компании Galamat © 2018–2025.
@@ -41,6 +43,9 @@ function Footer() {
             размещённая на сайте, предназначена исключительно для ознакомления и
             не является публичной офертой.
           </p>
+          <a href="#" className="private">
+            Политика Конфиденциальности
+          </a>
         </div>
       </div>
     </footer>

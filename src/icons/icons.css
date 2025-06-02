@@ -16,6 +16,10 @@
     content: "\f04c"
 }
 
+.fa-bars-filter:before {
+    content: "\e0ad"
+}
+
 
 
 /*---------------------------------*/
