@@ -27,7 +27,7 @@ function Footer() {
           </li>
         </ul>
         <div className="footer-info">
-          <Link href={SITE_URL.HOME} className="footer-logo">
+          <Link href={SITE_URL.HOME} className="footer-logo min-w-[197px]">
             <img src="img/footer-logo.svg" alt="" />
           </Link>
           <p>

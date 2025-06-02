@@ -66,7 +66,7 @@ function Header() {
           </a>
           <Select
             selectedKeys={["RU"]}
-            className="w-[80px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2]"
+            className="w-[80px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] hidden md:inline-block"
             variant="bordered"
           >
             <SelectItem key="RU">RU</SelectItem>
@@ -93,10 +93,14 @@ function Header() {
               ))}
             </ul>
             <div className="btns">
-              <select className="min-h-[43px]">
-                <option value="1">RU</option>
-                <option value="2">KZ</option>
-              </select>
+              <Select
+                selectedKeys={["RU"]}
+                className="w-[80px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white"
+                variant="bordered"
+              >
+                <SelectItem key="RU">RU</SelectItem>
+                <SelectItem key="KZ">KZ</SelectItem>
+              </Select>
               <a href="#" className="border-btn order-call">
                 Заказать звонок
               </a>

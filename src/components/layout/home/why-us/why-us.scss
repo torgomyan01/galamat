@@ -1,93 +1,98 @@
-.why-us{
+.why-us {
   margin: 20px 0;
   @media(max-width: 767px) {
     margin-top: 10px;
   }
-  .main-title{
+
+  .main-title {
     margin-bottom: 30px;
     @media(max-width: 767px) {
       margin-bottom: 20px;
     }
   }
-  .info{
+
+  .info {
     @include flex;
     @include justify-between;
-    @media(max-width: 1200px){
+    @media(max-width: 1200px) {
       @include dir-col;
     }
-    .info-sect{
+
+    .info-sect {
       width: 33%;
       background: #132C5E;
       padding: 20px;
       border-radius: 16px;
-      @media(max-width: 1200px){
+      padding-top: 40px;
+      @media(max-width: 1200px) {
         width: 100%;
         margin-bottom: 10px;
+        padding-top: 20px;
       }
       @media(max-width: 767px) {
         padding: 20px 15px;
       }
-      h4{
+
+      h4 {
         margin-bottom: 15px;
         font-size: 24px;
         font-weight: 500;
         color: white;
       }
-      p{
+
+      p {
         font-size: 14px;
         color: white;
-        margin-bottom: 15px;
-      }
-      .more{
-        border-radius: 4px;
-        padding: 6px 20px;
-        font-size: 10px;
-        color: white;
-        font-weight: 500;
-        border: 1px solid #fff;
       }
     }
-    .info-items{
+
+    .info-items {
       width: 66%;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr;
       gap: 10px;
-      @media(max-width: 1200px){
+      @media(max-width: 1200px) {
         width: 100%;
       }
-      @media(max-width: 767px){
+      @media(max-width: 767px) {
         grid-template-columns: 1fr 1fr;
       }
-      @media(max-width: 475px){
+      @media(max-width: 475px) {
         grid-template-columns: 1fr;
       }
-      .info-item{
+
+      .info-item {
         padding: 20px;
         border-radius: 16px;
         background: white;
         @media(max-width: 767px) {
-          padding: 20px 15px;
+          padding: 15px;
         }
-        h3{
+
+        h3 {
           margin-bottom: 10px;
           font-size: 44px;
           font-weight: 500;
           color: #DB1D31;
           @media(max-width: 767px) {
-            font-size: 36px;
+            font-size: 28px;
+            margin-bottom: 5px;
           }
         }
-        b{
+
+        b {
           display: block;
           margin-bottom: 10px;
           font-size: 24px;
           font-weight: 500;
           color: #132C5E;
           @media(max-width: 767px) {
-            font-size: 22px;
+            font-size: 20px;
+            margin-bottom: 8px;
           }
         }
-        span{
+
+        span {
           font-size: 15px;
           color: #132C5E;
           max-width: 145px;
