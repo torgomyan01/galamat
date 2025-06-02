@@ -88,7 +88,7 @@ function HorizontalFilter({ className }: IThisProps) {
             max={50000000}
             step={1000}
             typeOption="₸"
-            className="w-full md:w-[350]"
+            className="w-full md:w-[350px]"
           />
 
           <SliderInput
@@ -96,7 +96,7 @@ function HorizontalFilter({ className }: IThisProps) {
             min={10}
             max={150}
             step={0.5}
-            className="w-full md:w-[200]"
+            className="w-full md:w-[200px]"
           />
         </div>
       </div>
