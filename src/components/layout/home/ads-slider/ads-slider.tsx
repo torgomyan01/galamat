@@ -17,7 +17,7 @@ function AdsSlider() {
               style={{ backgroundImage: `url(img/buy-coffee-img.png)` }}
             ></div>
             <h2>
-              Покупай кофе <br />и получи{" "}
+              Покупай кофе <br />и получи
             </h2>
             <div className="price">
               <img src="img/plus.svg" alt="" className="plus" />
