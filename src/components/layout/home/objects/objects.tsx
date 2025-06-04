@@ -21,7 +21,7 @@ const tabContents = [
 ];
 
 function Objects() {
-  const [activeTab, setActiveTab] = useState(2);
+  const [activeTab, setActiveTab] = useState(0);
 
   return (
     <div className="wrapper">

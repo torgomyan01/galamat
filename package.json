@@ -41,6 +41,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@eslint/eslintrc": "^3",
     "@heroui/react": "^2.7.6",
+    "@photo-sphere-viewer/markers-plugin": "^5.13.2",
     "@toolpad/core": "^0.12.0",
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.9",
