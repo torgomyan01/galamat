@@ -21,7 +21,7 @@ function AdsSlider() {
             </h2>
             <div className="price">
               <img src="img/plus.svg" alt="" className="plus" />
-              <span>200.100тг</span>
+              <span>200.600тг</span>
             </div>
           </div>
           <Swiper
