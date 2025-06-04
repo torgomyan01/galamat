@@ -4,7 +4,7 @@
   "private": true,
   "proxy": "http://5.129.197.148:8000",
   "engines": {
-    "node": "20.13.1"
+    "node": ">=20.13.1"
   },
   "scripts": {
     "dev": "next dev --turbopack",
