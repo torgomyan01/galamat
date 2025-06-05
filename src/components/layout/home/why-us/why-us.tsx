@@ -2,7 +2,7 @@ import "./why-us.scss";
 
 function WhyUs() {
   return (
-    <div className="why-us">
+    <div className="why-us mt-10">
       <div className="wrapper">
         <h2 className="main-title">Почему мы?</h2>
         <div className="info">

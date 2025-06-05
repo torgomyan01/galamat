@@ -1,14 +1,33 @@
 import "./filter-wrapper.scss";
 import HorizontalFilter from "@/components/common/horizontal-filter/horizontal-filter";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import clsx from "clsx";
 import OurObjects from "@/components/layout/home/objects/our-objects";
-import { RandomKey } from "@/utils/helpers";
-import Image from "next/image";
+import { GetHouses } from "@/utils/api";
+import ProductItem from "@/components/common/product-item/product-item";
+import { Spinner } from "@heroui/spinner";
+import { Button } from "@heroui/react";
 
 function FilterWrapper() {
   const [content, setContent] = useState<"items" | "map">("items");
   const [mobileFilter, setMobileFilter] = useState<boolean>(false);
+
+  const [houses, setHouses] = useState<IProjectStage[]>([]);
+  const [countSplits, setCountSplits] = useState<number>(6);
+
+  useEffect(() => {
+    GetHouses({}).then(({ data }) => {
+      const _data = data.data.filter(
+        (houe: IProjectStage) => houe.type === "RESIDENTIAL",
+      );
+
+      setHouses(_data);
+    });
+  }, []);
+
+  function SeeMore() {
+    setCountSplits(countSplits + 6);
+  }
 
   return (
     <div className="filter-wrapper">
@@ -48,51 +67,44 @@ function FilterWrapper() {
           <div className="tabs2">
             <div className="tab-content2 active" id="tab4">
               <div className="product-items-wrap">
-                <div className="product-items">
-                  {Array.from({ length: 6 }).map(() => (
-                    <div key={RandomKey()} className="product-item">
-                      <div className="texts-wrap">
-                        <a href="#" className="name">
-                          Название Жк
-                        </a>
-                        <span className="text">от 30.5 млн</span>
-                        <span className="grey">г. Астана, Толеби 00</span>
-                        <div className="hide-info">
-                          <p>
-                            107 квартиры <span>в продаже</span>
-                          </p>
-                          <div className="links">
-                            <a href="#">1</a>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
-                            <a href="#">4</a>
-                          </div>
-                          <span className="date">
-                            Ближайшая сдача 25.05.2025
-                          </span>
-                        </div>
-                      </div>
-                      <a href="#" className="img-wrap">
-                        <span className="style red">Бизнес+</span>
-                        <Image
-                          src="/img/product-img.webp"
-                          alt="Название Жк"
-                          width={700}
-                          height={500}
-                        />
-                      </a>
+                {houses.length ? (
+                  <>
+                    <div className="product-items">
+                      {houses
+                        .slice(0, countSplits)
+                        .map((project: IProjectStage) => (
+                          <ProductItem
+                            key={`complex-${project.id}`}
+                            project={project}
+                          />
+                        ))}
                     </div>
-                  ))}
-                </div>
-                <div className="show-wrap">
-                  <span>Показано 6 из 50 </span>
-                  <div className="show-btn">Показать еще</div>
-                </div>
-              </div>
-            </div>
-            <div className="tab-content2" id="tab5">
-              <div className="map">
-                <img src="img/map-img.png" alt="" />
+
+                    <div className="show-wrap">
+                      <span>
+                        Показано{" "}
+                        {countSplits >= houses.length
+                          ? houses.length
+                          : countSplits}{" "}
+                        из {houses.length}
+                      </span>
+                      <Button
+                        className={clsx("show-btn bg-transparent h-[60px]", {
+                          "opacity-50 !cursor-default hover:opacity-50":
+                            countSplits >= houses.length,
+                        })}
+                        onPress={SeeMore}
+                        disabled={countSplits >= houses.length}
+                      >
+                        Показать еще
+                      </Button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="w-full h-[400px] flex-jc-c">
+                    <Spinner color="danger" />
+                  </div>
+                )}
               </div>
             </div>
           </div>

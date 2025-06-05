@@ -22,6 +22,7 @@ export default function PhotoSphereViewer() {
       container: viewerRef.current,
       panorama: "/img/360/360.jpg",
       caption: "Улица",
+      navbar: ["zoom", "fullscreen"],
       plugins: [
         [
           MarkersPlugin,

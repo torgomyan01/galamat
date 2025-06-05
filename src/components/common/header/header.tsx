@@ -7,6 +7,7 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Select, SelectItem } from "@heroui/react";
+import Image from "next/image";
 
 const menuItems = [
   {
@@ -48,17 +49,40 @@ function Header() {
       <div className="wrapper">
         <div className="top-line">
           <Link href={SITE_URL.HOME} className="logo">
-            <img src="img/logo.svg" alt="" />
+            <Image
+              src="/img/logo.svg"
+              alt="logo navbar"
+              width={162}
+              height={20}
+            />
           </Link>
           <div className="social-icons">
-            <Link href="#">
-              <img src="img/wp-icon.svg" alt="" />
+            <Link href="https://wa.me/+77001085757" target="_blank">
+              <Image
+                src="/img/wp-icon.svg"
+                alt="icon soc sites"
+                width={18}
+                height={18}
+                className="h-auto"
+              />
             </Link>
-            <Link href="#">
-              <img src="img/tg-icon.svg" alt="" />
-            </Link>
-            <Link href="#">
-              <img src="img/phone-icon.svg" alt="" />
+            {/*<Link href="tel: +7 700 108 5757" target="_blank">*/}
+            {/*  <Image*/}
+            {/*    src="/img/tg-icon.svg"*/}
+            {/*    alt="icon soc sites"*/}
+            {/*    width={18}*/}
+            {/*    height={18}*/}
+            {/*    className="h-auto"*/}
+            {/*  />*/}
+            {/*</Link>*/}
+            <Link href="tel: +7 700 108 5757" target="_blank">
+              <Image
+                src="/img/phone-icon.svg"
+                alt="icon soc sites"
+                width={18}
+                height={18}
+                className="h-auto"
+              />
             </Link>
           </div>
           <a href="#" className="border-btn order-call">
@@ -109,7 +133,12 @@ function Header() {
         </div>
         <div className="bottom-line">
           <Link href={SITE_URL.HOME} className="logo">
-            <img src="img/logo.svg" alt="" />
+            <Image
+              src="/img/logo.svg"
+              alt="logo navbar"
+              width={162}
+              height={20}
+            />
           </Link>
           <ul className="main-menu">
             {menuItems.map((menuItem, i) => (
@@ -123,10 +152,10 @@ function Header() {
               </li>
             ))}
           </ul>
-          <a href="#" className="login">
-            <img src="img/login-icon.svg" alt="" />
-            Войти
-          </a>
+          {/*<a href="#" className="login">*/}
+          {/*  <img src="img/login-icon.svg" alt="" />*/}
+          {/*  Войти*/}
+          {/*</a>*/}
         </div>
       </div>
     </header>
