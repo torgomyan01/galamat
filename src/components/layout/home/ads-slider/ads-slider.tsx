@@ -29,12 +29,6 @@ function AdsSlider() {
             <SwiperSlide>
               <div
                 className="bg"
-                style={{ backgroundImage: "url(img/info-img.png)" }}
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <div
-                className="bg"
                 style={{ backgroundImage: "url(img/ads/new-office.png)" }}
               />
             </SwiperSlide>

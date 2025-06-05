@@ -219,7 +219,7 @@ function FilterWrapper() {
                     </div>
                   </>
                 ) : (
-                  <div className="w-full h-[1250px] flex-jc-s pt-[200px]">
+                  <div className="w-full h-[400px] flex-jc-s pt-[200px]">
                     <Spinner color="danger" />
                   </div>
                 )}

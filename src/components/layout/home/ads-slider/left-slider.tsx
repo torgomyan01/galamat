@@ -19,23 +19,8 @@ function LeftSlider() {
         delay: 4000,
         disableOnInteraction: false, // Keep autoplay on user interaction
       }}
-      className="!w-[32.5%] h-[510px]"
+      className="w-full md:!w-[32.5%] md:h-[510px] mb-4 md:mb-0 rounded-[20px] overflow-hidden"
     >
-      <SwiperSlide>
-        <div className="buy-coffee h-full">
-          <div
-            className="bg"
-            style={{ backgroundImage: `url(img/buy-coffee-img.png)` }}
-          />
-          <h2>
-            Покупай кофе <br />и получи
-          </h2>
-          <div className="price">
-            <img src="img/plus.svg" alt="" className="plus" />
-            <span>200.000тг</span>
-          </div>
-        </div>
-      </SwiperSlide>
       <SwiperSlide>
         <div className="w-full h-full rounded-[20px] overflow-hidden">
           <Image

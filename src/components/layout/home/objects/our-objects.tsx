@@ -28,7 +28,7 @@ function OurObjects({ height = 400, className }: IThisProps) {
       if (window.ymaps) {
         window.ymaps.ready(() => {
           new window.ymaps.Map(mapRef.current, {
-            center: [51.10011, 71.404261],
+            center: [51.098985, 71.428983],
             zoom: 18,
           });
         });
