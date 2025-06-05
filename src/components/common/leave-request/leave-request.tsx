@@ -11,7 +11,6 @@ function LeaveRequest() {
 
   function startCallBack(e: any) {
     e.preventDefault();
-
     const phone = e.target.phone.value;
     const name = e.target.name.value;
 
