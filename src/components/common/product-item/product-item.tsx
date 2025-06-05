@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { formatPrice } from "@/utils/consts";
 import moment from "moment";
+import clsx from "clsx";
 
 interface IThisProps {
   project: IProjectStage;
@@ -34,10 +35,34 @@ function ProductItem({ project }: IThisProps) {
         <div className="hide-info">
           {countText}
           <div className="links">
-            <a href="#">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
+            <span
+              className={clsx({
+                active: project.roomsFilter.includes("one"),
+              })}
+            >
+              1
+            </span>
+            <span
+              className={clsx({
+                active: project.roomsFilter.includes("two"),
+              })}
+            >
+              2
+            </span>
+            <span
+              className={clsx({
+                active: project.roomsFilter.includes("three"),
+              })}
+            >
+              3
+            </span>
+            <span
+              className={clsx({
+                active: project.roomsFilter.includes("more_than_three"),
+              })}
+            >
+              4 и более
+            </span>
           </div>
           <span className="date">Ближайшая сдача {printData}</span>
         </div>

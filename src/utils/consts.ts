@@ -15,6 +15,8 @@ export const localStorageKeys = {
   tokenTime: "tokenTime",
 };
 
+export const all = "Все";
+
 export const StartGenerateNewToken = async () => {
   return axios.post(`${servLink}/authentication`, {
     type: "api-app",

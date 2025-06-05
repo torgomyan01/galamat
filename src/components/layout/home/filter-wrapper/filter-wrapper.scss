@@ -263,11 +263,13 @@ input[type=range]::-moz-range-thumb {
             display: block;
           }
           .links{
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             gap: 5px;
             margin-bottom: 20px;
-            a{
+            span{
+              width: 100%;
               height: 35px;
               @include flex;
               @include align-center;
@@ -276,7 +278,9 @@ input[type=range]::-moz-range-thumb {
               border-radius: 4px;
               font-size: 15px;
               color: #6B6B6B;
-              &:hover{
+              white-space: nowrap;
+              padding: 0 10px;
+              &.active{
                 background: #132C5E;
                 color: white;
               }

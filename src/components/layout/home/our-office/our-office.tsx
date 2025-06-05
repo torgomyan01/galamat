@@ -5,7 +5,7 @@ import { RandomKey } from "@/utils/helpers";
 
 function OurOffice() {
   return (
-    <div className="our-office">
+    <div className="our-office md:mt-[80px]">
       <div className="wrapper">
         <h2 className="main-title">Наш офис</h2>
 

@@ -10,9 +10,10 @@ declare global {
 
 interface IThisProps {
   height?: number;
+  className?: string;
 }
 
-function OurObjects({ height = 400 }: IThisProps) {
+function OurObjects({ height = 400, className }: IThisProps) {
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -36,7 +37,9 @@ function OurObjects({ height = 400 }: IThisProps) {
     document.head.appendChild(script);
   }, []);
 
-  return <div ref={mapRef} style={{ width: "100%", height }} />;
+  return (
+    <div ref={mapRef} style={{ width: "100%", height }} className={className} />
+  );
 }
 
 export default OurObjects;

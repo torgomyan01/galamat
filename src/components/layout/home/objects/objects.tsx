@@ -12,11 +12,11 @@ const tabContents = [
   },
   {
     name: "Офис",
-    content: <OurObjects />,
+    content: <OurObjects height={500} />,
   },
   {
     name: "Объекты",
-    content: <OurObjects />,
+    content: <OurObjects height={500} />,
   },
 ];
 

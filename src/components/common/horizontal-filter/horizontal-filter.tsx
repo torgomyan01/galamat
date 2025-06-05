@@ -1,14 +1,99 @@
-import { Select, SelectItem } from "@heroui/react";
+import { Select, SelectItem, SharedSelection } from "@heroui/react";
 import SliderInput from "@/components/common/slider-input/slider-input";
 import clsx from "clsx";
 import { useState } from "react";
+import { all } from "@/utils/consts";
 
 interface IThisProps {
   className?: string;
+  houses: IProjectStage[];
+  selectRegion: (key: string) => void;
+  selectProject: (key: string) => void;
+  selectFloor: (key: number | string) => void;
+  onSelectRoom: (roomArray: string[]) => void;
+  onSelectMinMax: (prices: number[]) => void;
 }
 
-function HorizontalFilter({ className }: IThisProps) {
-  const [numberRooms, SetNumberRooms] = useState<number>(4);
+function HorizontalFilter({
+  className,
+  houses,
+  selectRegion,
+  selectProject,
+  selectFloor,
+  onSelectRoom,
+  onSelectMinMax,
+}: IThisProps) {
+  const findRegions = houses
+    .filter((house: IProjectStage) => house.address.region)
+    .map((house: IProjectStage) => house.address.region);
+
+  const [regions, setRegions] = useState<string>(all);
+  const [project, setProject] = useState<string>(all);
+  const [floor, setFloor] = useState<string>(all);
+
+  const getProjects = [...new Set(houses.map((house) => house.projectName))];
+  const getFloors = [...new Set(houses.map((house) => house.maxFloor))].sort(
+    (a, b) => a - b,
+  );
+
+  function _selectRegion(keys: SharedSelection) {
+    if (keys.currentKey) {
+      setRegions(keys.currentKey);
+      selectRegion(keys.currentKey);
+    }
+  }
+
+  function _selectProject(keys: SharedSelection) {
+    if (keys.currentKey) {
+      setProject(keys.currentKey);
+      selectProject(keys.currentKey);
+    }
+  }
+
+  function _selectFloor(keys: SharedSelection) {
+    if (keys.currentKey) {
+      setFloor(keys.currentKey);
+      selectFloor(+keys.currentKey);
+    }
+  }
+
+  function ClearFilter() {
+    setRegions(all);
+    selectRegion(all);
+
+    setProject(all);
+    selectProject(all);
+
+    setFloor(all);
+    selectFloor(all);
+  }
+
+  const rooms = ["one", "two", "three", "more_than_three"];
+  const [selectedRoom, setSelectedRoom] = useState<string[]>([]);
+
+  function selectRoom(room: string) {
+    if (selectedRoom.includes(room)) {
+      const removeData = selectedRoom.filter((i) => i !== room);
+      setSelectedRoom(removeData);
+      onSelectRoom(removeData);
+    } else {
+      const data = [...selectedRoom, room];
+      setSelectedRoom(data);
+      onSelectRoom(data);
+    }
+  }
+
+  let priceDebounceTimer: NodeJS.Timeout;
+
+  function changeMinMaxPrice(res: number[]) {
+    if (priceDebounceTimer) {
+      clearTimeout(priceDebounceTimer);
+    }
+
+    priceDebounceTimer = setTimeout(() => {
+      onSelectMinMax(res);
+    }, 1000);
+  }
 
   return (
     <div className={clsx("filters mb-8", className)}>
@@ -17,66 +102,59 @@ function HorizontalFilter({ className }: IThisProps) {
           <span>Район</span>
 
           <Select
-            selectedKeys={["Есиль"]}
+            selectedKeys={[`${regions}`]}
             className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white"
             variant="bordered"
+            onSelectionChange={_selectRegion}
           >
-            <SelectItem key="Есиль">Есиль</SelectItem>
-            <SelectItem key="Есиль 2">Есиль 2</SelectItem>
-            <SelectItem key="Есиль 3">Есиль 3</SelectItem>
+            {[...findRegions, all]?.map((region) => (
+              <SelectItem key={region}>{region}</SelectItem>
+            ))}
           </Select>
         </div>
         <div className="select-info">
           <span>Жилой комплекс</span>
           <Select
-            selectedKeys={["ЖК Orleu"]}
+            selectedKeys={[project]}
             className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white"
             variant="bordered"
+            onSelectionChange={_selectProject}
           >
-            <SelectItem key="ЖК Orleu">ЖК Orleu</SelectItem>
-            <SelectItem key="Есиль 2">Есиль 2</SelectItem>
-            <SelectItem key="Есиль 3">Есиль 3</SelectItem>
+            {[...getProjects, all]?.map((projectName) => (
+              <SelectItem key={projectName}>{projectName}</SelectItem>
+            ))}
           </Select>
         </div>
         <div className="select-info">
           <span>Этаж</span>
           <Select
-            selectedKeys={["1"]}
-            className="md:w-[60px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white"
+            selectedKeys={[`${floor}`]}
+            className="md:w-[80px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white"
             variant="bordered"
+            onSelectionChange={_selectFloor}
           >
-            <SelectItem key="1">1</SelectItem>
-            <SelectItem key="2">2</SelectItem>
-            <SelectItem key="3">3</SelectItem>
+            {[...getFloors, all]?.map((floor) => (
+              <SelectItem key={`${floor}`}>{floor}</SelectItem>
+            ))}
           </Select>
         </div>
-        <div className="select-info">
-          <span />
-          <Select
-            selectedKeys={["1"]}
-            className="md:w-[160px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white"
-            variant="bordered"
-          >
-            <SelectItem key="1">Любой 1</SelectItem>
-            <SelectItem key="2">Любой 2</SelectItem>
-            <SelectItem key="3">Любой 3</SelectItem>
-          </Select>
-        </div>
-        <span className="reset">Сбросить</span>
+        <span className="reset" onClick={ClearFilter}>
+          Сбросить
+        </span>
       </div>
       <div className="bottom-info">
         <div className="room">
           <span>Ком.</span>
           <div className="items">
-            {Array.from({ length: 4 }).map((_, i) => (
+            {rooms.map((room, index) => (
               <span
-                key={`room-${i}`}
+                key={room}
                 className={clsx({
-                  "!bg-blue !text-white": i + 1 === numberRooms,
+                  "!bg-blue !text-white": selectedRoom.includes(room),
                 })}
-                onClick={() => SetNumberRooms(i + 1)}
+                onClick={() => selectRoom(room)}
               >
-                {i + 1}
+                {index + 1}
               </span>
             ))}
           </div>
@@ -84,11 +162,12 @@ function HorizontalFilter({ className }: IThisProps) {
         <div className="filter-block">
           <SliderInput
             labelName="Стоимость"
-            min={10000000}
+            min={1000000}
             max={50000000}
             step={1000}
             typeOption="₸"
             className="w-full md:w-[350px]"
+            onChangeInput={changeMinMaxPrice}
           />
 
           <SliderInput

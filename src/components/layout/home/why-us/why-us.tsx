@@ -1,38 +1,46 @@
 import "./why-us.scss";
+import { Fade } from "react-awesome-reveal";
+import clsx from "clsx";
+
+const dataWhyUs = [
+  {
+    title: "Нас выбирают",
+    text: "Компания заслуженно входит в число ведущих девелоперов столицы.",
+  },
+  {
+    title: "50 доступных объектов",
+    text: "Уже построенных и сданных домов. Всё готово к заселению",
+  },
+  {
+    title: "7 лет надежности",
+    text: "Уже 7 лет мы строим не просто дома, а доверие.",
+  },
+  {
+    title: "8500 семей выбрали нас",
+    text: "Наши дома стали тёплым и надёжным местом.",
+  },
+];
 
 function WhyUs() {
   return (
-    <div className="why-us mt-10">
+    <div className="why-us !mt-10">
       <div className="wrapper">
         <h2 className="main-title">Почему мы?</h2>
         <div className="info">
-          <div className="info-sect">
-            <h4>Нас выбирают</h4>
-            <p>
-              Компания заслуженно входит в число ведущих девелоперов столицы.
-            </p>
-          </div>
           <div className="info-items">
-            <div className="info-item">
-              <h3>50</h3>
-              <b>объектов</b>
-              <span>Объектов введено в эксплуатацию</span>
-            </div>
-            <div className="info-item">
-              <h3>7</h3>
-              <b>лет</b>
-              <span>Успешного опыта в столице</span>
-            </div>
-            <div className="info-item">
-              <h3>50</h3>
-              <b>объектов</b>
-              <span>Введено в эксплуатацию</span>
-            </div>
-            <div className="info-item">
-              <h3>8500</h3>
-              <b>семей</b>
-              <span>Счастливо живет в наших ЖК</span>
-            </div>
+            <Fade cascade direction="up" damping={0.4}>
+              {dataWhyUs.map((item, index) => (
+                <div
+                  key={`why-${index}`}
+                  className={clsx("info-item", {
+                    active: index === 0,
+                  })}
+                >
+                  <b>{item.title}</b>
+                  <span>{item.text}</span>
+                </div>
+              ))}
+            </Fade>
           </div>
         </div>
       </div>

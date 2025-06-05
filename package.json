@@ -30,6 +30,7 @@
     "nextjs-toploader": "^3.7.15",
     "openai": "^4.86.2",
     "react": "^19.0.0",
+    "react-awesome-reveal": "^4.3.1",
     "react-clipboardjs-copy": "^2.1.0",
     "react-dom": "^19.0.0",
     "react-input-mask": "^2.0.4",

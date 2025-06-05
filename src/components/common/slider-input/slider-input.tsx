@@ -9,6 +9,7 @@ interface IThisProps {
   max: number;
   step: number;
   typeOption?: string;
+  onChangeInput?: (val: number[]) => void;
 }
 
 function SliderInput({
@@ -18,6 +19,7 @@ function SliderInput({
   max,
   step,
   typeOption,
+  onChangeInput,
 }: IThisProps) {
   const [value, setValue] = useState<number[]>([min, max]);
 
@@ -44,9 +46,12 @@ function SliderInput({
           defaultValue={[min, max]}
           maxValue={max}
           minValue={min}
-          onChange={(value) =>
-            setValue(typeof value === "object" ? value : [min, max])
-          }
+          onChange={(value) => {
+            setValue(typeof value === "object" ? value : [min, max]);
+            if (onChangeInput) {
+              onChangeInput(typeof value === "object" ? value : [min, max]);
+            }
+          }}
           step={step}
           renderThumb={({ index, ...props }) => (
             <div

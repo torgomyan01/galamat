@@ -67,12 +67,12 @@ interface Currency {
 }
 
 interface Address {
-  full: string;
-  locality: string;
+  full: string | null;
+  locality: string | null;
   district: string | null;
-  region: string;
-  street: string;
-  number: string;
+  region: string | null;
+  street: string | null;
+  number: string | null;
 }
 
 interface IProjectStage {
@@ -103,7 +103,14 @@ interface IProjectStage {
   countFilteredProperty: string;
   houseBadges: any[]; // Դատարկ զանգված է, եթե badge օբյեկտ կա՝ նշի կառուցվածքը
   propertyTypes: number[];
-  roomsFilter: string[];
+  roomsFilter: [
+    "one",
+    "without_layout",
+    "two",
+    "studio",
+    "three",
+    "more_than_three",
+  ];
   roomsWithEuroFilter: string[];
   landNumber: string | null;
   hasAvailableProperties: boolean;
