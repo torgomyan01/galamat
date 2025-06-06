@@ -20,6 +20,10 @@
     content: "\e0ad"
 }
 
+.fa-xmark:before {
+    content: "\f00d"
+}
+
 
 
 /*---------------------------------*/

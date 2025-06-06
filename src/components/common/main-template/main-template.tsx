@@ -4,6 +4,7 @@ import { HeroUIProvider, ToastProvider } from "@heroui/react";
 import React from "react";
 import Header from "@/components/common/header/header";
 import Footer from "@/components/common/footer/footer";
+import ChatWidget from "@/components/common/chat-widget/chat-widget";
 
 interface IThisProps {
   children?: React.ReactNode;
@@ -31,6 +32,7 @@ function MainTemplate({ children, pageOff = false }: IThisProps) {
           <Footer />
         </>
       )}
+      <ChatWidget />
     </HeroUIProvider>
   );
 }

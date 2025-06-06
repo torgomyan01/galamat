@@ -24,7 +24,7 @@ function Objects() {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <div className="wrapper !mb-12 !mt-[100px]">
+    <div className="wrapper md:!mb-12 !mt-10 md:!mt-[100px]">
       <div className="tabs">
         <div className="tab-buttons !mr-[10px] min-[425px]:mr-5">
           {tabContents.map((tab, index) => (

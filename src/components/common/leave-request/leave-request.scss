@@ -8,12 +8,12 @@
       border-radius: 16px;
       overflow: hidden;
       background: #132C5E;
-      width: 55%;
+      width: 100%;
       padding: 80px 50px;
       @include flex;
       @include align-center;
       @media(max-width: 1024px) {
-        padding: 50px 20px;
+        padding: 58px 20px;
       }
       @media(max-width: 767px) {
         width: 100%;
@@ -57,14 +57,16 @@
       }
     }
     .leave-request-form{
+      min-height: 306px;
       border-radius: 16px;
       background: white;
-      width: 45%;
+      width: 100%;
       padding: 50px 40px;
       @include flex;
       @include dir-col;
       @media(max-width: 1024px) {
         padding: 30px;
+        min-height: 252px;
       }
       @media(max-width: 767px) {
         width: 100%;

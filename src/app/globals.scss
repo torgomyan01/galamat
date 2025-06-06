@@ -13,7 +13,7 @@
 
 body,
 html {
-  overflow-x: hidden;
+  overflow-x: hidden !important;
 
   &.overflow {
     overflow: hidden !important;
@@ -100,6 +100,10 @@ select {
   width: 100%;
   margin: 0 auto;
   padding: 0 20px;
+
+  @media (max-width: 767px){
+    padding: 0 16px;
+  }
 }
 
 .checkbox-wrap {

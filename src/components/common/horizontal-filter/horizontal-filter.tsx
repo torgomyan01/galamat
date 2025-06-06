@@ -1,4 +1,4 @@
-import { Select, SelectItem, SharedSelection } from "@heroui/react";
+import { Button, Select, SelectItem, SharedSelection } from "@heroui/react";
 import SliderInput from "@/components/common/slider-input/slider-input";
 import clsx from "clsx";
 import { useState } from "react";
@@ -12,6 +12,8 @@ interface IThisProps {
   selectFloor: (key: number | string) => void;
   onSelectRoom: (roomArray: string[]) => void;
   onSelectMinMax: (prices: number[]) => void;
+  result: number;
+  onClose: () => void;
 }
 
 function HorizontalFilter({
@@ -22,6 +24,8 @@ function HorizontalFilter({
   selectFloor,
   onSelectRoom,
   onSelectMinMax,
+  result,
+  onClose,
 }: IThisProps) {
   const findRegions = houses
     .filter((house: IProjectStage) => house.address.region)
@@ -97,6 +101,11 @@ function HorizontalFilter({
 
   return (
     <div className={clsx("filters mb-8", className)}>
+      <div className="w-[calc(100%+40px)] ml-[-20px] h-12 flex-jsb-c text-blue font-medium border-b mb-4 mt-[-10px] px-5 flex md:hidden">
+        <span>Фильтр</span>
+        <i className="fa-solid fa-xmark text-[18px]" onClick={onClose} />
+      </div>
+
       <div className="top-info gap-1">
         <div className="select-info">
           <span>Район</span>
@@ -138,7 +147,7 @@ function HorizontalFilter({
             ))}
           </Select>
         </div>
-        <span className="reset" onClick={ClearFilter}>
+        <span className="reset hidden md:block" onClick={ClearFilter}>
           Сбросить
         </span>
       </div>
@@ -166,7 +175,7 @@ function HorizontalFilter({
             max={50000000}
             step={1000}
             typeOption="₸"
-            className="w-full md:w-[350px]"
+            className="w-full md:w-[350px] mb-6"
             onChangeInput={changeMinMaxPrice}
           />
 
@@ -177,6 +186,18 @@ function HorizontalFilter({
             step={0.5}
             className="w-full md:w-[200px]"
           />
+        </div>
+        <div className="w-full flex-jsb-c mt-6 flex md:hidden gap-4">
+          <Button
+            className="rounded-[6px] bg-blue text-white"
+            variant="flat"
+            onPress={onClose}
+          >
+            {result} Проектов
+          </Button>
+          <span className="reset" onClick={ClearFilter}>
+            Сбросить
+          </span>
         </div>
       </div>
     </div>

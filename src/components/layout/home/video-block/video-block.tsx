@@ -82,7 +82,7 @@ function VideoBlock() {
   return (
     <div
       ref={containerRef}
-      className="max-w-[3000px] w-full h-[500px] md:h-[770px] relative video-block mx-auto !mt-[100px]"
+      className="max-w-[3000px] w-full h-[500px] md:h-[770px] relative video-block mx-auto !mt-10 md:!mt-[100px]"
     >
       <video
         ref={video}

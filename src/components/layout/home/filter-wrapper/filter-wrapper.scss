@@ -15,7 +15,6 @@
       @include dir-col;
       align-items: flex-start;
       margin-bottom: 20px;
-      position: relative;
       .main-title {
         margin-bottom: 20px;
       }
@@ -28,9 +27,10 @@
         border-radius: 4px;
         background: #132C5E;
         color: white;
-        position: absolute;
-        bottom: 0px;
-        right: 0px;
+        position: fixed;
+        bottom: 24px;
+        left: 20px;
+        z-index: 10;
       }
     }
   }
@@ -38,6 +38,14 @@
   .filters {
     @media(max-width: 767px) {
       display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: #fff;
+      z-index: 1000;
+      width: 100%;
+      height: 100dvh;
+      padding: 20px;
       &.open {
         display: block;
       }
@@ -121,6 +129,10 @@
             &:hover {
               background: rgba(19, 44, 94, 0.51);
               color: white;
+            }
+
+            @media (max-width: 767px) {
+              background: #e8eaef;
             }
           }
         }
@@ -235,7 +247,7 @@ input[type=range]::-moz-range-thumb {
     @media(max-width: 1200px) {
       grid-template-columns: 1fr 1fr;
     }
-    @media(max-width: 767px) {
+    @media(max-width: 600px) {
       grid-template-columns: 1fr;
     }
     .product-item{

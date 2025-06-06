@@ -28,7 +28,7 @@ function WhyUs() {
         <h2 className="main-title">Почему мы?</h2>
         <div className="info">
           <div className="info-items">
-            <Fade cascade direction="up" damping={0.4}>
+            <Fade cascade direction="up" damping={0.4} triggerOnce>
               {dataWhyUs.map((item, index) => (
                 <div
                   key={`why-${index}`}

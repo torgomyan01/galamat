@@ -156,7 +156,7 @@ function FilterWrapper() {
           </div>
           <div
             className="filter-btn h-10 px-4 !flex-jc-c md:!hidden"
-            onClick={() => setMobileFilter(!mobileFilter)}
+            onClick={() => setMobileFilter(true)}
           >
             <i className="fa-regular fa-bars-filter mr-1"></i>
             Фильтр
@@ -166,11 +166,13 @@ function FilterWrapper() {
         <HorizontalFilter
           className={mobileFilter ? "open" : ""}
           houses={allHouses}
+          result={houses?.length || 0}
           selectRegion={selectRegion}
           selectProject={selectProject}
           selectFloor={selectFloor}
           onSelectRoom={selectRoom}
           onSelectMinMax={selectMinMax}
+          onClose={() => setMobileFilter(false)}
         />
 
         {content === "items" && (

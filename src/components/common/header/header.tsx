@@ -37,11 +37,9 @@ function Header() {
   const [mobileMenu, setMobileMenu] = useState<boolean>(false);
 
   useEffect(() => {
-    if (mobileMenu) {
-      document.body.classList.add("overflow");
-    } else {
-      document.body.classList.remove("overflow");
-    }
+    const overflowValue = mobileMenu ? "hidden" : "auto";
+    document.body.style.overflow = overflowValue;
+    document.documentElement.style.overflow = overflowValue;
   }, [mobileMenu]);
 
   return (

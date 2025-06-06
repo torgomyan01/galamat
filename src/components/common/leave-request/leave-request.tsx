@@ -4,6 +4,7 @@ import { addToast, Button } from "@heroui/react";
 import { SendCallBack } from "@/utils/api";
 import { useState } from "react";
 import { isValidInternationalPhoneNumber } from "@/utils/consts";
+import { Fade } from "react-awesome-reveal";
 
 function LeaveRequest() {
   const [loading, setLoading] = useState(false);
@@ -40,53 +41,57 @@ function LeaveRequest() {
     <div className="leave-request mt-12">
       <div className="wrapper">
         <div className="leave-request-info">
-          <div className="info">
-            <div className="texts">
-              <h2>Оставить заявку</h2>
-              <span>Мы строим будущее</span>
-            </div>
-            <div className="img-wrap">
-              <img src="img/leave-request-img.svg" alt="" />
-            </div>
-          </div>
-          <div className="leave-request-form">
-            {sendStatus ? (
-              <div className="w-full flex-jc-c flex-col gap-4">
-                <img src="img/icons/checked.svg" alt="check icon" />
-                <h4 className="text-blue text-[28.74px] font-medium tracking-[-0.862px] text-center">
-                  Мы уже получили вашу заявку и скоро свяжемся!
-                </h4>
+          <Fade direction="left" className="md:w-[55%]" triggerOnce>
+            <div className="info">
+              <div className="texts">
+                <h2>Оставить заявку</h2>
+                <span>Мы строим будущее</span>
               </div>
-            ) : (
-              <form action="" onSubmit={startCallBack}>
-                <div className="mb-4">
-                  <Input
-                    label="Ваше имя"
-                    name="name"
-                    type="text"
-                    variant="bordered"
-                    required
-                  />
+              <div className="img-wrap">
+                <img src="img/leave-request-img.svg" alt="" />
+              </div>
+            </div>
+          </Fade>
+          <Fade direction="right" className="md:w-[45%]" triggerOnce>
+            <div className="leave-request-form">
+              {sendStatus ? (
+                <div className="w-full flex-jc-c flex-col gap-4">
+                  <img src="img/icons/checked.svg" alt="check icon" />
+                  <h4 className="text-blue text-[28.74px] font-medium tracking-[-0.862px] text-center">
+                    Мы уже получили вашу заявку и скоро свяжемся!
+                  </h4>
                 </div>
-                <div className="mb-4">
-                  <Input
-                    label="Номер телефона"
-                    type="text"
-                    name="phone"
-                    variant="bordered"
-                    required
-                  />
-                </div>
-                <Button
-                  className="blue-btn send-btn h-12 w-full"
-                  type="submit"
-                  isLoading={loading}
-                >
-                  Отправить
-                </Button>
-              </form>
-            )}
-          </div>
+              ) : (
+                <form action="" onSubmit={startCallBack}>
+                  <div className="mb-4">
+                    <Input
+                      label="Ваше имя"
+                      name="name"
+                      type="text"
+                      variant="bordered"
+                      required
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <Input
+                      label="Номер телефона"
+                      type="text"
+                      name="phone"
+                      variant="bordered"
+                      required
+                    />
+                  </div>
+                  <Button
+                    className="blue-btn send-btn h-12 w-full"
+                    type="submit"
+                    isLoading={loading}
+                  >
+                    Отправить
+                  </Button>
+                </form>
+              )}
+            </div>
+          </Fade>
         </div>
       </div>
     </div>
