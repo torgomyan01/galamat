@@ -6,6 +6,7 @@ import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
 
 import LeftSlider from "@/components/layout/home/ads-slider/left-slider";
+import Image from "next/image";
 
 function AdsSlider() {
   return (
@@ -27,9 +28,12 @@ function AdsSlider() {
             className="info-swiper rounded-[16px] overflow-hidden"
           >
             <SwiperSlide>
-              <div
-                className="bg"
-                style={{ backgroundImage: "url(img/ads/new-office.png)" }}
+              <Image
+                className="bg h-auto"
+                src="/img/ads/new-office.png"
+                alt="У нас есть новый офис"
+                width={800}
+                height={500}
               />
             </SwiperSlide>
           </Swiper>

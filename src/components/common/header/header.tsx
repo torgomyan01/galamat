@@ -83,9 +83,9 @@ function Header() {
               />
             </Link>
           </div>
-          <a href="#" className="border-btn order-call">
+          <Link href="tel: +7 700 108 5757" className="border-btn order-call">
             Заказать звонок
-          </a>
+          </Link>
           <Select
             selectedKeys={["RU"]}
             className="w-[80px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] hidden md:inline-block"
@@ -123,9 +123,12 @@ function Header() {
                 <SelectItem key="RU">RU</SelectItem>
                 <SelectItem key="KZ">KZ</SelectItem>
               </Select>
-              <a href="#" className="border-btn order-call">
+              <Link
+                href="tel: +7 700 108 5757"
+                className="border-btn order-call"
+              >
                 Заказать звонок
-              </a>
+              </Link>
             </div>
           </div>
         </div>

@@ -23,7 +23,7 @@ const dataWhyUs = [
 
 function WhyUs() {
   return (
-    <div className="why-us !mt-10">
+    <div className="why-us md:!mt-[80px]">
       <div className="wrapper">
         <h2 className="main-title">Почему мы?</h2>
         <div className="info">
@@ -36,8 +36,8 @@ function WhyUs() {
                     active: index === 0,
                   })}
                 >
-                  <b>{item.title}</b>
-                  <span>{item.text}</span>
+                  <h2>{item.title}</h2>
+                  <h3>{item.text}</h3>
                 </div>
               ))}
             </Fade>

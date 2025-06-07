@@ -8,22 +8,24 @@ function Footer() {
       <div className="wrapper">
         <ul className="footer-menu">
           <li>
-            <a href="#">Контакты</a>
+            <Link href={SITE_URL.CONTACT}>Контакты</Link>
           </li>
           <li>
-            <a href="#">FAQ</a>
+            <Link href={SITE_URL.FAQ}>FAQ</Link>
           </li>
           <li>
-            <a href="#">О нас</a>
+            <Link href={SITE_URL.OUR_COMPANY}>О нас</Link>
           </li>
           <li>
-            <a href="#">Оставить заявку</a>
+            <Link href={SITE_URL.REQUESTS}>Оставить заявку</Link>
           </li>
           <li>
-            <a href="#">Пользовательское соглашение</a>
+            <Link href={SITE_URL.USER_AGREEMENT}>
+              Пользовательское соглашение
+            </Link>
           </li>
           <li>
-            <a href="#">Офис продаж</a>
+            <Link href={SITE_URL.SALES_OFFICE}>Офис продаж</Link>
           </li>
         </ul>
         <div className="footer-info">

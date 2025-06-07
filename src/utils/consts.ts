@@ -8,6 +8,11 @@ export const SITE_URL = {
   OUR_COMPANY: "/our-company",
   SALES: "/sales",
   METHODS_PURCHASE: "/methods-purchase",
+  SALES_OFFICE: "/sales-office",
+  USER_AGREEMENT: "/user-agreement",
+  SEND_CALLBACK: "/send-callback",
+  FAQ: "/faq",
+  CONTACT: "/contact",
 };
 
 export const localStorageKeys = {

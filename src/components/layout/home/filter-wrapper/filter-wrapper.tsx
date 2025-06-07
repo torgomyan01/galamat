@@ -136,7 +136,7 @@ function FilterWrapper() {
       <div className="wrapper">
         <div className="title-wrap">
           <h2 className="main-title">Проекты Galamat</h2>
-          <div className="w-[200px] border rounded-[6px] flex-jsb-c h-10 overflow-hidden">
+          <div className="w-full md:w-[200px] border rounded-[6px] flex-je-c h-10 overflow-hidden">
             <button
               className={clsx("w-[100%] h-full rounded-[6px] bg-transparent", {
                 "!bg-[#132C5E] text-white": content === "items",
@@ -194,31 +194,33 @@ function FilterWrapper() {
                       </div>
                     ) : (
                       <div className="w-full h-[400px] flex-jc-c">
-                        <h3 className="text-blue text-[24px]">
+                        <h3 className="text-blue text-[18px] sm:text-[24px]">
                           Пока ничего не найдено.
                         </h3>
                       </div>
                     )}
 
-                    <div className="show-wrap">
-                      <span>
-                        Показано{" "}
-                        {countSplits >= houses.length
-                          ? houses.length
-                          : countSplits}{" "}
-                        из {houses.length}
-                      </span>
-                      <Button
-                        className={clsx("show-btn bg-transparent h-[60px]", {
-                          "opacity-50 !cursor-default hover:opacity-50":
-                            countSplits >= houses.length,
-                        })}
-                        onPress={SeeMore}
-                        disabled={countSplits >= houses.length}
-                      >
-                        Показать еще
-                      </Button>
-                    </div>
+                    {houses.length ? (
+                      <div className="show-wrap">
+                        <span>
+                          Показано{" "}
+                          {countSplits >= houses.length
+                            ? houses.length
+                            : countSplits}{" "}
+                          из {houses.length}
+                        </span>
+                        <Button
+                          className={clsx("show-btn bg-transparent h-[60px]", {
+                            "opacity-50 !cursor-default hover:opacity-50":
+                              countSplits >= houses.length,
+                          })}
+                          onPress={SeeMore}
+                          disabled={countSplits >= houses.length}
+                        >
+                          Показать еще
+                        </Button>
+                      </div>
+                    ) : null}
                   </>
                 ) : (
                   <div className="w-full h-[400px] flex-jc-s pt-[200px]">

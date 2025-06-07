@@ -173,6 +173,10 @@
   min-height: 48px;
   @include flex;
   @include align-center;
+
+  @media (max-width: 767px) {
+    padding: 0;
+  }
 }
 
 #price-min-val {
@@ -402,6 +406,10 @@ input[type=range]::-moz-range-thumb {
     margin: 30px auto;
     max-width: 230px;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     span{
       text-align: center;
       display: block;

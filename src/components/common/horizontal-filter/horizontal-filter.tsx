@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Select, SelectItem, SharedSelection } from "@heroui/react";
 import SliderInput from "@/components/common/slider-input/slider-input";
 import clsx from "clsx";
@@ -70,6 +72,8 @@ function HorizontalFilter({
 
     setFloor(all);
     selectFloor(all);
+
+    setSelectedRoom([]);
   }
 
   const rooms = ["one", "two", "three", "more_than_three"];
@@ -168,7 +172,7 @@ function HorizontalFilter({
             ))}
           </div>
         </div>
-        <div className="filter-block">
+        <div className="filter-block mt-5 md:mt-0">
           <SliderInput
             labelName="Стоимость"
             min={1000000}

@@ -3,9 +3,20 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { RandomKey } from "@/utils/helpers";
 
+const sliderItems = [
+  "img/slider/galamat-cetchen.jpg",
+  "img/slider/Galamat-office.jpg",
+  "img/slider/office-1.jpg",
+  "img/slider/office-2.jpg",
+  "img/slider/galamat-rakurs-street.jpg",
+  "img/slider/galamat-reseption.jpg",
+  "img/slider/reseption.jpg",
+  "img/slider/orleo-post.jpg",
+];
+
 function OurOffice() {
   return (
-    <div className="our-office md:mt-[80px]">
+    <div className="our-office mt-6 md:mt-[80px]">
       <div className="wrapper">
         <h2 className="main-title">Наш офис</h2>
 
@@ -29,12 +40,9 @@ function OurOffice() {
           }}
           className="office-swiper rounded-[16px] overflow-hidden group"
         >
-          {Array.from({ length: 4 }).map(() => (
+          {sliderItems.map((item) => (
             <SwiperSlide key={RandomKey()}>
-              <div
-                className="bg"
-                style={{ backgroundImage: "url(img/office-img.png)" }}
-              />
+              <div className="bg" style={{ backgroundImage: `url(${item})` }} />
             </SwiperSlide>
           ))}
 

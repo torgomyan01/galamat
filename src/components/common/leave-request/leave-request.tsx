@@ -5,6 +5,7 @@ import { SendCallBack } from "@/utils/api";
 import { useState } from "react";
 import { isValidInternationalPhoneNumber } from "@/utils/consts";
 import { Fade } from "react-awesome-reveal";
+import Image from "next/image";
 
 function LeaveRequest() {
   const [loading, setLoading] = useState(false);
@@ -48,7 +49,12 @@ function LeaveRequest() {
                 <span>Мы строим будущее</span>
               </div>
               <div className="img-wrap">
-                <img src="img/leave-request-img.svg" alt="" />
+                <Image
+                  src="/img/leave-request-img.svg"
+                  alt="def image"
+                  width={130}
+                  height={130}
+                />
               </div>
             </div>
           </Fade>
@@ -56,7 +62,12 @@ function LeaveRequest() {
             <div className="leave-request-form">
               {sendStatus ? (
                 <div className="w-full flex-jc-c flex-col gap-4">
-                  <img src="img/icons/checked.svg" alt="check icon" />
+                  <Image
+                    src="img/icons/checked.svg"
+                    alt="check icon"
+                    width="178"
+                    height="103"
+                  />
                   <h4 className="text-blue text-[28.74px] font-medium tracking-[-0.862px] text-center">
                     Мы уже получили вашу заявку и скоро свяжемся!
                   </h4>
