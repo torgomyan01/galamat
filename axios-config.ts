@@ -37,11 +37,17 @@ const instance = axios.create({
   },
 });
 
-// 🔑 Request interceptor
+// ✅ Request Interceptor
 instance.interceptors.request.use(async (config: any) => {
+  // Չենք ավելացնում token, եթե authentication հարցում է
+  if (config.url?.includes("/authentication")) {
+    return config;
+  }
+
   const tokenTime = localStorage.getItem(localStorageKeys.tokenTime);
   const now = moment().unix();
 
+  // Ժամկետանց token
   if (!tokenTime || +tokenTime < now) {
     if (!isRefreshing) {
       isRefreshing = true;
@@ -67,6 +73,7 @@ instance.interceptors.request.use(async (config: any) => {
         isRefreshing = false;
       }
     } else {
+      // Սպասում ենք մինչ token-ը թարմացվում է
       const token = await new Promise<string>((resolve, reject) => {
         failedQueue.push({ resolve, reject });
       });
@@ -77,6 +84,7 @@ instance.interceptors.request.use(async (config: any) => {
       };
     }
   } else {
+    // Օգտագործում ենք առկա token-ը
     const token = localStorage.getItem(localStorageKeys.tokenData);
     if (token) {
       config.params = {
@@ -89,13 +97,41 @@ instance.interceptors.request.use(async (config: any) => {
   return config;
 });
 
-// 🔁 Response interceptor — handle 401 and retry once
+// ✅ Response Interceptor
 instance.interceptors.response.use(
-  (response) => response,
+  async (response) => {
+    const originalRequest = response.config;
+
+    // "Not allowed" սխալի fallback
+    if (
+      response.data &&
+      typeof response.data === "object" &&
+      response.data.message === "Not allowed"
+    ) {
+      try {
+        const tokenData = await fetchNewToken();
+        const { access_token, remaining_time } = tokenData;
+
+        const expireAt = `${moment().unix() + remaining_time}`;
+        localStorage.setItem(localStorageKeys.tokenData, access_token);
+        localStorage.setItem(localStorageKeys.tokenTime, expireAt);
+
+        originalRequest.params = {
+          ...(originalRequest.params || {}),
+          access_token,
+        };
+
+        return instance(originalRequest);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    }
+
+    return response;
+  },
   async (error) => {
     const originalRequest = error.config;
 
-    // Միայն եթե դեռ չես փորձել մեկ անգամ (որպես fallback)
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
@@ -107,13 +143,12 @@ instance.interceptors.response.use(
         localStorage.setItem(localStorageKeys.tokenData, access_token);
         localStorage.setItem(localStorageKeys.tokenTime, expireAt);
 
-        // նոր token-ով վերստեղծում ենք request-ը
         originalRequest.params = {
           ...(originalRequest.params || {}),
           access_token,
         };
 
-        return instance(originalRequest); // 🔁 կրկին ուղարկում ենք հարցումը
+        return instance(originalRequest);
       } catch (refreshError) {
         return Promise.reject(refreshError);
       }
