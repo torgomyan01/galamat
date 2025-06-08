@@ -21,6 +21,9 @@ export async function generateMetadata() {
       "квартира в рассрочку Астана",
       "дешевые квартиры Астана",
     ],
+    alternates: {
+      canonical: "http://galamat.kz",
+    },
     // openGraph: {
     //   title: data.data.name,
     //   description: data.data.description?.slice(0, 140),
