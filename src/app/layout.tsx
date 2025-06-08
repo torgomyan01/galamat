@@ -22,7 +22,7 @@ export async function generateMetadata() {
       "дешевые квартиры Астана",
     ],
     alternates: {
-      canonical: "http://galamat.kz",
+      canonical: "https://galamat.kz",
     },
     // openGraph: {
     //   title: data.data.name,
