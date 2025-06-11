@@ -10,11 +10,15 @@ import VideoBlock from "@/components/layout/home/video-block/video-block";
 import OurOffice from "@/components/layout/home/our-office/our-office";
 import React from "react";
 
-export default function Home() {
+interface IThisProps {
+  houses: IProjectStage[];
+}
+
+export default function Home({ houses }: IThisProps) {
   return (
     <MainTemplate>
       <AdsSlider />
-      <FilterWrapper />
+      <FilterWrapper _houses={houses} />
       <LeaveRequest />
       <WhyUs />
       <Objects />

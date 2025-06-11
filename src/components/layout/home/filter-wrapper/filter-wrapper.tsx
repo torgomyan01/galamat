@@ -1,24 +1,27 @@
 import "./filter-wrapper.scss";
 import HorizontalFilter from "@/components/common/horizontal-filter/horizontal-filter";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import clsx from "clsx";
 import OurObjects from "@/components/layout/home/objects/our-objects";
-import { GetHouses } from "@/utils/api";
 import ProductItem from "@/components/common/product-item/product-item";
 import { Spinner } from "@heroui/spinner";
 import { Button } from "@heroui/react";
 import { all } from "@/utils/consts";
 import { useSelector } from "react-redux";
 
-function FilterWrapper() {
+interface IThisProps {
+  _houses: IProjectStage[];
+}
+
+function FilterWrapper({ _houses }: IThisProps) {
   const trans = useSelector(
     (state: IStateTranslate) => state.translateSite.words,
   );
   const [content, setContent] = useState<"items" | "map">("items");
   const [mobileFilter, setMobileFilter] = useState<boolean>(false);
 
-  const [allHouses, setAllHouses] = useState<IProjectStage[]>([]);
-  const [houses, setHouses] = useState<IProjectStage[] | null>(null);
+  const allHouses = _houses;
+  const [houses, setHouses] = useState<IProjectStage[] | null>(_houses);
   const [countSplits, setCountSplits] = useState<number>(6);
 
   const [selectedRegion, setSelectedRegion] = useState<string>(all);
@@ -26,17 +29,6 @@ function FilterWrapper() {
   const [selectedFloor, setSelectedFloor] = useState<string | number>(all);
   const [selectedRoom, setSelectedRoom] = useState<string[]>([]);
   const [selectedMinMax, setSelectedMinMax] = useState<number[]>([]);
-
-  useEffect(() => {
-    GetHouses({}).then(({ data }) => {
-      const _data = data.data.filter(
-        (houe: IProjectStage) => houe.type === "RESIDENTIAL",
-      );
-
-      setHouses(_data);
-      setAllHouses(_data);
-    });
-  }, []);
 
   function SeeMore() {
     setCountSplits(countSplits + 6);

@@ -1,6 +1,9 @@
 import axios from "axios";
 import moment from "moment";
-import { localStorageKeys, servLink } from "@/utils/consts";
+import NodeCache from "node-cache";
+import { servLink } from "@/utils/consts";
+
+const tokenCache = new NodeCache({ stdTTL: 86400 }); // 1 օր
 
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -39,16 +42,16 @@ const instance = axios.create({
 
 // ✅ Request Interceptor
 instance.interceptors.request.use(async (config: any) => {
-  // Չենք ավելացնում token, եթե authentication հարցում է
   if (config.url?.includes("/authentication")) {
     return config;
   }
 
-  const tokenTime = localStorage.getItem(localStorageKeys.tokenTime);
+  const token = tokenCache.get<string>("access_token");
+  const expireAt = tokenCache.get<number>("token_expire");
+
   const now = moment().unix();
 
-  // Ժամկետանց token
-  if (!tokenTime || +tokenTime < now) {
+  if (!token || !expireAt || now >= expireAt) {
     if (!isRefreshing) {
       isRefreshing = true;
 
@@ -56,9 +59,10 @@ instance.interceptors.request.use(async (config: any) => {
         const tokenData = await fetchNewToken();
         const { access_token, remaining_time } = tokenData;
 
-        const expireAt = `${moment().unix() + remaining_time}`;
-        localStorage.setItem(localStorageKeys.tokenData, access_token);
-        localStorage.setItem(localStorageKeys.tokenTime, expireAt);
+        const newExpire = now + remaining_time;
+
+        tokenCache.set("access_token", access_token);
+        tokenCache.set("token_expire", newExpire);
 
         processQueue(null, access_token);
 
@@ -73,7 +77,6 @@ instance.interceptors.request.use(async (config: any) => {
         isRefreshing = false;
       }
     } else {
-      // Սպասում ենք մինչ token-ը թարմացվում է
       const token = await new Promise<string>((resolve, reject) => {
         failedQueue.push({ resolve, reject });
       });
@@ -84,14 +87,10 @@ instance.interceptors.request.use(async (config: any) => {
       };
     }
   } else {
-    // Օգտագործում ենք առկա token-ը
-    const token = localStorage.getItem(localStorageKeys.tokenData);
-    if (token) {
-      config.params = {
-        ...config.params,
-        access_token: token,
-      };
-    }
+    config.params = {
+      ...config.params,
+      access_token: token,
+    };
   }
 
   return config;
@@ -102,7 +101,6 @@ instance.interceptors.response.use(
   async (response) => {
     const originalRequest = response.config;
 
-    // "Not allowed" սխալի fallback
     if (
       response.data &&
       typeof response.data === "object" &&
@@ -112,9 +110,9 @@ instance.interceptors.response.use(
         const tokenData = await fetchNewToken();
         const { access_token, remaining_time } = tokenData;
 
-        const expireAt = `${moment().unix() + remaining_time}`;
-        localStorage.setItem(localStorageKeys.tokenData, access_token);
-        localStorage.setItem(localStorageKeys.tokenTime, expireAt);
+        const expireAt = moment().unix() + remaining_time;
+        tokenCache.set("access_token", access_token);
+        tokenCache.set("token_expire", expireAt);
 
         originalRequest.params = {
           ...(originalRequest.params || {}),
@@ -139,9 +137,9 @@ instance.interceptors.response.use(
         const tokenData = await fetchNewToken();
         const { access_token, remaining_time } = tokenData;
 
-        const expireAt = `${moment().unix() + remaining_time}`;
-        localStorage.setItem(localStorageKeys.tokenData, access_token);
-        localStorage.setItem(localStorageKeys.tokenTime, expireAt);
+        const expireAt = moment().unix() + remaining_time;
+        tokenCache.set("access_token", access_token);
+        tokenCache.set("token_expire", expireAt);
 
         originalRequest.params = {
           ...(originalRequest.params || {}),
