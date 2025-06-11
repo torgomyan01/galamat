@@ -21,15 +21,17 @@ function TableChangeWords({ selectedLanguage, selectedParent }: IThisProps) {
 
   useEffect(() => {
     GetLanguage("ru").then(({ data }: { data: ILanguage[] }) => {
-      const startConvert: any = [...data].map((lang) => {
-        const fontKey = selectedLanguage.find((_lg) => _lg.key === lang.key);
-        return {
-          id: fontKey?.id,
-          ruName: lang.name,
-          name: fontKey?.name || "",
-          parent_id: fontKey?.parent_id,
-        };
-      });
+      const startConvert: any = [...data]
+        .map((lang) => {
+          const fontKey = selectedLanguage.find((_lg) => _lg.key === lang.key);
+          return {
+            id: fontKey?.id,
+            ruName: lang.name,
+            name: fontKey?.name || "",
+            parent_id: fontKey?.parent_id,
+          };
+        })
+        .reverse();
       setMergedLanguage(startConvert);
     });
   }, [selectedParent]);
