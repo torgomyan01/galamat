@@ -15,6 +15,7 @@ interface IThisProps {
 }
 
 export default function Home({ houses }: IThisProps) {
+  console.log(houses, 5555555555);
   return (
     <MainTemplate>
       <AdsSlider />
