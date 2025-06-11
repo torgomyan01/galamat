@@ -4,24 +4,29 @@ import clsx from "clsx";
 
 import OurObjects from "@/components/layout/home/objects/our-objects";
 import PhotoSphereViewer from "@/components/layout/home/objects/ponarama";
-
-const tabContents = [
-  {
-    name: "360°",
-    content: <PhotoSphereViewer />,
-  },
-  {
-    name: "Офис",
-    content: <OurObjects height={500} />,
-  },
-  {
-    name: "Объекты",
-    content: <OurObjects height={500} />,
-  },
-];
+import { useSelector } from "react-redux";
 
 function Objects() {
+  const trans = useSelector(
+    (state: IStateTranslate) => state.translateSite.words,
+  );
+
   const [activeTab, setActiveTab] = useState(0);
+
+  const tabContents = [
+    {
+      name: "360°",
+      content: <PhotoSphereViewer />,
+    },
+    {
+      name: trans["office_"],
+      content: <OurObjects height={500} />,
+    },
+    {
+      name: trans["objects_"],
+      content: <OurObjects height={500} />,
+    },
+  ];
 
   return (
     <div className="wrapper md:!mb-12 !mt-10 md:!mt-[100px]">

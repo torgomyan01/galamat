@@ -103,27 +103,31 @@ function AdminMainTemplate({
   }
 
   return (
-    <AppProvider
-      navigation={NAVIGATION}
-      router={routerObj}
-      branding={{
-        logo: "",
-        title: "GALAMAT Admin",
-        homeUrl: `/${SITE_URL.ADMIN}`,
-      }}
-    >
-      <DashboardLayout
-        slots={{
-          toolbarAccount: ToolbarActionsSearch,
-        }}
-      >
-        <PageContainer>
-          <ToastProvider />
+    <>
+      {success ? (
+        <AppProvider
+          navigation={NAVIGATION}
+          router={routerObj}
+          branding={{
+            logo: "",
+            title: "GALAMAT Admin",
+            homeUrl: `/${SITE_URL.ADMIN}`,
+          }}
+        >
+          <DashboardLayout
+            slots={{
+              toolbarAccount: ToolbarActionsSearch,
+            }}
+          >
+            <PageContainer>
+              <ToastProvider />
 
-          {success ? children : null}
-        </PageContainer>
-      </DashboardLayout>
-    </AppProvider>
+              {children}
+            </PageContainer>
+          </DashboardLayout>
+        </AppProvider>
+      ) : null}
+    </>
   );
 }
 

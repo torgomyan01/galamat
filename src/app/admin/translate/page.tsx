@@ -8,6 +8,7 @@ import {
   Button,
   Select,
   SelectItem,
+  Snippet,
   Table,
   TableBody,
   TableCell,
@@ -37,6 +38,7 @@ function Requests() {
 
   const [modalCreateNewKey, setModalCreateNewKey] = useState<boolean>(false);
 
+  const [keyInput, setKeyInput] = useState<string>("");
   useEffect(() => {
     UpdateParentLanguages();
   }, []);
@@ -52,7 +54,7 @@ function Requests() {
 
   function _getLanguages() {
     GetLanguage(selectedParantLang).then(({ data }) => {
-      setSelectedLanguage(data);
+      setSelectedLanguage(data.reverse());
     });
   }
 
@@ -120,9 +122,16 @@ function Requests() {
         .then(() => {
           _getLanguages();
           setModalCreateNewKey(false);
+          setKeyInput("");
         })
         .finally(() => setLoadingCreateKey(false));
     }
+  }
+
+  function ChangeKeyInput(e: any) {
+    const value = e.target.value;
+    const formattedText = value.toLowerCase().replace(/\s+/g, "_");
+    setKeyInput(formattedText);
   }
 
   return (
@@ -138,6 +147,7 @@ function Requests() {
               <Select
                 className="w-full"
                 label="Выберите язык"
+                selectedKeys={[`${selectedParantLang}`]}
                 onSelectionChange={(key) =>
                   setSelectedParantLang(key.currentKey ? key.currentKey : "ru")
                 }
@@ -199,7 +209,11 @@ function Requests() {
                       <TableRow key={`lang-${_lang.key}`}>
                         <TableCell>{_lang.id}</TableCell>
                         <TableCell>{_lang.name}</TableCell>
-                        <TableCell>{_lang.key}</TableCell>
+                        <TableCell>
+                          <Snippet className="h-[30px]" symbol="">
+                            {_lang.key}
+                          </Snippet>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -243,6 +257,8 @@ function Requests() {
               placeholder="project_galamat"
               label="Key"
               type="text"
+              value={keyInput}
+              onChange={ChangeKeyInput}
               name="key"
               required
               variant="bordered"
