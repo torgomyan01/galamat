@@ -1,10 +1,14 @@
 "use client";
 
 import { HeroUIProvider, ToastProvider } from "@heroui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "@/components/common/header/header";
 import Footer from "@/components/common/footer/footer";
 import ChatWidget from "@/components/common/chat-widget/chat-widget";
+import { getTranslations } from "@/lib/translationCache";
+import { useDispatch, useSelector } from "react-redux";
+import { setLang, setWords } from "@/redux/translate";
+import { localStorageKeys } from "@/utils/consts";
 
 interface IThisProps {
   children?: React.ReactNode;
@@ -12,6 +16,37 @@ interface IThisProps {
 }
 
 function MainTemplate({ children, pageOff = false }: IThisProps) {
+  const dispatch = useDispatch();
+  const getLanguage = useSelector(
+    (state: IStateTranslate) => state.translateSite.selectedLang,
+  );
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    startTranslate(getLanguage);
+  }, [getLanguage]);
+
+  useEffect(() => {
+    const getLang = localStorage.getItem(localStorageKeys.languages);
+
+    if (getLang) {
+      startTranslate(getLang);
+    } else {
+      startTranslate("ru");
+      localStorage.setItem(localStorageKeys.languages, "ru");
+    }
+  }, []);
+
+  function startTranslate(lang: string) {
+    dispatch(setLang(lang));
+    getTranslations(lang).then((res) => {
+      dispatch(setWords(res));
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    });
+  }
+
   return (
     <HeroUIProvider>
       <ToastProvider />
@@ -28,8 +63,20 @@ function MainTemplate({ children, pageOff = false }: IThisProps) {
         </div>
       ) : (
         <>
-          {children}
-          <Footer />
+          {loading ? (
+            <div className="w-full h-[100dvh] flex-jc-c bg-white fixed top-0 left-0 px-[100px] z-[100000]">
+              <img
+                src="img/preloader.svg"
+                alt="preloader"
+                className="w-full max-w-[500px] h-auto "
+              />
+            </div>
+          ) : (
+            <>
+              {children}
+              <Footer />
+            </>
+          )}
         </>
       )}
       <ChatWidget />

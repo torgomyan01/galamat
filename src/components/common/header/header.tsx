@@ -2,45 +2,73 @@
 
 import "./header.scss";
 import Link from "next/link";
-import { SITE_URL } from "@/utils/consts";
+import { localStorageKeys, SITE_URL } from "@/utils/consts";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Select, SelectItem } from "@heroui/react";
+import { Select, SelectItem, SharedSelection } from "@heroui/react";
 import Image from "next/image";
-
-const menuItems = [
-  {
-    name: "Недвижимость",
-    url: SITE_URL.HOME,
-  },
-  {
-    name: "Заявка",
-    url: SITE_URL.REQUESTS,
-  },
-  {
-    name: "О компании",
-    url: SITE_URL.OUR_COMPANY,
-  },
-  {
-    name: "Акции",
-    url: SITE_URL.SALES,
-  },
-  {
-    name: "Способы покупки",
-    url: SITE_URL.METHODS_PURCHASE,
-  },
-];
+import { GetLanguage } from "@/app/actions/admin/language/get-languages";
+import { useDispatch, useSelector } from "react-redux";
+import { setLang } from "@/redux/translate";
 
 function Header() {
+  const dispatch = useDispatch();
+  const trans = useSelector(
+    (state: IStateTranslate) => state.translateSite.words,
+  );
+  const activeLang = useSelector(
+    (state: IStateTranslate) => state.translateSite.selectedLang,
+  );
+
+  const menuItems = [
+    {
+      name: trans ? trans["real_estate"] : "Недвижимость",
+      url: SITE_URL.HOME,
+    },
+    {
+      name: trans ? trans["bid"] : "Заявка",
+      url: SITE_URL.REQUESTS,
+    },
+    {
+      name: trans ? trans["about_company"] : "О компании",
+      url: SITE_URL.OUR_COMPANY,
+    },
+    {
+      name: trans ? trans["stock"] : "Акции",
+      url: SITE_URL.SALES,
+    },
+    {
+      name: trans ? trans["methods_purchase"] : "Способы покупки",
+      url: SITE_URL.METHODS_PURCHASE,
+    },
+  ];
+
   const pathname = usePathname();
   const [mobileMenu, setMobileMenu] = useState<boolean>(false);
+  const [languages, setLanguages] = useState<ILanguage[]>([]);
+
+  useEffect(() => {
+    GetLanguage("parents").then((res) => {
+      setLanguages(res.data);
+    });
+  }, []);
 
   useEffect(() => {
     const overflowValue = mobileMenu ? "hidden" : "auto";
     document.body.style.overflow = overflowValue;
     document.documentElement.style.overflow = overflowValue;
   }, [mobileMenu]);
+
+  function selectLanguage(keys: SharedSelection) {
+    const getKey = keys.currentKey;
+
+    if (getKey) {
+      localStorage.setItem(localStorageKeys.languages, getKey);
+
+      dispatch(setLang(getKey));
+    }
+  }
 
   return (
     <header className="header">
@@ -84,15 +112,17 @@ function Header() {
             </Link>
           </div>
           <Link href="tel: +7 700 108 5757" className="border-btn order-call">
-            Заказать звонок
+            {trans ? trans["request_call"] : "Заказать звонок"}
           </Link>
           <Select
-            selectedKeys={["RU"]}
+            selectedKeys={[`${activeLang}`]}
             className="w-[80px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] hidden md:inline-block"
             variant="bordered"
+            onSelectionChange={selectLanguage}
           >
-            <SelectItem key="RU">RU</SelectItem>
-            <SelectItem key="KZ">KZ</SelectItem>
+            {languages.map((lang) => (
+              <SelectItem key={lang.key}>{lang.name}</SelectItem>
+            ))}
           </Select>
           <div
             className={clsx("drop-menu", { "is-active": mobileMenu })}
@@ -116,18 +146,20 @@ function Header() {
             </ul>
             <div className="btns">
               <Select
-                selectedKeys={["RU"]}
-                className="w-[80px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white"
+                selectedKeys={[`${activeLang}`]}
+                className="w-[80px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] hidden md:inline-block"
                 variant="bordered"
+                onSelectionChange={selectLanguage}
               >
-                <SelectItem key="RU">RU</SelectItem>
-                <SelectItem key="KZ">KZ</SelectItem>
+                {languages.map((lang) => (
+                  <SelectItem key={lang.key}>{lang.name}</SelectItem>
+                ))}
               </Select>
               <Link
                 href="tel: +7 700 108 5757"
                 className="border-btn order-call"
               >
-                Заказать звонок
+                {trans ? trans["request_call"] : "Заказать звонок"}
               </Link>
             </div>
           </div>

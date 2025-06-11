@@ -29,7 +29,7 @@ function AdsSlider() {
           >
             <SwiperSlide>
               <Image
-                className="bg h-auto"
+                className="w-full h-auto "
                 src="/img/ads/new-office.png"
                 alt="У нас есть новый офис"
                 width={800}

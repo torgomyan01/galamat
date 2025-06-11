@@ -32,13 +32,13 @@ export async function generateMetadata() {
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="hy" suppressHydrationWarning={true}>
+    <html lang="ru" suppressHydrationWarning={true}>
       <body>
         <NextTopLoader />
         <Providers>{children}</Providers>

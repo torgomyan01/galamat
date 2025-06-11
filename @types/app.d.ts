@@ -1,5 +1,13 @@
 type IUpdateCategoryType = "category" | "subcategory";
 
+declare interface IStateTranslate {
+  translateSite: {
+    words: any;
+    selectedLang: string;
+    languages: string[];
+  };
+}
+
 declare interface IToken {
   access_token: string;
   lang: string;
@@ -119,4 +127,33 @@ interface IProjectStage {
   externalId: string;
   showroom: boolean;
   commissioningDate: string; // ISO date
+}
+
+declare interface ILanguage {
+  id: number;
+  name: string;
+  key: string | null;
+  parent_id: string | null;
+}
+
+declare interface ILangMerged {
+  id: number | undefined;
+  ruName: string;
+  name: string;
+  parent_id: number | null | undefined;
+}
+
+declare interface IUser {
+  id: number;
+  name: string;
+  login: string;
+  password: string;
+  status: "super-admin" | "def-user";
+}
+
+declare interface IUserNoPass {
+  id: number;
+  name: string;
+  login: string;
+  status: "super-admin" | "def-user" | string;
 }

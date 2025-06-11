@@ -8,8 +8,12 @@ import ProductItem from "@/components/common/product-item/product-item";
 import { Spinner } from "@heroui/spinner";
 import { Button } from "@heroui/react";
 import { all } from "@/utils/consts";
+import { useSelector } from "react-redux";
 
 function FilterWrapper() {
+  const trans = useSelector(
+    (state: IStateTranslate) => state.translateSite.words,
+  );
   const [content, setContent] = useState<"items" | "map">("items");
   const [mobileFilter, setMobileFilter] = useState<boolean>(false);
 
@@ -135,7 +139,9 @@ function FilterWrapper() {
     <div className="filter-wrapper">
       <div className="wrapper">
         <div className="title-wrap">
-          <h2 className="main-title">Проекты Galamat</h2>
+          <h2 className="main-title">
+            {trans ? trans["project_galamat"] : "Проекты Galamat"}
+          </h2>
           <div className="w-full md:w-[200px] border rounded-[6px] flex-je-c h-10 overflow-hidden">
             <button
               className={clsx("w-[100%] h-full rounded-[6px] bg-transparent", {
@@ -143,7 +149,7 @@ function FilterWrapper() {
               })}
               onClick={() => setContent("items")}
             >
-              Плитка
+              {trans ? trans["tile"] : "Плитка"}
             </button>
             <button
               className={clsx("w-[100%] h-full rounded-[6px] bg-transparent", {
@@ -151,7 +157,7 @@ function FilterWrapper() {
               })}
               onClick={() => setContent("map")}
             >
-              На карте
+              {trans ? trans["on_the_map"] : "На карте"}
             </button>
           </div>
           <div
@@ -159,7 +165,7 @@ function FilterWrapper() {
             onClick={() => setMobileFilter(true)}
           >
             <i className="fa-regular fa-bars-filter mr-1"></i>
-            Фильтр
+            {trans ? trans["filter"] : "Фильтр"}
           </div>
         </div>
 
@@ -195,7 +201,9 @@ function FilterWrapper() {
                     ) : (
                       <div className="w-full h-[400px] flex-jc-c">
                         <h3 className="text-blue text-[18px] sm:text-[24px]">
-                          Пока ничего не найдено.
+                          {trans
+                            ? trans["nothing_found_yet"]
+                            : "Пока ничего не найдено."}
                         </h3>
                       </div>
                     )}
@@ -207,7 +215,7 @@ function FilterWrapper() {
                           {countSplits >= houses.length
                             ? houses.length
                             : countSplits}{" "}
-                          из {houses.length}
+                          {trans ? trans["from"] : "из"} {houses.length}
                         </span>
                         <Button
                           className={clsx("show-btn bg-transparent h-[60px]", {
@@ -217,7 +225,7 @@ function FilterWrapper() {
                           onPress={SeeMore}
                           disabled={countSplits >= houses.length}
                         >
-                          Показать еще
+                          {trans ? trans["show_more"] : "Показать еще"}
                         </Button>
                       </div>
                     ) : null}

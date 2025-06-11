@@ -24,6 +24,34 @@
     content: "\f00d"
 }
 
+.fa-house:before {
+    content: "\f015"
+}
+
+.fa-language:before {
+    content: "\f1ab"
+}
+
+.fa-plus:before {
+    content: "\2b"
+}
+
+.fa-trash:before {
+    content: "\f1f8"
+}
+
+.fa-check:before {
+    content: "\f00c"
+}
+
+.fa-user:before {
+    content: "\f007"
+}
+
+.fa-ellipsis-vertical:before {
+    content: "\f142"
+}
+
 
 
 /*---------------------------------*/

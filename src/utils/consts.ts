@@ -13,11 +13,18 @@ export const SITE_URL = {
   SEND_CALLBACK: "/send-callback",
   FAQ: "/faq",
   CONTACT: "/contact",
+  ADMIN: "admin",
+  ADMIN_TRANSLATE: "admin/translate",
+  ADMIN_USERS: "admin/users",
+  ADMIN_LOGIN: "admin/login",
 };
 
 export const localStorageKeys = {
   tokenData: "tokenData",
   tokenTime: "tokenTime",
+  tokenAdmin: "tokenAdmin",
+  userAdmin: "userAdmin",
+  languages: "languages",
 };
 
 export const all = "Все";
