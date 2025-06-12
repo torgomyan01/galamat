@@ -5,7 +5,7 @@ import Home from "@/components/layout/home/home";
 import { fetchHouses } from "@/lib/getHouses";
 
 async function Page() {
-  const housesData = await fetchHouses();
+  const housesData: any = await fetchHouses();
 
   return <Home houses={housesData} />;
 }
