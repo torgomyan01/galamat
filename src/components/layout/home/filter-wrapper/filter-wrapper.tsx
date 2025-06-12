@@ -26,7 +26,7 @@ function FilterWrapper({ _houses }: IThisProps) {
 
   const [selectedRegion, setSelectedRegion] = useState<string>(all);
   const [selectedProject, setSelectedProject] = useState<string>(all);
-  const [selectedFloor, setSelectedFloor] = useState<string | number>(all);
+  const [selectedFloor, setSelectedFloor] = useState<any>(all);
   const [selectedRoom, setSelectedRoom] = useState<string[]>([]);
   const [selectedMinMax, setSelectedMinMax] = useState<number[]>([]);
 
@@ -110,7 +110,7 @@ function FilterWrapper({ _houses }: IThisProps) {
     applyFilters(
       selectedRegion,
       selectedProject,
-      selectedProject,
+      selectedFloor,
       key,
       selectedMinMax,
     );
@@ -121,7 +121,7 @@ function FilterWrapper({ _houses }: IThisProps) {
     applyFilters(
       selectedRegion,
       selectedProject,
-      selectedProject,
+      selectedFloor,
       selectedRoom,
       key,
     );

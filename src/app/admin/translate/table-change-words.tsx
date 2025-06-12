@@ -54,7 +54,7 @@ function TableChangeWords({ selectedLanguage, selectedParent }: IThisProps) {
               <TableRow key={`lang-${_lang.id}`}>
                 <TableCell>{_lang.id}</TableCell>
                 <TableCell>{_lang.ruName}</TableCell>
-                <TableCell>
+                <TableCell className="w-1/2">
                   <ChangeKey _lang={_lang} />
                 </TableCell>
               </TableRow>
