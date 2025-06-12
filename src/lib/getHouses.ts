@@ -11,8 +11,9 @@ export async function fetchHouses() {
   }
 
   try {
-    const res = await GetHouses({}); // կամ քո ցանկալի params-ները
-    const data = res.data.filter(
+    const res = await GetHouses({});
+    // կամ քո ցանկալի params-ները
+    const data = [...res.data.data].filter(
       (houe: IProjectStage) => houe.type === "RESIDENTIAL",
     );
     cache.set(CACHE_KEY, data); // պահում ենք cache-ում
