@@ -37,7 +37,7 @@ function FilterWrapper({ _houses }: IThisProps) {
   function applyFilters(
     region: string,
     project: string,
-    floor: number | string,
+    floor: number,
     room: string[],
     price: number[],
   ) {
@@ -51,7 +51,7 @@ function FilterWrapper({ _houses }: IThisProps) {
       filtered = filtered.filter((item) => item.projectName === project);
     }
 
-    if (floor !== all) {
+    if (!isNaN(floor)) {
       filtered = filtered.filter((item) => item.maxFloor === floor);
     }
 
