@@ -30,7 +30,7 @@ function ProductItem({ project }: IThisProps) {
         </a>
         <span className="text">от {formatPrice(project.minPrice)}</span>
         <span className="grey h-[40px]">
-          {project.address.full || "Место пока не написано"}
+          {project.address.street || "Место пока не написано"}
         </span>
         <div className="hide-info">
           {countText}
