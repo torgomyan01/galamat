@@ -14,7 +14,6 @@ export async function GetUsers() {
         status: true,
       },
     });
-
     return {
       status: 1,
       data: result,
