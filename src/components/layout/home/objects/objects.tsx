@@ -4,9 +4,10 @@ import clsx from "clsx";
 
 import OurObjects from "@/components/layout/home/objects/our-objects";
 import PhotoSphereViewer from "@/components/layout/home/objects/ponarama";
-import $t from "@/utils/helpers";
+import { useTranslate } from "@/hooks/useTranslate";
 
 function Objects() {
+  const $t = useTranslate();
   const [activeTab, setActiveTab] = useState(0);
 
   const tabContents = [

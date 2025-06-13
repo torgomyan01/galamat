@@ -5,7 +5,7 @@ import SliderInput from "@/components/common/slider-input/slider-input";
 import clsx from "clsx";
 import { useState } from "react";
 import { all } from "@/utils/consts";
-import $t from "@/utils/helpers";
+import { useTranslate } from "@/hooks/useTranslate";
 
 interface IThisProps {
   className?: string;
@@ -30,6 +30,7 @@ function HorizontalFilter({
   result,
   onClose,
 }: IThisProps) {
+  const $t = useTranslate();
   const findRegions = houses
     .filter((house: IProjectStage) => house.address.region)
     .map((house: IProjectStage) => house.address.region);

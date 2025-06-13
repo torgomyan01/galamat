@@ -7,13 +7,15 @@ import ProductItem from "@/components/common/product-item/product-item";
 import { Spinner } from "@heroui/spinner";
 import { Button } from "@heroui/react";
 import { all } from "@/utils/consts";
-import $t from "@/utils/helpers";
+import { useTranslate } from "@/hooks/useTranslate";
 
 interface IThisProps {
   _houses: IProjectStage[];
 }
 
 function FilterWrapper({ _houses }: IThisProps) {
+  const $t = useTranslate();
+
   const [content, setContent] = useState<"items" | "map">("items");
   const [mobileFilter, setMobileFilter] = useState<boolean>(false);
 

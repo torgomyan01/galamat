@@ -11,10 +11,11 @@ import Image from "next/image";
 import { GetLanguage } from "@/app/actions/admin/language/get-languages";
 import { useDispatch, useSelector } from "react-redux";
 import { setLang } from "@/redux/translate";
-import $t from "@/utils/helpers";
+import { useTranslate } from "@/hooks/useTranslate";
 
 function Header() {
   const dispatch = useDispatch();
+  const $t = useTranslate();
 
   const activeLang = useSelector(
     (state: IStateTranslate) => state.translateSite.selectedLang,

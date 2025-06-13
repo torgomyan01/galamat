@@ -1,9 +1,10 @@
 import "./why-us.scss";
 import { Fade } from "react-awesome-reveal";
 import clsx from "clsx";
-import $t from "@/utils/helpers";
+import { useTranslate } from "@/hooks/useTranslate";
 
 function WhyUs() {
+  const $t = useTranslate();
   const dataWhyUs = [
     {
       title: $t("they_choose_us"),

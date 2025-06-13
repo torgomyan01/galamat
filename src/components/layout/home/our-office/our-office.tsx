@@ -1,7 +1,8 @@
 import "./our-office.scss";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import $t, { RandomKey } from "@/utils/helpers";
+import { RandomKey } from "@/utils/helpers";
+import { useTranslate } from "@/hooks/useTranslate";
 
 const sliderItems = [
   "img/slider/galamat-cetchen.jpg",
@@ -15,6 +16,7 @@ const sliderItems = [
 ];
 
 function OurOffice() {
+  const $t = useTranslate();
   return (
     <div className="our-office mt-6 md:mt-[80px]">
       <div className="wrapper">

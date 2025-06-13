@@ -6,9 +6,10 @@ import { useState } from "react";
 import { isValidInternationalPhoneNumber } from "@/utils/consts";
 import { Fade } from "react-awesome-reveal";
 import Image from "next/image";
-import $t from "@/utils/helpers";
+import { useTranslate } from "@/hooks/useTranslate";
 
 function LeaveRequest() {
+  const $t = useTranslate();
   const [loading, setLoading] = useState(false);
   const [sendStatus, setSendStatus] = useState(false);
 

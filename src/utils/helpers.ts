@@ -75,10 +75,3 @@ export function decryptData(encryptedBase64: string, password: string): string {
 
   return decrypted;
 }
-
-export default function $t(key: string) {
-  const state = store.getState();
-  const getWords = state.translateSite.words;
-
-  return getWords ? getWords[key] : "";
-}
