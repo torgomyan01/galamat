@@ -22,7 +22,7 @@ model users {
   status   String @db.VarChar(255)
 }
 
-model sliders {
+model sliders_tb {
   id            Int    @id @default(autoincrement())
   slider_name   String @db.VarChar(250)
   image_path    String @db.VarChar(1000)
