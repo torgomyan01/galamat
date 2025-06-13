@@ -157,3 +157,14 @@ declare interface IUserNoPass {
   login: string;
   status: "super-admin" | "def-user" | string;
 }
+
+declare interface ISliderItem {
+  id: number;
+  slider_name: string;
+  image_path: string;
+  url: string;
+  parent_id: string;
+  sub_parent_id: string;
+  lang_key: string;
+  children?: SliderNode[];
+}

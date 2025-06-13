@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import { store } from "@/store/store";
 
 export const RandomKey = (length = 5) => {
   let result = "";
@@ -73,4 +74,11 @@ export function decryptData(encryptedBase64: string, password: string): string {
   decrypted += decipher.final("utf8");
 
   return decrypted;
+}
+
+export default function $t(key: string) {
+  const state = store.getState();
+  const getWords = state.translateSite.words;
+
+  return getWords ? getWords[key] : "";
 }

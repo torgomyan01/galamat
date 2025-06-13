@@ -4,13 +4,9 @@ import clsx from "clsx";
 
 import OurObjects from "@/components/layout/home/objects/our-objects";
 import PhotoSphereViewer from "@/components/layout/home/objects/ponarama";
-import { useSelector } from "react-redux";
+import $t from "@/utils/helpers";
 
 function Objects() {
-  const trans = useSelector(
-    (state: IStateTranslate) => state.translateSite.words,
-  );
-
   const [activeTab, setActiveTab] = useState(0);
 
   const tabContents = [
@@ -19,11 +15,11 @@ function Objects() {
       content: <PhotoSphereViewer />,
     },
     {
-      name: trans["office_"],
+      name: $t("office_"),
       content: <OurObjects height={500} />,
     },
     {
-      name: trans["objects_"],
+      name: $t("objects_"),
       content: <OurObjects height={500} />,
     },
   ];

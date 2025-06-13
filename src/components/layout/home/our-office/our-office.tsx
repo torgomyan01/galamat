@@ -1,8 +1,7 @@
 import "./our-office.scss";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { RandomKey } from "@/utils/helpers";
-import { useSelector } from "react-redux";
+import $t, { RandomKey } from "@/utils/helpers";
 
 const sliderItems = [
   "img/slider/galamat-cetchen.jpg",
@@ -16,14 +15,10 @@ const sliderItems = [
 ];
 
 function OurOffice() {
-  const trans = useSelector(
-    (state: IStateTranslate) => state.translateSite.words,
-  );
-
   return (
     <div className="our-office mt-6 md:mt-[80px]">
       <div className="wrapper">
-        <h2 className="main-title">{trans["our_office"]}</h2>
+        <h2 className="main-title">{$t("our_office")}</h2>
 
         <Swiper
           modules={[Pagination, Navigation, Autoplay]}

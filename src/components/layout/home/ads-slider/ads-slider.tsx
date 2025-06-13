@@ -21,7 +21,7 @@ function AdsSlider() {
             slidesPerView={1}
             loop={true}
             autoplay={{
-              delay: 3000,
+              delay: 5000,
               disableOnInteraction: false, // Keep autoplay on user interaction
             }}
             pagination={{ clickable: true }}

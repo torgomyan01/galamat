@@ -34,6 +34,23 @@ const NAVIGATION: Navigation = [
     title: "Пользователи",
     icon: <i className="fa-solid fa-user"></i>,
   },
+  {
+    segment: SITE_URL.ADMIN_PAGES,
+    title: "Страницы ",
+    icon: <i className="fa-duotone fa-regular fa-list-dropdown"></i>,
+    children: [
+      {
+        segment: SITE_URL.ADMIN_PAGES_HOME,
+        title: "Главная",
+        icon: "",
+      },
+      {
+        segment: "traffic",
+        title: "Traffic",
+        icon: "",
+      },
+    ],
+  },
 ];
 
 function AdminMainTemplate({
@@ -119,7 +136,7 @@ function AdminMainTemplate({
               toolbarAccount: ToolbarActionsSearch,
             }}
           >
-            <PageContainer>
+            <PageContainer className="pt-6">
               <ToastProvider />
 
               {children}

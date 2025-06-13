@@ -72,12 +72,10 @@ function MainTemplate({ children, pageOff = false }: IThisProps) {
                 className="w-full max-w-[500px] h-auto "
               />
             </div>
-          ) : (
-            <>
-              {children}
-              <Footer />
-            </>
-          )}
+          ) : null}
+
+          {children}
+          <Footer />
         </>
       )}
       <ChatWidget />

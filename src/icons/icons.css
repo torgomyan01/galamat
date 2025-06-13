@@ -52,6 +52,14 @@
     content: "\f142"
 }
 
+.fa-list-dropdown:before {
+    content: "\e1cf"
+}
+
+.fa-chevron-right:before {
+    content: "\f054"
+}
+
 
 
 /*---------------------------------*/

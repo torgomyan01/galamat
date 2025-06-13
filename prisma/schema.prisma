@@ -21,3 +21,13 @@ model users {
   password String @db.VarChar(255)
   status   String @db.VarChar(255)
 }
+
+model sliders {
+  id            Int    @id @default(autoincrement())
+  slider_name   String @db.VarChar(250)
+  image_path    String @db.VarChar(1000)
+  url           String @db.VarChar(300)
+  parent_id     String @db.VarChar(255)
+  sub_parent_id String @db.VarChar(250)
+  lang_key      String @db.VarChar(250)
+}

@@ -11,35 +11,34 @@ import Image from "next/image";
 import { GetLanguage } from "@/app/actions/admin/language/get-languages";
 import { useDispatch, useSelector } from "react-redux";
 import { setLang } from "@/redux/translate";
+import $t from "@/utils/helpers";
 
 function Header() {
   const dispatch = useDispatch();
-  const trans = useSelector(
-    (state: IStateTranslate) => state.translateSite.words,
-  );
+
   const activeLang = useSelector(
     (state: IStateTranslate) => state.translateSite.selectedLang,
   );
 
   const menuItems = [
     {
-      name: trans ? trans["real_estate"] : "Недвижимость",
+      name: $t("real_estate"),
       url: SITE_URL.HOME,
     },
     {
-      name: trans ? trans["bid"] : "Заявка",
+      name: $t("bid"),
       url: SITE_URL.REQUESTS,
     },
     {
-      name: trans ? trans["about_company"] : "О компании",
+      name: $t("about_company"),
       url: SITE_URL.OUR_COMPANY,
     },
     {
-      name: trans ? trans["stock"] : "Акции",
+      name: $t("stock"),
       url: SITE_URL.SALES,
     },
     {
-      name: trans ? trans["methods_purchase"] : "Способы покупки",
+      name: $t("methods_purchase"),
       url: SITE_URL.METHODS_PURCHASE,
     },
   ];
@@ -112,7 +111,7 @@ function Header() {
             </Link>
           </div>
           <Link href="tel: +7 700 108 5757" className="border-btn order-call">
-            {trans ? trans["request_call"] : "Заказать звонок"}
+            {$t("request_call")}
           </Link>
           <Select
             selectedKeys={[`${activeLang}`]}
@@ -159,7 +158,7 @@ function Header() {
                 href="tel: +7 700 108 5757"
                 className="border-btn order-call"
               >
-                {trans ? trans["request_call"] : "Заказать звонок"}
+                {$t("request_call")}
               </Link>
             </div>
           </div>

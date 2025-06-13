@@ -6,15 +6,11 @@ import { useState } from "react";
 import { isValidInternationalPhoneNumber } from "@/utils/consts";
 import { Fade } from "react-awesome-reveal";
 import Image from "next/image";
-import { useSelector } from "react-redux";
+import $t from "@/utils/helpers";
 
 function LeaveRequest() {
   const [loading, setLoading] = useState(false);
   const [sendStatus, setSendStatus] = useState(false);
-
-  const trans = useSelector(
-    (state: IStateTranslate) => state.translateSite.words,
-  );
 
   function startCallBack(e: any) {
     e.preventDefault();
@@ -50,12 +46,8 @@ function LeaveRequest() {
           <Fade direction="left" className="md:w-[55%]" triggerOnce>
             <div className="info">
               <div className="texts">
-                <h2>{trans ? trans["leave_a_request"] : "Оставить заявку"}</h2>
-                <span>
-                  {trans
-                    ? trans["we_are_building _the_future"]
-                    : "Мы строим будущее"}
-                </span>
+                <h2>{$t("leave_a_request")}</h2>
+                <span>{$t("we_are_building _the_future")}</span>
               </div>
               <div className="img-wrap">
                 <Image
@@ -78,16 +70,14 @@ function LeaveRequest() {
                     height="103"
                   />
                   <h4 className="text-blue text-[28.74px] font-medium tracking-[-0.862px] text-center">
-                    {trans
-                      ? trans["we_have_already_received"]
-                      : "Мы уже получили вашу заявку и скоро свяжемся!"}
+                    {$t("we_have_already_received")}
                   </h4>
                 </div>
               ) : (
                 <form action="" onSubmit={startCallBack}>
                   <div className="mb-4">
                     <Input
-                      label={trans ? trans["your_name"] : "Ваше имя"}
+                      label={$t("your_name")}
                       name="name"
                       type="text"
                       variant="bordered"
@@ -96,7 +86,7 @@ function LeaveRequest() {
                   </div>
                   <div className="mb-4">
                     <Input
-                      label={trans ? trans["phone_number"] : "Номер телефона"}
+                      label={$t("phone_number")}
                       type="text"
                       name="phone"
                       variant="bordered"
@@ -108,7 +98,7 @@ function LeaveRequest() {
                     type="submit"
                     isLoading={loading}
                   >
-                    {trans ? trans["send"] : "Отправить"}
+                    {$t("send")}
                   </Button>
                 </form>
               )}

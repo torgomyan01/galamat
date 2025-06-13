@@ -7,16 +7,13 @@ import ProductItem from "@/components/common/product-item/product-item";
 import { Spinner } from "@heroui/spinner";
 import { Button } from "@heroui/react";
 import { all } from "@/utils/consts";
-import { useSelector } from "react-redux";
+import $t from "@/utils/helpers";
 
 interface IThisProps {
   _houses: IProjectStage[];
 }
 
 function FilterWrapper({ _houses }: IThisProps) {
-  const trans = useSelector(
-    (state: IStateTranslate) => state.translateSite.words,
-  );
   const [content, setContent] = useState<"items" | "map">("items");
   const [mobileFilter, setMobileFilter] = useState<boolean>(false);
 
@@ -131,9 +128,7 @@ function FilterWrapper({ _houses }: IThisProps) {
     <div className="filter-wrapper">
       <div className="wrapper">
         <div className="title-wrap">
-          <h2 className="main-title">
-            {trans ? trans["project_galamat"] : "Проекты Galamat"}
-          </h2>
+          <h2 className="main-title">{$t("project_galamat")}</h2>
           <div className="w-full md:w-[200px] border rounded-[6px] flex-je-c h-10 overflow-hidden">
             <button
               className={clsx("w-[100%] h-full rounded-[6px] bg-transparent", {
@@ -141,7 +136,7 @@ function FilterWrapper({ _houses }: IThisProps) {
               })}
               onClick={() => setContent("items")}
             >
-              {trans ? trans["tile"] : "Плитка"}
+              {$t("tile")}
             </button>
             <button
               className={clsx("w-[100%] h-full rounded-[6px] bg-transparent", {
@@ -149,7 +144,7 @@ function FilterWrapper({ _houses }: IThisProps) {
               })}
               onClick={() => setContent("map")}
             >
-              {trans ? trans["on_the_map"] : "На карте"}
+              {$t("on_the_map")}
             </button>
           </div>
           <div
@@ -157,7 +152,7 @@ function FilterWrapper({ _houses }: IThisProps) {
             onClick={() => setMobileFilter(true)}
           >
             <i className="fa-regular fa-bars-filter mr-1"></i>
-            {trans ? trans["filter"] : "Фильтр"}
+            {$t("filter")}
           </div>
         </div>
 
@@ -193,9 +188,7 @@ function FilterWrapper({ _houses }: IThisProps) {
                     ) : (
                       <div className="w-full h-[400px] flex-jc-c">
                         <h3 className="text-blue text-[18px] sm:text-[24px]">
-                          {trans
-                            ? trans["nothing_found_yet"]
-                            : "Пока ничего не найдено."}
+                          {$t("nothing_found_yet")}
                         </h3>
                       </div>
                     )}
@@ -207,7 +200,7 @@ function FilterWrapper({ _houses }: IThisProps) {
                           {countSplits >= houses.length
                             ? houses.length
                             : countSplits}{" "}
-                          {trans ? trans["from"] : "из"} {houses.length}
+                          {$t("from")} {houses.length}
                         </span>
                         <Button
                           className={clsx("show-btn bg-transparent h-[60px]", {
@@ -217,7 +210,7 @@ function FilterWrapper({ _houses }: IThisProps) {
                           onPress={SeeMore}
                           disabled={countSplits >= houses.length}
                         >
-                          {trans ? trans["show_more"] : "Показать еще"}
+                          {$t("show_more")}
                         </Button>
                       </div>
                     ) : null}

@@ -17,6 +17,8 @@ export const SITE_URL = {
   ADMIN_TRANSLATE: "admin/translate",
   ADMIN_USERS: "admin/users",
   ADMIN_LOGIN: "admin/login",
+  ADMIN_PAGES: "admin/pages",
+  ADMIN_PAGES_HOME: "home",
 };
 
 export const localStorageKeys = {

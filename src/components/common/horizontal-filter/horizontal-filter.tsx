@@ -5,7 +5,7 @@ import SliderInput from "@/components/common/slider-input/slider-input";
 import clsx from "clsx";
 import { useState } from "react";
 import { all } from "@/utils/consts";
-import { useSelector } from "react-redux";
+import $t from "@/utils/helpers";
 
 interface IThisProps {
   className?: string;
@@ -30,10 +30,6 @@ function HorizontalFilter({
   result,
   onClose,
 }: IThisProps) {
-  const trans = useSelector(
-    (state: IStateTranslate) => state.translateSite.words,
-  );
-
   const findRegions = houses
     .filter((house: IProjectStage) => house.address.region)
     .map((house: IProjectStage) => house.address.region);
@@ -111,13 +107,13 @@ function HorizontalFilter({
   return (
     <div className={clsx("filters mb-8", className)}>
       <div className="w-[calc(100%+40px)] ml-[-20px] h-12 flex-jsb-c text-blue font-medium border-b mb-4 mt-[-10px] px-5 flex md:hidden">
-        <span>{trans["filter__"]}</span>
+        <span>{$t("filter__")}</span>
         <i className="fa-solid fa-xmark text-[18px]" onClick={onClose} />
       </div>
 
       <div className="top-info gap-1">
         <div className="select-info">
-          <span>{trans["district"]}</span>
+          <span>{$t("district")}</span>
 
           <Select
             selectedKeys={[`${regions}`]}
@@ -131,7 +127,7 @@ function HorizontalFilter({
           </Select>
         </div>
         <div className="select-info">
-          <span>{trans["residential_complex"]}</span>
+          <span>{$t("residential_complex")}</span>
           <Select
             selectedKeys={[project]}
             className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white"
@@ -144,7 +140,7 @@ function HorizontalFilter({
           </Select>
         </div>
         <div className="select-info">
-          <span>{trans["floor__"]}</span>
+          <span>{$t("floor__")}</span>
           <Select
             selectedKeys={[`${floor}`]}
             className="md:w-[80px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white"
@@ -157,12 +153,12 @@ function HorizontalFilter({
           </Select>
         </div>
         <span className="reset hidden md:block" onClick={ClearFilter}>
-          {trans["reset__"]}
+          {$t("reset__")}
         </span>
       </div>
       <div className="bottom-info">
         <div className="room">
-          <span>{trans["com__"]}</span>
+          <span>{$t("com__")}</span>
           <div className="items">
             {rooms.map((room, index) => (
               <span
@@ -179,7 +175,7 @@ function HorizontalFilter({
         </div>
         <div className="filter-block mt-5 md:mt-0">
           <SliderInput
-            labelName={trans["price"]}
+            labelName={$t("price")}
             min={1000000}
             max={50000000}
             step={1000}
@@ -189,7 +185,7 @@ function HorizontalFilter({
           />
 
           <SliderInput
-            labelName={trans["area_m"]}
+            labelName={$t("area_m")}
             min={10}
             max={150}
             step={0.5}
@@ -202,10 +198,10 @@ function HorizontalFilter({
             variant="flat"
             onPress={onClose}
           >
-            {result} {trans["projects__"]}
+            {result} {$t("projects__")}
           </Button>
           <span className="reset" onClick={ClearFilter}>
-            {trans["reset__"]}
+            {$t("reset__")}
           </span>
         </div>
       </div>
