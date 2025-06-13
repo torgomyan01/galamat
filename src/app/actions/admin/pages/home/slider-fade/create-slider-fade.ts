@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export async function ActionCreateSliderFade() {
   try {
-    const result = await prisma.sliders.create({
+    const result = await prisma.sliders_tb.create({
       data: {
         slider_name: "",
         image_path: "",
