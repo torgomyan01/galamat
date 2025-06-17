@@ -7,6 +7,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Mousewheel } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Button } from "@heroui/react";
 
 const sliderBlocks = [
   "/img/orleu-page/block-1.png",
@@ -21,7 +22,11 @@ const sliderBlocks = [
   "/img/orleu-page/block-10.png",
 ];
 
-function ContentOrleuProjectHomeMap() {
+interface IThisProps {
+  sendRequest: () => void;
+}
+
+function ContentOrleuProjectHomeMap({ sendRequest }: IThisProps) {
   const [activeSlider, setActiveSlider] = useState(0);
   const swiperRef = useRef<any>(null);
 
@@ -47,9 +52,9 @@ function ContentOrleuProjectHomeMap() {
                 <img src="img/slider-arr.svg" alt="" />
               </button>
             </div>
-            <a href="#" className="planing-btn">
+            <Button onPress={sendRequest} className="planing-btn">
               Выбрать квартиру
-            </a>
+            </Button>
           </div>
         </div>
         <div className="w-full grid grid-cols-12 gap-4">

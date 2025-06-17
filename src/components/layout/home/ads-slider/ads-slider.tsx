@@ -36,15 +36,15 @@ function AdsSlider() {
                 height={700}
               />
             </SwiperSlide>
-            <SwiperSlide>
-              <Image
-                className="w-full h-auto "
-                src="/img/ads/new-office.png"
-                alt="У нас есть новый офис"
-                width={1000}
-                height={700}
-              />
-            </SwiperSlide>
+            {/*<SwiperSlide>*/}
+            {/*  <Image*/}
+            {/*    className="w-full h-auto "*/}
+            {/*    src="/img/ads/new-office.png"*/}
+            {/*    alt="У нас есть новый офис"*/}
+            {/*    width={1000}*/}
+            {/*    height={700}*/}
+            {/*  />*/}
+            {/*</SwiperSlide>*/}
           </Swiper>
 
           <div className="swiper-pagination"></div>

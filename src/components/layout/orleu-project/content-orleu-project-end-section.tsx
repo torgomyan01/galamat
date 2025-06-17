@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import SendRequest from "@/components/layout/orleu-project/send-request";
 
 function ContentOrleuEndSection() {
   return (
@@ -8,19 +9,7 @@ function ContentOrleuEndSection() {
       <div className="info">
         <img src="img/sect3-bg.png" alt="" className="bg" />
         <img src="img/style.png" alt="" className="style" />
-        <div className="leave-request-wrap">
-          <img src="img/title-style.svg" alt="" />
-          <form>
-            <h3>Оставьте заявку</h3>
-            <p>
-              Укажите номер телефона, чтобы мы могли перезвонить и
-              проконсультировать вас.
-            </p>
-            <input type="text" name="name" placeholder="Ваше имя" />
-            <input type="tel" name="phone" placeholder="Номер телефона" />
-            <button className="send">Отправить</button>
-          </form>
-        </div>
+        <SendRequest />
       </div>
     </div>
   );

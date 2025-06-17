@@ -2,6 +2,7 @@
 
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import SendRequest from "@/components/layout/orleu-project/send-request";
 
 function ContentOrleuProjectTwo() {
   const containerRef = useRef(null);
@@ -61,19 +62,7 @@ function ContentOrleuProjectTwo() {
 
       <div className="section section4 !relative z-[100000] mt-[500px]">
         <div className="info">
-          <div className="leave-request-wrap">
-            <img src="img/title-style.svg" alt="" />
-            <form>
-              <h3>Оставьте заявку</h3>
-              <p>
-                Укажите номер телефона, чтобы мы могли перезвонить и
-                проконсультировать вас.
-              </p>
-              <input type="text" name="name" placeholder="Ваше имя" />
-              <input type="tel" name="phone" placeholder="Номер телефона" />
-              <button className="send">Отправить</button>
-            </form>
-          </div>
+          <SendRequest />
         </div>
       </div>
     </div>

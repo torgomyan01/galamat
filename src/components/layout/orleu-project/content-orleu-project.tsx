@@ -2,8 +2,14 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import React, { useRef } from "react";
+import { Button } from "@heroui/react";
+import Link from "next/link";
 
-function ContentOrleuProject() {
+interface IThisProps {
+  sendRequest: () => void;
+}
+
+function ContentOrleuProject({ sendRequest }: IThisProps) {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -117,12 +123,16 @@ function ContentOrleuProject() {
               г. Астана, р-н Алматы, ул. Айнаколь
             </p>
             <div className="buttons">
-              <a href="#" className="blue-btn2">
+              <Button className="blue-btn2 !py-6" onPress={sendRequest}>
                 Выбрать квартиру
-              </a>
-              <a href="#" className="light-blue-btn">
+              </Button>
+              <Link
+                href="https://drive.google.com/drive/folders/1D2Ib3V9SHjXxy-MYXIs2wceoQivEESqV"
+                target="_blank"
+                className="light-blue-btn"
+              >
                 Скачать буклет
-              </a>
+              </Link>
             </div>
           </div>
         </div>
