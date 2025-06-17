@@ -4,7 +4,11 @@ import Link from "next/link";
 import React from "react";
 import SendRequest from "@/components/layout/orleu-project/send-request";
 
-function OreluMobileHeader() {
+interface IThisProps {
+  sendRequest: () => void;
+}
+
+function OreluMobileHeader({ sendRequest }: IThisProps) {
   return (
     <div className="p-4">
       <div className="flex-jc-c flex-col min-[425px]:px-6">
@@ -36,7 +40,7 @@ function OreluMobileHeader() {
       </div>
 
       <div className="section section2 !pb-0">
-        <div className="info">
+        <div className="info !p-1">
           <div className="texts">
             <p>
               <img src="img/icon1.svg" alt="" />
@@ -47,7 +51,9 @@ function OreluMobileHeader() {
               г. Астана, р-н Алматы, ул. Айнаколь
             </p>
             <div className="buttons">
-              <Button className="blue-btn2 !py-6">Выбрать квартиру</Button>
+              <Button className="blue-btn2 !py-6" onPress={sendRequest}>
+                Выбрать квартиру
+              </Button>
               <Link
                 href="https://drive.google.com/drive/folders/1D2Ib3V9SHjXxy-MYXIs2wceoQivEESqV"
                 target="_blank"

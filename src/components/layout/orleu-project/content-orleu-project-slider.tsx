@@ -51,7 +51,7 @@ function ContentOrleuProjectSlider() {
                   alt="Image 1"
                   width={500}
                   height={500}
-                  className="rounded-[20px] h-[200] lg:h-[350px] object-cover"
+                  className="rounded-[20px] h-[180] lg:h-[350px] object-cover"
                 />
               ))}
             </motion.div>

@@ -121,13 +121,13 @@ function ContentOrleuProjectHomeMap({ sendRequest }: IThisProps) {
               {sliderBlocks.map((item, index) => (
                 <SwiperSlide key={item}>
                   <div
-                    className="w-full h-full flex-jc-c p-2 lg:p-9 bg-[#F3F7FF] rounded-[12px] cursor-pointer transition hover:bg-blue/10"
+                    className="w-full h-full flex-jc-c p-1 lg:p-9 bg-[#F3F7FF] rounded-[12px] cursor-pointer transition hover:bg-blue/10"
                     onClick={() => setActiveSlider(index)}
                   >
                     <Image
                       src={item}
                       alt="image"
-                      className="w-[90%] rounded-[8px]"
+                      className="w-[90%] rounded-[5px]"
                       width={300}
                       height={200}
                     />

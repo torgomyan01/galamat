@@ -36,7 +36,7 @@ function OrleuProject() {
         </div>
 
         <div className="block lg:hidden">
-          <OreluMobileHeader />
+          <OreluMobileHeader sendRequest={() => setIsOpen(true)} />
         </div>
 
         <ContentOrleuProjectSlider />
