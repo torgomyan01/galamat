@@ -29,7 +29,7 @@ function ContentOrleuProjectTwo() {
           <motion.img
             src="img/sect3-bg.png"
             alt=""
-            className="!fixed left-0 bottom-0 w-full z-[-1]"
+            className="!fixed left-0 bottom-0 w-full z-[-1] pointer-events-none"
             style={{
               opacity: opacityHouse,
               y: leftImageY,
@@ -46,18 +46,20 @@ function ContentOrleuProjectTwo() {
               минутах езды от площади «Қазақ елі».
             </p>
             <div className="tags">
-              <span className="tag">Комфорт класс</span>
-              <span className="tag">9 этажей</span>
-              <span className="tag">10 подъездов</span>
-              <span className="tag">448 квартир</span>
-              <span className="tag">Потолки - 3м</span>
-              <span className="tag">3-6 квартир на площадке</span>
+              <span className="tag cursor-pointer">Комфорт класс</span>
+              <span className="tag cursor-pointer">9 этажей</span>
+              <span className="tag cursor-pointer">10 подъездов</span>
+              <span className="tag cursor-pointer">448 квартир</span>
+              <span className="tag cursor-pointer">Потолки - 3м</span>
+              <span className="tag cursor-pointer">
+                3-6 квартир на площадке
+              </span>
             </div>
           </motion.div>
         </div>
       </motion.div>
 
-      <div className="section section4 !relative z-[100000]">
+      <div className="section section4 !relative z-[100000] mt-[500px]">
         <div className="info">
           <div className="leave-request-wrap">
             <img src="img/title-style.svg" alt="" />

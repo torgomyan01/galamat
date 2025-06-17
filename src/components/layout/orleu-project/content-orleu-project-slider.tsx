@@ -17,16 +17,22 @@ function ContentOrleuProjectSlider() {
   const opacityForClose = useTransform(scrollYProgress, [0.8, 0.9], ["1", "0"]);
 
   return (
-    <div ref={containerRef} className="h-[4000px] relative !z-[1000000000000]">
+    <div
+      ref={containerRef}
+      className="h-[4000px] relative !z-[10000] pointer-events-none"
+    >
       <motion.div
         style={{ opacity, y: moveY }}
         className="section section-halls fixed top-[50px]"
       >
-        <div className="design-halls-wrap">
+        <motion.div
+          style={{ opacity: opacityForClose }}
+          className="design-halls-wrap"
+        >
           <div className="w-full">
             <motion.div
               style={{ x: moveX }}
-              className="design-halls flex-js-c gap-6 pr-[50px]"
+              className="design-halls flex-js-c gap-6 pr-[50px] pointer-events-none"
             >
               <img
                 src="img/halls-img1.png"
@@ -60,7 +66,7 @@ function ContentOrleuProjectSlider() {
               />
             </motion.div>
           </div>
-        </div>
+        </motion.div>
         <motion.div style={{ opacity: opacityForClose }} className="info">
           <div className="texts">
             <h2>Авторский дизайн холлов</h2>

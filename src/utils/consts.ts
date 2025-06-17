@@ -14,6 +14,8 @@ export const SITE_URL = {
   FAQ: "/faq",
   CONTACT: "/contact",
   PROJECTS: "/projects",
+  ORLEU_PROJECT: "/orleu-project",
+  ORLEU_PROJECT_PANORAMA: "/orleu-project/360",
   ADMIN: "admin",
   ADMIN_TRANSLATE: "admin/translate",
   ADMIN_USERS: "admin/users",

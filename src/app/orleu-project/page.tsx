@@ -7,6 +7,9 @@ import ContentOrleuProjectSlider from "@/components/layout/orleu-project/content
 import ContentOrleuProjectList from "@/components/layout/orleu-project/content-orleu-project-list";
 import ContentOrleuProjectMap from "@/components/layout/orleu-project/content-orleu-project-map";
 import ContentOrleuProjectHomeMap from "@/components/layout/orleu-project/content-orleu-project-home-map";
+import ContentOrleuProjectAllHotelSlider from "@/components/layout/orleu-project/content-orleu-project-all-hotel-slider";
+import ContentOrleuProjectAlPanorama from "@/components/layout/orleu-project/content-orleu-project-panarama";
+import ContentOrleuEndSection from "@/components/layout/orleu-project/content-orleu-project-end-section";
 
 async function Page() {
   return (
@@ -31,6 +34,12 @@ async function Page() {
         <ContentOrleuProjectMap />
 
         <ContentOrleuProjectHomeMap />
+
+        <ContentOrleuProjectAllHotelSlider />
+
+        <ContentOrleuProjectAlPanorama />
+
+        <ContentOrleuEndSection />
       </div>
     </MainTemplate>
   );

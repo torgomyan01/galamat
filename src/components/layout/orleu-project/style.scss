@@ -57,6 +57,9 @@
 
 
 
+.swiper-pagination{
+  padding: 0 150px;
+}
 
 
 
@@ -576,7 +579,7 @@
     @media(max-width: 1300px){
       padding: 40px 20px;
     }
-    @media (max-width: 767px) {
+    @media (max-width: 1200px) {
       height: auto;
       min-height: auto;
     }

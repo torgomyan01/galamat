@@ -50,7 +50,7 @@ function ContentOrleuProject() {
         </h2>
       </div>
 
-      <div className="fixed left-1/2 transform translate-x-[-50%] top-[200px]">
+      <div className="fixed left-1/2 transform translate-x-[-50%] top-[200px] pointer-events-none">
         <motion.img
           src="img/orleu-logo.svg"
           alt="orleu logo"
@@ -58,7 +58,7 @@ function ContentOrleuProject() {
         />
       </div>
 
-      <div className="w-full h-[100dvh] fixed left-0 top-0 z-10  flex-jc-e">
+      <div className="w-full h-[100dvh] fixed left-0 top-0 z-10  flex-jc-e pointer-events-none">
         <motion.div
           style={{
             x: leftImageX,
@@ -97,15 +97,15 @@ function ContentOrleuProject() {
       <motion.img
         src="img/sect2-bg.png"
         alt=""
-        className="fixed top-[200px] right-0 w-[90%] z-10"
+        className="fixed top-[200px] right-0 w-[90%] z-10 pointer-events-none"
         style={{ y: homeMoveTop, opacity: homeOpacity }}
       />
 
       <motion.div
         style={{ x: leaveApartment, opacity: apartmentOpacity }}
-        className="section section2 !fixed top-[200px] left-[100px] z-[1000]"
+        className="section section2 !fixed top-[0] min-h-[900px]:top-[200px] left-[100px] z-[1000]"
       >
-        <div className="info">
+        <div className="info transform scale-80 min-h-[900px]:scale-100">
           <div className="texts">
             <img src="img/orleu-logo.svg" alt="" />
             <p>
