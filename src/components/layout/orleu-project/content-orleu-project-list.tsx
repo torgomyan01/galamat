@@ -4,8 +4,8 @@ import React from "react";
 
 function ContentOrleuProjectList() {
   return (
-    <div className="mt-[500px]">
-      <div className="section section6">
+    <div className="">
+      <div className="section section6 !h-auto">
         <div className="improvement-wrap">
           <div className="title-wrap">
             <h2 className="main-title">Благоустройство двора</h2>

@@ -4,7 +4,7 @@ import React from "react";
 
 function ContentOrleuProjectMap() {
   return (
-    <div className="section section7 relative z-[1000]">
+    <div className="section section7 !h-auto relative z-[1000]">
       <div className="map-info">
         <h2 className="main-title">Все нужное рядом</h2>
         <div className="map-block overflow-hidden rounded-[20px]">
