@@ -13,7 +13,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLang } from "@/redux/translate";
 import { useTranslate } from "@/hooks/useTranslate";
 
-function Header() {
+interface IThisProps {
+  info: boolean;
+}
+
+function Header({ info = true }: IThisProps) {
   const dispatch = useDispatch();
   const $t = useTranslate();
 
@@ -73,97 +77,100 @@ function Header() {
   return (
     <header className="header">
       <div className="wrapper">
-        <div className="top-line">
-          <Link href={SITE_URL.HOME} className="logo">
-            <Image
-              src="/img/logo.svg"
-              alt="logo navbar"
-              width={162}
-              height={20}
-            />
-          </Link>
-          <div className="social-icons">
-            <Link href="https://wa.me/+77001085757" target="_blank">
+        {info ? (
+          <div className="top-line">
+            <Link href={SITE_URL.HOME} className="logo">
               <Image
-                src="/img/wp-icon.svg"
-                alt="icon soc sites"
-                width={18}
-                height={18}
-                className="h-auto"
+                src="/img/logo.svg"
+                alt="logo navbar"
+                width={162}
+                height={20}
               />
             </Link>
-            {/*<Link href="tel: +7 700 108 5757" target="_blank">*/}
-            {/*  <Image*/}
-            {/*    src="/img/tg-icon.svg"*/}
-            {/*    alt="icon soc sites"*/}
-            {/*    width={18}*/}
-            {/*    height={18}*/}
-            {/*    className="h-auto"*/}
-            {/*  />*/}
-            {/*</Link>*/}
-            <Link href="tel: +7 700 108 5757" target="_blank">
-              <Image
-                src="/img/phone-icon.svg"
-                alt="icon soc sites"
-                width={18}
-                height={18}
-                className="h-auto"
-              />
-            </Link>
-          </div>
-          <Link href="tel: +7 700 108 5757" className="border-btn order-call">
-            {$t("request_call")}
-          </Link>
-          <Select
-            selectedKeys={[`${activeLang}`]}
-            className="w-[80px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] hidden md:inline-block"
-            variant="bordered"
-            onSelectionChange={selectLanguage}
-          >
-            {languages.map((lang) => (
-              <SelectItem key={lang.key}>{lang.name}</SelectItem>
-            ))}
-          </Select>
-          <div
-            className={clsx("drop-menu", { "is-active": mobileMenu })}
-            onClick={() => setMobileMenu(!mobileMenu)}
-          >
-            <span className="line"></span>
-            <span className="line"></span>
-            <span className="line"></span>
-          </div>
-          <div
-            className={clsx("menu-wrap", {
-              open: mobileMenu,
-            })}
-          >
-            <ul className="main-menu">
-              {menuItems.map((menuItem, i) => (
-                <li key={`desktop-menu-${i}`}>
-                  <Link href={menuItem.url}>{menuItem.name}</Link>
-                </li>
-              ))}
-            </ul>
-            <div className="btns">
-              <Select
-                selectedKeys={[`${activeLang}`]}
-                className="w-[80px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] hidden md:inline-block"
-                variant="bordered"
-                onSelectionChange={selectLanguage}
-              >
-                {languages.map((lang) => (
-                  <SelectItem key={lang.key}>{lang.name}</SelectItem>
-                ))}
-              </Select>
-              <Link
-                href="tel: +7 700 108 5757"
-                className="border-btn order-call"
-              >
-                {$t("request_call")}
+            <div className="social-icons">
+              <Link href="https://wa.me/+77001085757" target="_blank">
+                <Image
+                  src="/img/wp-icon.svg"
+                  alt="icon soc sites"
+                  width={18}
+                  height={18}
+                  className="h-auto"
+                />
+              </Link>
+              {/*<Link href="tel: +7 700 108 5757" target="_blank">*/}
+              {/*  <Image*/}
+              {/*    src="/img/tg-icon.svg"*/}
+              {/*    alt="icon soc sites"*/}
+              {/*    width={18}*/}
+              {/*    height={18}*/}
+              {/*    className="h-auto"*/}
+              {/*  />*/}
+              {/*</Link>*/}
+              <Link href="tel: +7 700 108 5757" target="_blank">
+                <Image
+                  src="/img/phone-icon.svg"
+                  alt="icon soc sites"
+                  width={18}
+                  height={18}
+                  className="h-auto"
+                />
               </Link>
             </div>
+            <Link href="tel: +7 700 108 5757" className="border-btn order-call">
+              {$t("request_call")}
+            </Link>
+            <Select
+              selectedKeys={[`${activeLang}`]}
+              className="w-[80px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] hidden md:inline-block"
+              variant="bordered"
+              onSelectionChange={selectLanguage}
+            >
+              {languages.map((lang) => (
+                <SelectItem key={lang.key}>{lang.name}</SelectItem>
+              ))}
+            </Select>
+            <div
+              className={clsx("drop-menu", { "is-active": mobileMenu })}
+              onClick={() => setMobileMenu(!mobileMenu)}
+            >
+              <span className="line"></span>
+              <span className="line"></span>
+              <span className="line"></span>
+            </div>
+            <div
+              className={clsx("menu-wrap", {
+                open: mobileMenu,
+              })}
+            >
+              <ul className="main-menu">
+                {menuItems.map((menuItem, i) => (
+                  <li key={`desktop-menu-${i}`}>
+                    <Link href={menuItem.url}>{menuItem.name}</Link>
+                  </li>
+                ))}
+              </ul>
+              <div className="btns">
+                <Select
+                  selectedKeys={[`${activeLang}`]}
+                  className="w-[80px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] hidden md:inline-block"
+                  variant="bordered"
+                  onSelectionChange={selectLanguage}
+                >
+                  {languages.map((lang) => (
+                    <SelectItem key={lang.key}>{lang.name}</SelectItem>
+                  ))}
+                </Select>
+                <Link
+                  href="tel: +7 700 108 5757"
+                  className="border-btn order-call"
+                >
+                  {$t("request_call")}
+                </Link>
+              </div>
+            </div>
           </div>
-        </div>
+        ) : null}
+
         <div className="bottom-line">
           <Link href={SITE_URL.HOME} className="logo">
             <Image

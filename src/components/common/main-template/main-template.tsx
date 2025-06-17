@@ -13,9 +13,16 @@ import { localStorageKeys } from "@/utils/consts";
 interface IThisProps {
   children?: React.ReactNode;
   pageOff?: boolean;
+  footer?: boolean;
+  headerInfo?: boolean;
 }
 
-function MainTemplate({ children, pageOff = false }: IThisProps) {
+function MainTemplate({
+  children,
+  pageOff = false,
+  footer = true,
+  headerInfo = true,
+}: IThisProps) {
   const dispatch = useDispatch();
   const getLanguage = useSelector(
     (state: IStateTranslate) => state.translateSite.selectedLang,
@@ -51,7 +58,7 @@ function MainTemplate({ children, pageOff = false }: IThisProps) {
   return (
     <HeroUIProvider>
       <ToastProvider />
-      <Header />
+      <Header info={headerInfo} />
       {pageOff ? (
         <div className="w-full h-[calc(100dvh-165px)] bg-[#132C5E] flex-jc-c flex-col gap-4">
           <img src="img/no-page.svg" alt="preloader" />
@@ -75,7 +82,7 @@ function MainTemplate({ children, pageOff = false }: IThisProps) {
           ) : null}
 
           {children}
-          <Footer />
+          {footer ? <Footer /> : null}
         </>
       )}
       <ChatWidget />

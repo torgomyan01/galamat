@@ -2,7 +2,6 @@
 
 import MainTemplate from "@/components/common/main-template/main-template";
 import AdsSlider from "@/components/layout/home/ads-slider/ads-slider";
-import FilterWrapper from "@/components/layout/home/filter-wrapper/filter-wrapper";
 import LeaveRequest from "@/components/common/leave-request/leave-request";
 import WhyUs from "@/components/layout/home/why-us/why-us";
 import Objects from "@/components/layout/home/objects/objects";
@@ -15,13 +14,15 @@ interface IThisProps {
 }
 
 export default function Home({ houses }: IThisProps) {
+  console.log(houses);
+
   return (
     <MainTemplate>
       <AdsSlider />
-      <FilterWrapper _houses={houses} />
+      <Objects />
+      {/*<FilterWrapper _houses={houses} />*/}
       <LeaveRequest />
       <WhyUs />
-      <Objects />
       <VideoBlock />
       <OurOffice />
     </MainTemplate>

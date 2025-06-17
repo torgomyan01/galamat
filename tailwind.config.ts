@@ -37,6 +37,11 @@ const flexClasses = {
     justifyContent: "center",
     alignItems: "center",
   },
+  ".flex-jc-e": {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "end",
+  },
   ".flex-jc-s": {
     display: "flex",
     justifyContent: "center",

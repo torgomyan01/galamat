@@ -13,6 +13,7 @@ export const SITE_URL = {
   SEND_CALLBACK: "/send-callback",
   FAQ: "/faq",
   CONTACT: "/contact",
+  PROJECTS: "/projects",
   ADMIN: "admin",
   ADMIN_TRANSLATE: "admin/translate",
   ADMIN_USERS: "admin/users",
