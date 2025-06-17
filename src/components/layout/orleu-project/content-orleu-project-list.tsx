@@ -24,7 +24,7 @@ function ContentOrleuProjectList() {
               <span
                 className="bg"
                 style={{ backgroundImage: "url(img/improvement-img1.png)" }}
-              ></span>
+              />
               <div className="hide-texts">
                 <p>
                   Безопасное и комфортное место для отдыха и прогулок без машин.

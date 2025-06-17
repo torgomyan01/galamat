@@ -34,7 +34,7 @@ function ContentOrleuProjectAllHotelSlider() {
             disableOnInteraction: false, // Keep autoplay on user interaction
           }}
           pagination={{ clickable: true }}
-          className="info-swiper !px-[80px] h-[80dvh]"
+          className="info-swiper !px-4 lg:!px-[80px] h-[50dvh] lg:h-[80dvh]"
         >
           {sliderItems.map((item, i) => (
             <SwiperSlide key={`sl-${i}`}>

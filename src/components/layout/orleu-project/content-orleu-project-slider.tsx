@@ -2,6 +2,16 @@
 
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
+
+const images = [
+  "/img/halls-img1.png",
+  "/img/halls-img2.png",
+  "/img/halls-img3.png",
+  "/img/halls-img4.png",
+  "/img/halls-img5.png",
+  "/img/halls-img6.png",
+];
 
 function ContentOrleuProjectSlider() {
   const containerRef = useRef(null);
@@ -23,7 +33,7 @@ function ContentOrleuProjectSlider() {
     >
       <motion.div
         style={{ opacity, y: moveY }}
-        className="section section-halls fixed top-[50px]"
+        className="section section-halls fixed top-0 lg:top-[50px]"
       >
         <motion.div
           style={{ opacity: opacityForClose }}
@@ -34,42 +44,22 @@ function ContentOrleuProjectSlider() {
               style={{ x: moveX }}
               className="design-halls flex-js-c gap-6 pr-[50px] pointer-events-none"
             >
-              <img
-                src="img/halls-img1.png"
-                alt="Image 1"
-                className="rounded-[20px] h-[350px] object-cover"
-              />
-              <img
-                src="img/halls-img2.png"
-                alt="Image 1"
-                className="rounded-[20px] h-[350px] object-cover"
-              />
-              <img
-                src="img/halls-img3.png"
-                alt="Image 1"
-                className="rounded-[20px] h-[350px] object-cover"
-              />
-              <img
-                src="img/halls-img4.png"
-                alt="Image 1"
-                className="rounded-[20px] h-[350px] object-cover"
-              />
-              <img
-                src="img/halls-img5.png"
-                alt="Image 1"
-                className="rounded-[20px] h-[350px] object-cover"
-              />
-              <img
-                src="img/halls-img6.png"
-                alt="Image 1"
-                className="rounded-[20px] h-[350px] object-cover"
-              />
+              {images.map((image) => (
+                <Image
+                  key={image}
+                  src={image}
+                  alt="Image 1"
+                  width={500}
+                  height={500}
+                  className="rounded-[20px] h-[200] lg:h-[350px] object-cover"
+                />
+              ))}
             </motion.div>
           </div>
         </motion.div>
         <motion.div style={{ opacity: opacityForClose }} className="info">
           <div className="texts">
-            <h2>Авторский дизайн холлов</h2>
+            <h2 className="!mb-4 lg:!mb-6">Авторский дизайн холлов</h2>
             <p>
               Интерьеры холлов Orleu разработаны по индивидуальному
               дизайн-проекту, сочетающему удобство, эстетику и функциональность.
