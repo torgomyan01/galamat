@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 
@@ -20,11 +20,21 @@ function ContentOrleuProjectSlider() {
     offset: ["start 500px", "end start"],
   });
 
+  const [checkWindow, setCheckWindow] = useState<boolean>(false);
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const isMobile = window.innerWidth < 1024;
+
+    setCheckWindow(isMobile);
+  }, []);
+
   const moveX = useTransform(scrollYProgress, [0.3, 1], ["0", "-200%"]);
-  const moveY =
-    window.innerWidth > 1024
-      ? useTransform(scrollYProgress, [0.1, 0.2], ["50%", "0%"])
-      : undefined;
+  const moveY = checkWindow
+    ? undefined
+    : useTransform(scrollYProgress, [0.1, 0.2], ["50%", "0%"]);
   const opacity = useTransform(scrollYProgress, [0.001, 0.2], ["0", "1"]);
 
   const opacityForClose = useTransform(scrollYProgress, [0.8, 0.9], ["1", "0"]);
