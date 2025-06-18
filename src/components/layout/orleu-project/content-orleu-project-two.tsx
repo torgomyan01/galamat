@@ -39,7 +39,7 @@ function ContentOrleuProjectTwo() {
           <img src="img/style.png" alt="" className="style" />
           <motion.div style={{ x: leftImageX }} className="texts mt-[400px]">
             <h2>
-              <img src="img/title-style.svg" alt="" /> Преимущества
+              <img src="img/title-style.svg" alt="title" /> Преимущества
             </h2>
             <p>
               Жилой комплекс «Örleu» — это новый проект комфорт класса от
