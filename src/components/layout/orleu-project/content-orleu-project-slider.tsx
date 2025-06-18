@@ -21,7 +21,10 @@ function ContentOrleuProjectSlider() {
   });
 
   const moveX = useTransform(scrollYProgress, [0.3, 1], ["0", "-200%"]);
-  const moveY = useTransform(scrollYProgress, [0.1, 0.2], ["50%", "0%"]);
+  const moveY =
+    window.innerWidth > 1024
+      ? useTransform(scrollYProgress, [0.1, 0.2], ["50%", "0%"])
+      : undefined;
   const opacity = useTransform(scrollYProgress, [0.001, 0.2], ["0", "1"]);
 
   const opacityForClose = useTransform(scrollYProgress, [0.8, 0.9], ["1", "0"]);
@@ -33,7 +36,7 @@ function ContentOrleuProjectSlider() {
     >
       <motion.div
         style={{ opacity, y: moveY }}
-        className="section section-halls fixed top-0 lg:top-[50px]"
+        className="section section-halls fixed top-[-20px] lg:top-[50px] "
       >
         <motion.div
           style={{ opacity: opacityForClose }}
@@ -57,10 +60,15 @@ function ContentOrleuProjectSlider() {
             </motion.div>
           </div>
         </motion.div>
-        <motion.div style={{ opacity: opacityForClose }} className="info">
+        <motion.div
+          style={{ opacity: opacityForClose }}
+          className="info !mt-[10px] lg:!mt-[30px]"
+        >
           <div className="texts">
-            <h2 className="!mb-4 lg:!mb-6">Авторский дизайн холлов</h2>
-            <p>
+            <h2 className="!mb-2 lg:!mb-6 !text-[23px] lg:!text-[26px]">
+              Авторский дизайн холлов
+            </h2>
+            <p className="!text-[15px] md:!text-[16px]">
               Интерьеры холлов Orleu разработаны по индивидуальному
               дизайн-проекту, сочетающему удобство, эстетику и функциональность.
               Особое внимание уделено освещению, спокойной цветовой палитре и
@@ -68,11 +76,19 @@ function ContentOrleuProjectSlider() {
             </p>
           </div>
           <div className="tags">
-            <span className="tag">Бесшумные лифты</span>
-            <span className="tag">Smart замки</span>
-            <span className="tag">Face ID</span>
-            <span className="tag">Колясочные зоны</span>
-            <span className="tag">Зоны ожидания</span>
+            <span className="tag !text-[15px] md:!text-[16px]">
+              Бесшумные лифты
+            </span>
+            <span className="tag !text-[15px] md:!text-[16px]">
+              Smart замки
+            </span>
+            <span className="tag !text-[15px] md:!text-[16px]">Face ID</span>
+            <span className="tag !text-[15px] md:!text-[16px]">
+              Колясочные зоны
+            </span>
+            <span className="tag !text-[15px] md:!text-[16px]">
+              Зоны ожидания
+            </span>
           </div>
         </motion.div>
       </motion.div>

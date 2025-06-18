@@ -67,7 +67,7 @@ function OreluMobileHeader({ sendRequest }: IThisProps) {
       </div>
 
       <div className="mt-8">
-        <div className="section section3 reltive">
+        <div className="section section3 reltive !min-h-auto !h-auto">
           <div className="info !p-0">
             <div className="w-[calc(100%+32px)] ml-[-16px] mountain-after before:!hidden relative">
               <Image
