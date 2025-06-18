@@ -31,7 +31,7 @@ function ContentOrleuProjectSlider() {
     setCheckWindow(isMobile);
   }, []);
 
-  const moveX = useTransform(scrollYProgress, [0.3, 1], ["0", "-200%"]);
+  const moveX = useTransform(scrollYProgress, [0.1, 1], ["0", "-200%"]);
   const moveY = useTransform(
     scrollYProgress,
     [0.1, 0.2],
@@ -44,7 +44,7 @@ function ContentOrleuProjectSlider() {
   return (
     <div
       ref={containerRef}
-      className="h-[4000px] relative !z-[10000] pointer-events-none"
+      className="h-[1000px] md:h-[4000px] relative !z-[10000] pointer-events-none"
     >
       <motion.div
         style={{ opacity, y: moveY }}
