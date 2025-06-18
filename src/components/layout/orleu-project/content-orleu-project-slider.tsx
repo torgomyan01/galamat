@@ -2,6 +2,16 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+
+// plugins
+import lgThumbnail from "lightgallery/plugins/thumbnail";
+import lgZoom from "lightgallery/plugins/zoom";
+
+// styles
+import "lightgallery/css/lightgallery.css";
+import "lightgallery/css/lg-thumbnail.css";
+import "lightgallery/css/lg-zoom.css";
+import LightGallery from "lightgallery/react";
 import Image from "next/image";
 
 const images = [
@@ -20,6 +30,8 @@ function ContentOrleuProjectSlider() {
     offset: ["start 500px", "end start"],
   });
 
+  const galleryRef = useRef<any>(null);
+
   const [checkWindow, setCheckWindow] = useState<boolean>(false);
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -31,7 +43,11 @@ function ContentOrleuProjectSlider() {
     setCheckWindow(isMobile);
   }, []);
 
-  const moveX = useTransform(scrollYProgress, [0.1, 1], ["0", "-200%"]);
+  const moveX = useTransform(
+    scrollYProgress,
+    [checkWindow ? 0.1 : 0.2, 1],
+    ["0", "-200%"],
+  );
   const moveY = useTransform(
     scrollYProgress,
     [0.1, 0.2],
@@ -44,8 +60,30 @@ function ContentOrleuProjectSlider() {
   return (
     <div
       ref={containerRef}
-      className="h-[1000px] md:h-[4000px] relative !z-[10000] pointer-events-none"
+      className="h-[1000px] md:h-[4000px] relative !z-[100]"
     >
+      <LightGallery
+        galleryId="product-gallery"
+        plugins={[lgZoom, lgThumbnail]}
+        onInit={(detail: any) => {
+          galleryRef.current = detail.instance;
+        }}
+        thumbnail={true}
+        elementClassNames="hidden"
+      >
+        {images.map((image, i) => (
+          <a key={`lg-item-${i}`} data-src={image}>
+            <Image
+              src={image}
+              alt=""
+              width={100}
+              height={100}
+              className="hidden min-h-[440px]"
+            />
+          </a>
+        ))}
+      </LightGallery>
+
       <motion.div
         style={{ opacity, y: moveY }}
         className="section section-halls fixed top-[-20px] lg:top-[50px] "
@@ -56,17 +94,19 @@ function ContentOrleuProjectSlider() {
         >
           <div className="w-full">
             <motion.div
+              ref={galleryRef}
               style={{ x: moveX }}
-              className="design-halls flex-js-c gap-6 pr-[50px] pointer-events-none"
+              className="design-halls flex-js-c gap-6 pr-[50px]"
             >
-              {images.map((image) => (
+              {images.map((image, i) => (
                 <Image
                   key={image}
                   src={image}
+                  onClick={() => galleryRef.current?.openGallery(i)}
                   alt="Image 1"
                   width={500}
                   height={500}
-                  className="rounded-[20px] h-[180] lg:h-[350px] object-cover"
+                  className="rounded-[20px] h-[180] lg:h-[350px] object-cover gallery-item cursor-pointer"
                 />
               ))}
             </motion.div>

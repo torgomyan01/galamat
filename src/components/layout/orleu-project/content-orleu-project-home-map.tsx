@@ -9,6 +9,9 @@ import { Mousewheel } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Button } from "@heroui/react";
 import Image from "next/image";
+import lgZoom from "lightgallery/plugins/zoom";
+import lgThumbnail from "lightgallery/plugins/thumbnail";
+import LightGallery from "lightgallery/react";
 
 const sliderBlocks = [
   "/img/orleu-page/block-1.png",
@@ -52,8 +55,10 @@ function ContentOrleuProjectHomeMap({ sendRequest }: IThisProps) {
     swiperRef.current?.slidePrev();
   }
 
+  const galleryRefMap = useRef<any>(null);
+
   return (
-    <div className="section section8 !h-auto !min-h-auto">
+    <div className="section section8 !h-auto !min-h-auto relative z-[1000]">
       <div className="planning-wrap">
         <div className="title-wrap">
           <h2>Планировочные решения</h2>
@@ -76,38 +81,66 @@ function ContentOrleuProjectHomeMap({ sendRequest }: IThisProps) {
             <img
               src={sliderBlocks[activeSlider]}
               alt=""
-              className="w-full rounded-[12px]"
+              onClick={() => galleryRefMap.current?.openGallery(activeSlider)}
+              className="w-full rounded-[12px] cursor-pointer"
             />
           </div>
-          <div className="col-span-12 lg:col-span-3 lg:h-[80dvh] gap-4 rounded-[12px] lg:rounded-[20px] overflow-hidden">
-            <div className="hidden lg:block">
-              <Swiper
-                onSwiper={(swiper) => {
-                  swiperRef.current = swiper;
-                }}
-                direction={"vertical"}
-                slidesPerView={3}
-                spaceBetween={30}
-                mousewheel={true}
-                pagination={{
-                  clickable: true,
-                }}
-                onSlideChange={(swiper) => setActiveSlider(swiper.activeIndex)}
-                modules={[Mousewheel]}
-                className="mySwiper"
-              >
-                {sliderBlocks.map((item, index) => (
-                  <SwiperSlide key={item}>
-                    <div
-                      className="w-full h-full flex-jc-c p-9 bg-[#F3F7FF] rounded-[20px] cursor-pointer transition hover:bg-blue/10"
-                      onClick={() => swiperRef.current?.slideTo(index)}
-                    >
-                      <img src={item} alt="" className="w-[90%]" />
-                    </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </div>
+          <div
+            ref={galleryRefMap}
+            className="col-span-12 lg:col-span-3 lg:h-[80dvh] gap-4 rounded-[12px] lg:rounded-[20px] overflow-hidden"
+          >
+            <LightGallery
+              galleryId="product-gallery"
+              plugins={[lgZoom, lgThumbnail]}
+              onInit={(detail: any) => {
+                galleryRefMap.current = detail.instance;
+              }}
+              thumbnail={true}
+              elementClassNames="hidden"
+            >
+              {sliderBlocks.map((image, i) => (
+                <a key={`lg-item-${i}`} data-src={image}>
+                  <Image
+                    src={image}
+                    alt=""
+                    width={100}
+                    height={100}
+                    className="hidden min-h-[440px]"
+                  />
+                </a>
+              ))}
+            </LightGallery>
+
+            <Swiper
+              onSwiper={(swiper) => {
+                swiperRef.current = swiper;
+              }}
+              direction="vertical"
+              slidesPerView={3}
+              spaceBetween={30}
+              mousewheel={true}
+              pagination={{
+                clickable: true,
+              }}
+              onSlideChange={(swiper) => setActiveSlider(swiper.activeIndex)}
+              modules={[Mousewheel]}
+              className="mySwiper !hidden lg:!block h-[80dvh]"
+            >
+              {sliderBlocks.map((item, index) => (
+                <SwiperSlide key={item}>
+                  <div
+                    className="w-full h-full flex-jc-c overflow-hidden border-[4px] border-[#1a3b7e]/20 bg-[#F3F7FF] rounded-[20px] cursor-pointer transition hover:border-[#1a3b7e]"
+                    onClick={() => swiperRef.current?.slideTo(index)}
+                  >
+                    <img
+                      src={item}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
 
             <Swiper
               onSwiper={(swiper) => {
@@ -116,7 +149,7 @@ function ContentOrleuProjectHomeMap({ sendRequest }: IThisProps) {
               slidesPerView={3}
               spaceBetween={15}
               onSlideChange={(swiper) => setActiveSlider(swiper.activeIndex)}
-              className="mySwiper block lg:hidden max-h-[200px]"
+              className="mySwiper !block lg:!hidden max-h-[200px]"
             >
               {sliderBlocks.map((item, index) => (
                 <SwiperSlide key={item}>
