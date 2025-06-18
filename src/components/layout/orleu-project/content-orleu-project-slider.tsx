@@ -32,9 +32,11 @@ function ContentOrleuProjectSlider() {
   }, []);
 
   const moveX = useTransform(scrollYProgress, [0.3, 1], ["0", "-200%"]);
-  const moveY = checkWindow
-    ? undefined
-    : useTransform(scrollYProgress, [0.1, 0.2], ["50%", "0%"]);
+  const moveY = useTransform(
+    scrollYProgress,
+    [0.1, 0.2],
+    [checkWindow ? "0" : "50%", "0%"],
+  );
   const opacity = useTransform(scrollYProgress, [0.001, 0.2], ["0", "1"]);
 
   const opacityForClose = useTransform(scrollYProgress, [0.8, 0.9], ["1", "0"]);
