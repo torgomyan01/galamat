@@ -14,7 +14,7 @@ function ContentOrleuProjectMap() {
             height="720"
             frameBorder="0"
             className="h-[60dvh] lg:h-[80dvh]"
-          />
+          ></iframe>
         </div>
       </div>
     </div>
