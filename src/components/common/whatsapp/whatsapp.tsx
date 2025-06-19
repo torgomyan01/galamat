@@ -28,7 +28,7 @@ function Whatsapp() {
     <>
       <div
         className={clsx(
-          "w-12 h-12 rounded-full bg-blue flex-jc-c fixed bottom-12 transition-all text-white cursor-pointer hover:bg-blue/90",
+          "w-12 h-12 rounded-full bg-blue flex-jc-c fixed bottom-12 transition-all text-white cursor-pointer hover:bg-blue/90 z-[1000000]",
           {
             "right-[-150px]": !topStatus,
             "right-5": topStatus,
@@ -40,7 +40,7 @@ function Whatsapp() {
       </div>
 
       <div
-        className={clsx("rs-video whatsapp-fixed transition-all", {
+        className={clsx("rs-video whatsapp-fixed transition-all z-[100000]", {
           "!right-[90px]": topStatus,
         })}
       >
