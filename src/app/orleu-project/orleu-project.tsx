@@ -14,6 +14,7 @@ import ContentOrleuEndSection from "@/components/layout/orleu-project/content-or
 import { Modal, ModalBody, ModalContent } from "@heroui/modal";
 import SendRequest from "@/components/layout/orleu-project/send-request";
 import OreluMobileHeader from "@/components/layout/orleu-project/orelu-mobile-header";
+import ContentOrleuProjectSliderMobile from "@/components/layout/orleu-project/content-orleu-project-slider-mobile";
 
 function OrleuProject() {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,7 +40,13 @@ function OrleuProject() {
           <OreluMobileHeader sendRequest={() => setIsOpen(true)} />
         </div>
 
-        <ContentOrleuProjectSlider />
+        <div className="hidden md:block">
+          <ContentOrleuProjectSlider />
+        </div>
+
+        <div className="block md:hidden">
+          <ContentOrleuProjectSliderMobile />
+        </div>
 
         <ContentOrleuProjectList />
 

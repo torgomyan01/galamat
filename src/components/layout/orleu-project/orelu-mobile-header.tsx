@@ -103,7 +103,7 @@ function OreluMobileHeader({ sendRequest }: IThisProps) {
           </div>
         </div>
 
-        <div className="section section4 mt-10">
+        <div className="section section4 mt-10 !h-auto">
           <div className="info !p-0">
             <SendRequest />
           </div>
