@@ -40,7 +40,7 @@ function Whatsapp() {
       </div>
 
       <div
-        className={clsx("rs-video whatsapp-fixed transition-all z-[100000]", {
+        className={clsx("rs-video whatsapp-fixed transition-all !z-[100000]", {
           "!right-[90px]": topStatus,
         })}
       >
