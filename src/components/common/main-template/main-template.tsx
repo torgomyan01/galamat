@@ -4,11 +4,11 @@ import { HeroUIProvider, ToastProvider } from "@heroui/react";
 import React, { useEffect, useState } from "react";
 import Header from "@/components/common/header/header";
 import Footer from "@/components/common/footer/footer";
-import ChatWidget from "@/components/common/chat-widget/chat-widget";
 import { getTranslations } from "@/lib/translationCache";
 import { useDispatch, useSelector } from "react-redux";
 import { setLang, setWords } from "@/redux/translate";
 import { localStorageKeys } from "@/utils/consts";
+import Whatsapp from "@/components/common/whatsapp/whatsapp";
 
 interface IThisProps {
   children?: React.ReactNode;
@@ -85,7 +85,7 @@ function MainTemplate({
           {footer ? <Footer /> : null}
         </>
       )}
-      <ChatWidget />
+      <Whatsapp />
     </HeroUIProvider>
   );
 }
