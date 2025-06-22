@@ -31,6 +31,10 @@ function Header({ info = true }: IThisProps) {
       url: SITE_URL.HOME,
     },
     {
+      name: $t("projects"),
+      url: SITE_URL.PROJECTS,
+    },
+    {
       name: $t("bid"),
       url: SITE_URL.REQUESTS,
     },

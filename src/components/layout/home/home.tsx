@@ -9,13 +9,7 @@ import VideoBlock from "@/components/layout/home/video-block/video-block";
 import OurOffice from "@/components/layout/home/our-office/our-office";
 import React from "react";
 
-interface IThisProps {
-  houses: IProjectStage[];
-}
-
-export default function Home({ houses }: IThisProps) {
-  console.log(houses);
-
+export default function Home() {
   return (
     <MainTemplate>
       <AdsSlider />

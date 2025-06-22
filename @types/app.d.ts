@@ -168,3 +168,17 @@ declare interface ISliderItem {
   lang_key: string;
   children?: SliderNode[];
 }
+
+type IProjectDataPositions =
+  | "business"
+  | "business-plus"
+  | "comfort-plus"
+  | "comfort"
+  | "standard";
+
+declare interface IProjectData {
+  id: number;
+  project_id: number;
+  hide: boolean;
+  position: IProjectDataPositions;
+}

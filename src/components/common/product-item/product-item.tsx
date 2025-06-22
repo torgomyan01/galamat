@@ -2,12 +2,18 @@ import Image from "next/image";
 import { formatPrice } from "@/utils/consts";
 import moment from "moment";
 import clsx from "clsx";
+import PrintStatus from "@/components/common/product-item/print-status";
 
 interface IThisProps {
   project: IProjectStage;
+  housesDataAdmin?: IProjectData[];
 }
 
-function ProductItem({ project }: IThisProps) {
+function ProductItem({ project, housesDataAdmin }: IThisProps) {
+  const getInfoOtherProject = housesDataAdmin?.find(
+    (house) => house.project_id === project.id,
+  );
+
   const count = parseInt(project.countFilteredProperty || "0", 10);
   const countText = (
     <p>
@@ -68,10 +74,12 @@ function ProductItem({ project }: IThisProps) {
         </div>
       </div>
       <div className="img-wrap">
-        <span className="style red">Бизнес+</span>
+        {getInfoOtherProject ? (
+          <PrintStatus position={getInfoOtherProject.position} />
+        ) : null}
         <Image
           src={project.fullImage || "/img/def-proj.png"}
-          className="border !rounded-[8px] object-[0_50%]"
+          className="!rounded-[8px] object-[0_50%]"
           alt="Название Жк"
           width={700}
           height={500}

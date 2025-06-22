@@ -35,6 +35,11 @@ const NAVIGATION: Navigation = [
     icon: <i className="fa-solid fa-user"></i>,
   },
   {
+    segment: SITE_URL.ADMIN_PROJECTS,
+    title: "Проекты",
+    icon: <i className="fa-solid fa-rectangle-vertical-history"></i>,
+  },
+  {
     segment: SITE_URL.ADMIN_PAGES,
     title: "Страницы ",
     icon: <i className="fa-duotone fa-regular fa-list-dropdown"></i>,

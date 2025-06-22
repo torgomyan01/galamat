@@ -22,6 +22,7 @@ export const SITE_URL = {
   ADMIN_LOGIN: "admin/login",
   ADMIN_PAGES: "admin/pages",
   ADMIN_PAGES_HOME: "home",
+  ADMIN_PROJECTS: "admin/projects",
 };
 
 export const localStorageKeys = {
@@ -33,6 +34,14 @@ export const localStorageKeys = {
 };
 
 export const all = "Все";
+
+export const ProjectDataPositions = [
+  { value: "business", label: "Бизнес", color: "#DB1D31" },
+  { value: "business-plus", label: "Бизнес +", color: "#DB1D31" },
+  { value: "comfort-plus", label: "Комфорт +", color: "#132C5E" },
+  { value: "comfort", label: "Комфорт", color: "#156E33" },
+  { value: "standard", label: "Стандарт", color: "#7B7B7B" },
+] as const;
 
 export const StartGenerateNewToken = async () => {
   return axios.post(`${servLink}/authentication`, {

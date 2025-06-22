@@ -68,6 +68,14 @@
     content: "\f077"
 }
 
+.fa-rectangle-vertical-history:before {
+    content: "\e237"
+}
+
+.fa-eye-slash:before {
+    content: "\f070"
+}
+
 
 
 /*---------------------------------*/
