@@ -114,7 +114,6 @@ function FilterWrapper({ _houses }: IThisProps) {
       selectedMinMax,
     );
   }
-
   function selectMinMax(key: number[]) {
     setSelectedMinMax(key);
     applyFilters(
