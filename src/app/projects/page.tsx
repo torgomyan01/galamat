@@ -1,17 +1,22 @@
-"use server";
+// app/admin/projects/page.tsx
 
 import React from "react";
-import { fetchHouses } from "@/lib/getHouses";
 import Projects from "@/components/layout/projects/projects";
 import { ActionGetProjectsInfo } from "@/app/actions/projects/get-projects";
+import { fetchHouses } from "@/lib/getHouses";
 
-async function Page() {
-  const housesData: any = await fetchHouses();
-  const housesDataAdmin: any = await ActionGetProjectsInfo();
+export const dynamic = "force-dynamic";
+
+export default async function Page() {
+  const [housesData, housesDataAdmin] = await Promise.all([
+    fetchHouses(),
+    ActionGetProjectsInfo(),
+  ]);
 
   return (
-    <Projects houses={housesData} housesDataAdmin={housesDataAdmin.data} />
+    <Projects
+      houses={housesData as IProjectStage[]}
+      housesDataAdmin={housesDataAdmin.data as IProjectData[]}
+    />
   );
 }
-
-export default Page;
