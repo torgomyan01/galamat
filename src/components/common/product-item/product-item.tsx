@@ -14,6 +14,11 @@ function ProductItem({ project, housesDataAdmin }: IThisProps) {
     (house) => house.project_id === project.id,
   );
 
+  console.log(
+    getInfoOtherProject,
+    "getInfoOtherProjectgetInfoOtherProjectgetInfoOtherProject",
+  );
+
   const count = parseInt(project.countFilteredProperty || "0", 10);
   const countText = (
     <p>
