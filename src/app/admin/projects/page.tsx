@@ -1,16 +1,25 @@
+// app/admin/projects/page.tsx
+
 "use server";
 
-import { fetchHouses } from "@/lib/getHouses";
 import Projects from "@/app/admin/projects/projects";
+import { fetchHouses } from "@/lib/getHouses";
 import { ActionGetProjectsInfo } from "@/app/actions/projects/get-projects";
 
-async function Page() {
-  const housesData: any = await fetchHouses();
-  const housesDataAdmin: any = await ActionGetProjectsInfo();
+// 🔁 Ասում ենք՝ cache չպահել, միշտ server-side render
+export const dynamic = "force-dynamic";
+
+export default async function Page() {
+  // 🔁 Կատարում ենք երկու async հարցում միաժամանակ
+  const [housesData, housesDataAdmin] = await Promise.all([
+    fetchHouses(),
+    ActionGetProjectsInfo(),
+  ]);
 
   return (
-    <Projects houses={housesData} housesDataAdmin={housesDataAdmin.data} />
+    <Projects
+      houses={housesData as IProjectStage[]}
+      housesDataAdmin={housesDataAdmin.data as IProjectData[]}
+    />
   );
 }
-
-export default Page;
