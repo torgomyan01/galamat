@@ -7,6 +7,8 @@ import { Autoplay, Pagination } from "swiper/modules";
 
 import LeftSlider from "@/components/layout/home/ads-slider/left-slider";
 import Image from "next/image";
+import Link from "next/link";
+import { SITE_URL } from "@/utils/consts";
 
 function AdsSlider() {
   return (
@@ -28,13 +30,15 @@ function AdsSlider() {
             className="info-swiper rounded-[16px] overflow-hidden"
           >
             <SwiperSlide>
-              <Image
-                className="w-full h-auto "
-                src="/img/ads/start-sale.png"
-                alt="У нас есть новый офис"
-                width={1000}
-                height={700}
-              />
+              <Link href={SITE_URL.ORLEU_PROJECT} className="w-full h-auto">
+                <Image
+                  className="w-full h-full object-cover rounded-[20px]"
+                  src="/img/ads/start-order.png"
+                  alt="У нас есть новый офис"
+                  width={1000}
+                  height={700}
+                />
+              </Link>
             </SwiperSlide>
             {/*<SwiperSlide>*/}
             {/*  <Image*/}

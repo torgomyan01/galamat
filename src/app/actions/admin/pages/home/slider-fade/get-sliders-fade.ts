@@ -28,7 +28,7 @@ export async function ActionGetSlidersFade() {
     const packages: Slider[] = await prisma.sliders_tb.findMany({
       where: {
         parent_id: {
-          in: mainSliders.map((s) => s.parent_id),
+          in: mainSliders.map((s) => s.slider_name),
         },
       },
     });
@@ -36,7 +36,7 @@ export async function ActionGetSlidersFade() {
     const subPackages: Slider[] = await prisma.sliders_tb.findMany({
       where: {
         sub_parent_id: {
-          in: packages.map((p) => p.sub_parent_id),
+          in: packages.map((p) => p.parent_id),
         },
       },
     });

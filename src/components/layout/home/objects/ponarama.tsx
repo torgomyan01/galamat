@@ -45,7 +45,7 @@ export default function PhotoSphereViewer() {
 
     const markersPlugin = viewer.getPlugin(MarkersPlugin);
 
-    markersPlugin.addEventListener("select-marker", () => {
+    markersPlugin?.addEventListener("select-marker", () => {
       setActiveMarker(1);
     });
 
