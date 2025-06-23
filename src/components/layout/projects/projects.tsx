@@ -34,21 +34,28 @@ function Projects({ houses, housesDataAdmin }: IThisProps) {
     setCountSplits(countSplits + 6);
   }
 
+  const result = filteredResult.slice(0, countSplits);
+
   return (
     <MainTemplate>
       <div className="wrapper !pt-10">
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 ">
-          {filteredResult?.length ? (
+        <div
+          className={clsx(
+            "w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 ",
+            {
+              grid: result.length,
+            },
+          )}
+        >
+          {result?.length ? (
             <>
-              {filteredResult
-                .slice(0, countSplits)
-                .map((project: IProjectStage) => (
-                  <ProductItem
-                    key={`complex-${project.id}`}
-                    project={project}
-                    housesDataAdmin={housesDataAdmin}
-                  />
-                ))}
+              {result.map((project: IProjectStage) => (
+                <ProductItem
+                  key={`complex-${project.id}`}
+                  project={project}
+                  housesDataAdmin={housesDataAdmin}
+                />
+              ))}
             </>
           ) : (
             <div className="w-full h-[400px] flex-jc-c">
@@ -59,20 +66,20 @@ function Projects({ houses, housesDataAdmin }: IThisProps) {
           )}
         </div>
 
-        {houses.length ? (
+        {result.length ? (
           <div className="show-wrap">
             <span>
-              Показано{" "}
-              {countSplits >= houses.length ? houses.length : countSplits}{" "}
-              {$t("from")} {houses.length}
+              {$t("shown")}{" "}
+              {countSplits >= result.length ? result.length : countSplits}{" "}
+              {$t("from")} {result.length}
             </span>
             <Button
               className={clsx("show-btn bg-transparent h-[60px]", {
                 "opacity-50 !cursor-default hover:opacity-50":
-                  countSplits >= houses.length,
+                  countSplits >= result.length,
               })}
               onPress={SeeMore}
-              disabled={countSplits >= houses.length}
+              disabled={countSplits >= result.length}
             >
               {$t("show_more")}
             </Button>

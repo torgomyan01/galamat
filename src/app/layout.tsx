@@ -4,6 +4,8 @@ import NextTopLoader from "nextjs-toploader";
 
 import { Providers } from "@/app/providers";
 
+import { GoogleAnalytics } from "@next/third-parties/google";
+
 export async function generateMetadata() {
   return {
     title: "Купить квартиру в Астане — Galamat | Отдел продаж недвижимости",
@@ -42,6 +44,8 @@ export default async function RootLayout({
       <body>
         <NextTopLoader />
         <Providers>{children}</Providers>
+
+        <GoogleAnalytics gaId="AW-10990855116" />
       </body>
     </html>
   );
