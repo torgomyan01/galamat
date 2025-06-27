@@ -8,7 +8,7 @@ import { Autoplay, Pagination } from "swiper/modules";
 import LeftSlider from "@/components/layout/home/ads-slider/left-slider";
 import Image from "next/image";
 import Link from "next/link";
-import { filesLink, SITE_URL } from "@/utils/consts";
+import { filesLink } from "@/utils/consts";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { ActionGetSlidersFade } from "@/app/actions/admin/pages/home/slider-fade/get-sliders-fade";
