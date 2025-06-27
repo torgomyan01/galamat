@@ -4,28 +4,15 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-interface Slider {
-  id: number;
-  slider_name: string;
-  image_path: string;
-  url: string;
-  parent_id: string;
-  sub_parent_id: string;
-}
-
-interface SliderTree extends Slider {
-  children: Slider[];
-}
-
 export async function ActionGetSlidersFade(slider_name: string) {
   try {
-    const mainSliders: Slider[] = await prisma.sliders_tb.findMany({
+    const mainSliders = await prisma.sliders_tb.findMany({
       where: {
         slider_name,
       },
     });
 
-    const packages: Slider[] = await prisma.sliders_tb.findMany({
+    const packages = await prisma.sliders_tb.findMany({
       where: {
         parent_id: {
           in: mainSliders.map((s) => s.slider_name),
@@ -33,7 +20,7 @@ export async function ActionGetSlidersFade(slider_name: string) {
       },
     });
 
-    const subPackages: Slider[] = await prisma.sliders_tb.findMany({
+    const subPackages = await prisma.sliders_tb.findMany({
       where: {
         sub_parent_id: {
           in: packages.map((p) => p.id),
@@ -41,12 +28,12 @@ export async function ActionGetSlidersFade(slider_name: string) {
       },
     });
 
-    const result: SliderTree[] = mainSliders.map((main) => {
-      const mainPackages: SliderTree[] = packages
+    const result = mainSliders.map((main) => {
+      const mainPackages = packages
         .filter((p) => p.slider_name === main.parent_id)
         .map((pkg) => ({
           ...pkg,
-          children: subPackages.filter((sub) => +sub.sub_parent_id === pkg.id),
+          children: subPackages.filter((sub) => sub.sub_parent_id === pkg.id),
         }));
 
       return {
