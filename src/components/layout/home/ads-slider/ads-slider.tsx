@@ -41,7 +41,7 @@ function AdsSlider() {
             loop={true}
             autoplay={{
               delay: 5000,
-              disableOnInteraction: false, // Keep autoplay on user interaction
+              disableOnInteraction: false,
             }}
             pagination={{ clickable: true }}
             className="info-swiper rounded-[16px] overflow-hidden"
