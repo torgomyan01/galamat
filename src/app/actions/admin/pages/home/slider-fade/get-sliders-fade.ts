@@ -17,11 +17,11 @@ interface SliderTree extends Slider {
   children: Slider[];
 }
 
-export async function ActionGetSlidersFade() {
+export async function ActionGetSlidersFade(slider_name: string) {
   try {
     const mainSliders: Slider[] = await prisma.sliders_tb.findMany({
       where: {
-        slider_name: "fade-slider",
+        slider_name,
       },
     });
 
@@ -36,7 +36,7 @@ export async function ActionGetSlidersFade() {
     const subPackages: Slider[] = await prisma.sliders_tb.findMany({
       where: {
         sub_parent_id: {
-          in: packages.map((p) => p.parent_id),
+          in: packages.map((p) => p.id),
         },
       },
     });
@@ -46,7 +46,7 @@ export async function ActionGetSlidersFade() {
         .filter((p) => p.slider_name === main.parent_id)
         .map((pkg) => ({
           ...pkg,
-          children: subPackages.filter((sub) => sub.id === +pkg.sub_parent_id),
+          children: subPackages.filter((sub) => +sub.sub_parent_id === pkg.id),
         }));
 
       return {

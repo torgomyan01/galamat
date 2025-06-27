@@ -1,30 +1,27 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import AdminMainTemplate from "@/components/layout/admin/admin-main-template";
 import { SITE_URL } from "@/utils/consts";
 import { Listbox, ListboxItem } from "@heroui/react";
 import SliderFade from "@/components/layout/admin/pages/home/slider-fade";
 
 function Requests() {
+  const [activeKey, setActiveKey] = useState<string>("fade");
   const items = [
     {
       key: "fade",
       label: "Слайдер Fade",
+      component: <SliderFade slider="fade-slider" />,
     },
     {
-      key: "copy",
-      label: "Copy link",
-    },
-    {
-      key: "edit",
-      label: "Edit file",
-    },
-    {
-      key: "delete",
-      label: "Delete file",
+      key: "slider-carousel",
+      label: "Слайдер Carousel",
+      component: <SliderFade slider="slider-carousel" />,
     },
   ];
+
+  const selectedItem = items.find((item) => item.key === activeKey);
 
   return (
     <AdminMainTemplate
@@ -33,7 +30,7 @@ function Requests() {
       <div className="w-full grid grid-cols-12 gap-4 mt-6">
         <Listbox
           items={items}
-          onAction={(key) => alert(key)}
+          onAction={(key) => setActiveKey(key as string)}
           className="col-span-3 border border-black/20 rounded-[12px] p-2 "
         >
           {(item) => (
@@ -50,9 +47,11 @@ function Requests() {
         </Listbox>
 
         <div className="col-span-9 border rounded-[12px] p-4">
-          <h2 className="font-medium text-[18px] mb-4">Слайдер Fade</h2>
+          <h2 className="font-medium text-[18px] mb-4">
+            {selectedItem?.label}
+          </h2>
 
-          <SliderFade />
+          {selectedItem?.component}
         </div>
       </div>
     </AdminMainTemplate>

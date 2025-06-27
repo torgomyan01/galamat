@@ -4,8 +4,26 @@ import { Autoplay, EffectFade } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/effect-fade";
+import { useEffect, useState } from "react";
+import { ActionGetSlidersFade } from "@/app/actions/admin/pages/home/slider-fade/get-sliders-fade";
+import { filesLink } from "@/utils/consts";
+import { useSelector } from "react-redux";
 
 function LeftSlider() {
+  const activeLang = useSelector(
+    (state: IStateTranslate) => state.translateSite.selectedLang,
+  );
+
+  const [items, setItems] = useState<ISliderItem[] | null>(null);
+
+  useEffect(getSliders, []);
+
+  function getSliders() {
+    ActionGetSlidersFade("fade-slider").then(({ data }) => {
+      setItems(data as ISliderItem[]);
+    });
+  }
+
   return (
     <Swiper
       modules={[Autoplay, EffectFade]}
@@ -21,17 +39,23 @@ function LeftSlider() {
       }}
       className="w-full md:!w-[32.5%] md:h-[510px] mb-4 md:mb-0 rounded-[20px] overflow-hidden"
     >
-      <SwiperSlide>
-        <div className="w-full h-full rounded-[20px] overflow-hidden">
-          <Image
-            src="/img/ads/ads-for-map.png"
-            alt="ads-for-map.png"
-            width={500}
-            height={600}
-            className="w-full h-auto"
-          />
-        </div>
-      </SwiperSlide>
+      {items?.map((item: ISliderItem) => (
+        <>
+          {item.children?.map((sliderItem) => (
+            <SwiperSlide key={`home-slider-ads-${sliderItem.id}`}>
+              <div className="w-full h-full rounded-[20px] overflow-hidden">
+                <Image
+                  src={`${filesLink}${sliderItem.children?.find((_child) => _child.lang_key === activeLang)?.image_path}`}
+                  alt="ads-for-map.png"
+                  width={500}
+                  height={600}
+                  className="w-full h-auto"
+                />
+              </div>
+            </SwiperSlide>
+          ))}
+        </>
+      ))}
     </Swiper>
   );
 }

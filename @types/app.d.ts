@@ -164,9 +164,9 @@ declare interface ISliderItem {
   image_path: string;
   url: string;
   parent_id: string;
-  sub_parent_id: string;
+  sub_parent_id: number;
   lang_key: string;
-  children?: SliderNode[];
+  children?: ISliderItem[];
 }
 
 type IProjectDataPositions =

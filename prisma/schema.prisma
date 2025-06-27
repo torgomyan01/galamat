@@ -28,7 +28,7 @@ model sliders_tb {
   image_path    String @db.VarChar(1000)
   url           String @db.VarChar(300)
   parent_id     String @db.VarChar(255)
-  sub_parent_id String @db.VarChar(250)
+  sub_parent_id Int?
   lang_key      String @db.VarChar(250)
 }
 
