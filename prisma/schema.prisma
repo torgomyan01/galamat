@@ -37,4 +37,17 @@ model projects {
   project_id Int
   hide       Boolean
   position   String  @db.VarChar(255)
+  page_url   String  @db.VarChar(250)
+  address    String  @db.VarChar(250)
+  min_price  Int
+}
+
+model objects {
+  id               Int     @id @default(autoincrement())
+  project_house_id Int
+  parent_id        Int?
+  coordinates      String? @db.Text
+  image_path       String? @db.VarChar(1000)
+  api_url          String  @db.VarChar(255)
+  color            String? @db.VarChar(250)
 }

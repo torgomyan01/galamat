@@ -1,10 +1,11 @@
 import Image from "next/image";
-import { formatPrice } from "@/utils/consts";
-import moment from "moment";
-import clsx from "clsx";
 import { Button } from "@heroui/react";
 import { useState } from "react";
 import ModalChangeProductItem from "@/app/admin/projects/modal-change-product-item";
+import PrintStatus from "@/components/common/product-item/print-status";
+import { formatPrice, SITE_URL } from "@/utils/consts";
+import ModalChangeFosad from "@/app/admin/projects/modal-change-fosadi";
+import Link from "next/link";
 
 interface IThisProps {
   project: IProjectStage;
@@ -16,74 +17,36 @@ function ProductItemAdmin({ project, housesDataAdmin }: IThisProps) {
     (house) => house.project_id === project.id,
   );
 
-  const count = parseInt(project.countFilteredProperty || "0", 10);
-  const countText = (
-    <p>
-      {count} квартир{" "}
-      <span>
-        {count === 1 ? "а" : count > 1 && count < 5 ? "ы" : ""} в продаже
-      </span>
-    </p>
-  );
-
-  const printData = project.commissioningDate
-    ? moment(project.commissioningDate).format("DD.MM.YYYY")
-    : "";
-
   const [modalChange, setModalChange] = useState<boolean>(false);
+  const [modalChangeFosad, setModalChangeFosad] = useState<boolean>(false);
 
   return (
     <>
-      <div className="product-item !bg-black/10 relative">
-        <div className="texts-wrap">
-          <a href="#" className="name">
-            {project.projectName}
-          </a>
-          <span className="text">от {formatPrice(project.minPrice)}</span>
-          <span className="grey h-[40px]">
-            {project.address.street || "Место пока не написано"}
-          </span>
-          <div className="hide-info">
-            {countText}
-            <div className="links">
-              <span
-                className={clsx({
-                  active: project.roomsFilter.includes("one"),
-                })}
-              >
-                1
-              </span>
-              <span
-                className={clsx({
-                  active: project.roomsFilter.includes("two"),
-                })}
-              >
-                2
-              </span>
-              <span
-                className={clsx({
-                  active: project.roomsFilter.includes("three"),
-                })}
-              >
-                3
-              </span>
-              <span
-                className={clsx({
-                  active: project.roomsFilter.includes("more_than_three"),
-                })}
-              >
-                4 и более
-              </span>
-            </div>
-            <span className="date">Ближайшая сдача {printData}</span>
-          </div>
+      <div className=" w-full bg-[#3d3d3d]/10 rounded-[16px] p-[15px] cursor-pointer group flex-jsb-c flex-col relative">
+        <div className="w-full p-[15px]">
+          <Link href={`/${SITE_URL.ADMIN_PROJECTS_HOUSES}/${project.id}`}>
+            <h2 className="text-[22px] md:text-[28px] lg:text-[35px] font-medium">
+              {project.title}
+            </h2>
+          </Link>
+          <h3 className="text-[18px] md:text-[23px] text-[#353535]">
+            {getInfoOtherProject?.address}
+          </h3>
+          <h3 className="text-[18px] md:text-[23px] text-[#353535] opacity-40">
+            от {formatPrice(getInfoOtherProject?.min_price || 0)}
+          </h3>
         </div>
-        <div className="img-wrap">
-          {/*<span className="style red">Бизнес+</span>*/}
+        <div className="w-full h-[250px] md:h-[383px] bg-[#E0E0E0] rounded-[7px] overflow-hidden flex-jc-c relative">
+          {getInfoOtherProject ? (
+            <PrintStatus
+              position={getInfoOtherProject.position}
+              className="absolute top-4 left-4 z-10 text-white px-4 rounded-[4px]"
+            />
+          ) : null}
           <Image
-            src={project.fullImage || "/img/def-proj.png"}
-            className="!rounded-[8px] object-center"
-            alt="Название Жк"
+            src={project.images[0]?.url || "/img/def-proj.svg"}
+            className="!rounded-[8px] w-full h-full object-cover object-center transition transform group-hover:scale-[1.05]"
+            alt={project.title}
             width={700}
             height={500}
           />
@@ -93,14 +56,27 @@ function ProductItemAdmin({ project, housesDataAdmin }: IThisProps) {
           >
             Изменить
           </Button>
+          <Button
+            className="absolute left-6 bottom-6"
+            onPress={() => setModalChangeFosad(true)}
+          >
+            Фасады
+          </Button>
         </div>
-
         {getInfoOtherProject?.hide ? (
           <div className="w-8 h-8 bg-white absolute top-1 right-1 shadow rounded-full flex-jc-c text-red-600">
             <i className="fa-regular fa-eye-slash"></i>
           </div>
         ) : null}
       </div>
+
+      {modalChangeFosad ? (
+        <ModalChangeFosad
+          status={modalChangeFosad}
+          onClose={() => setModalChangeFosad(false)}
+          project={project}
+        />
+      ) : null}
 
       {modalChange ? (
         <ModalChangeProductItem

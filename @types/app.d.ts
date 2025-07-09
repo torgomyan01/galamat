@@ -1,5 +1,3 @@
-type IUpdateCategoryType = "category" | "subcategory";
-
 declare interface IStateTranslate {
   translateSite: {
     words: any;
@@ -8,16 +6,11 @@ declare interface IStateTranslate {
   };
 }
 
-declare interface IToken {
-  access_token: string;
-  lang: string;
-  remaining_time: number;
-}
-
-interface BuildingImage {
-  url: string;
-  mobile_url: string;
-  isPublished: boolean;
+declare interface IModalState {
+  modals: {
+    modalSelectedHouse: IHouse | null;
+    objectInfo: IObjectData[] | null;
+  };
 }
 
 interface Description {
@@ -31,102 +24,43 @@ interface Location {
   zoom: number | null;
 }
 
-interface IBuildingComplex {
+declare interface IProjectStage {
   id: number;
   title: string;
   type: string;
   currency: string;
-
-  agreementText: string | null;
-  archiveState: "NOT_ARCHIVED" | "ARCHIVED"; // Եթե լինում են այլ տարբերակներ՝ ավելացնենք
-  banks: any | null; // Մանրամասն չկա, եթե գիտես կառուցվածքը՝ նշիր
+  developer: string | null;
+  developer_brand: string | null;
   description: Description;
-  developer: any | null; // Կառուցվածքը բացակայում է
-  developer_brand: any | null;
+  agreementText: string | null;
+  archiveState: "ARCHIVED" | "NOT_ARCHIVED";
+  banks: string | null;
   district: string | null;
+  locality: string | null;
+  region: string | null;
+  salesOffice: string | null;
   externalId: string | null;
+  parking: string | null;
   hasKindergarten: boolean;
   hasPlayground: boolean;
   hasSchool: boolean;
   hasSecurity: boolean;
   hasSportsGround: boolean;
-  images: BuildingImage[];
-  locality: string;
+  images: IProjectImage[];
   location: Location;
-  parking: any | null;
-  region: string;
-  salesOffice: any | null;
-  youtubeVideos: any[]; // Եթե YouTube video օբյեկտներն ունեն կառուցվածք, կարող ենք ավելացնել
+  youtubeVideos: string[];
 }
 
-interface DevelopmentEndQuarter {
-  year: string;
-  quarter: number;
+interface IProjectImage {
+  url: string;
+  mobile_url: string;
+  isPublished: boolean;
 }
 
-interface Currency {
-  id: number;
-  code: string;
-  class: string;
-  symbol: string;
-  title: string;
-  shortName: string;
-  unicodeSymbol: string;
-}
-
-interface Address {
-  full: string | null;
-  locality: string | null;
-  district: string | null;
-  region: string | null;
-  street: string | null;
-  number: string | null;
-}
-
-interface IProjectStage {
-  id: number;
-  projectId: number;
-  projectName: string;
-  title: string;
-  type: string;
-  isArchive: boolean;
-  street: string;
-  number: string;
-  facing: string | null;
-  material: string | null;
-  buildingState: string | null;
-  developmentStartQuarter: string | null;
-  developmentEndQuarter: DevelopmentEndQuarter | null;
-  salesStart: string | null;
-  salesEnd: string | null;
-  image: string;
-  fullImage: string;
-  minFloor: number;
-  maxFloor: number;
-  currency: Currency;
-  address: Address;
-  minPrice: number;
-  minPriceArea: number;
-  propertyCount: string;
-  countFilteredProperty: string;
-  houseBadges: any[]; // Դատարկ զանգված է, եթե badge օբյեկտ կա՝ նշի կառուցվածքը
-  propertyTypes: number[];
-  roomsFilter: [
-    "one",
-    "without_layout",
-    "two",
-    "studio",
-    "three",
-    "more_than_three",
-  ];
-  roomsWithEuroFilter: string[];
-  landNumber: string | null;
-  hasAvailableProperties: boolean;
-  hasBookedProperties: boolean;
-  contractAddress: string | null;
-  externalId: string;
-  showroom: boolean;
-  commissioningDate: string; // ISO date
+declare interface Location {
+  latitude: number | null;
+  longitude: number | null;
+  zoom: number | null;
 }
 
 declare interface ILanguage {
@@ -134,6 +68,11 @@ declare interface ILanguage {
   name: string;
   key: string | null;
   parent_id: string | null;
+}
+
+interface Description {
+  title: string | null;
+  body: string | null;
 }
 
 declare interface ILangMerged {
@@ -181,4 +120,292 @@ declare interface IProjectData {
   project_id: number;
   hide: boolean;
   position: IProjectDataPositions;
+  page_url: string;
+  address: string;
+  min_price: number;
+}
+
+declare interface IProjectMerged extends IProjectStage {
+  id: number;
+  project_id: number;
+  hide: boolean;
+  position: IProjectDataPositions;
+  page_url: string;
+  address: string;
+  min_price: number;
+}
+
+// FOR PLANS
+
+declare interface IPlanAddress {
+  full: string;
+  locality: string;
+  district: string | null;
+  region: string | null;
+  street: string;
+  number: string | null;
+}
+
+declare interface IPlanImageInfo {
+  source: string;
+  technical: boolean;
+  big: string;
+  preview: string;
+  small: string;
+  imageName: string;
+}
+
+declare interface IPlanPriceRange {
+  min: string;
+  max: string;
+}
+
+declare interface IPlanAreaRange {
+  min: string;
+  max: string;
+}
+
+declare interface IPlan {
+  id: number;
+  code: string;
+  projectId: number;
+  projectName: string;
+  houseName: string;
+  houseId: number;
+  isHouseArchive: boolean;
+  isWithoutLayout: boolean;
+  isStudio: boolean;
+  isEuroLayout: boolean;
+  isFreeLayout: boolean;
+  roomsAmount: number;
+  hidePrice: boolean;
+  priceRange: IPlanPriceRange;
+  areaRange: IPlanAreaRange;
+  attachments: any[]; // փոխիր կոնկրետ տիպով եթե կա
+  properties: string[];
+  propertyTypeAliases: string[];
+  address: IPlanAddress;
+  image: IPlanImageInfo;
+  planImages: IPlanImageInfo[];
+  lightSideAngle: number;
+  isLightSideVisible: boolean;
+  countFilteredProperty: number;
+}
+
+// FOR PROPERTY
+
+declare interface IPropertyArea {
+  area_total: number;
+  area_estimated: number | null;
+  area_living: number | null;
+  area_kitchen: number | null;
+  area_balcony: number | null;
+  area_without_balcony: number | null;
+}
+
+declare interface IPropertyPrice {
+  value: number;
+  prevValue: number | null;
+  pricePerMeter: number;
+  isActivePromo: boolean;
+}
+
+declare interface IProperty {
+  id: number;
+  house_id: number;
+  houseName: string;
+  isHouseArchive: boolean;
+  projectName: string;
+  number: string;
+  rooms_amount: number;
+  floor: number;
+  sectionName: string;
+  layout_type: string;
+  without_layout: boolean;
+  studio: boolean;
+  free_layout: boolean;
+  euro_layout: boolean;
+  propertyType: string;
+  typePurpose: "apartment" | "office" | "parking" | "residential";
+  has_related_preset_with_layout: boolean;
+  facing: string;
+  externalId: string | null;
+  area: IPropertyArea;
+  show_calculate_mortgage: boolean;
+  show_register: boolean;
+  disable_booking_button: boolean;
+  price: IPropertyPrice;
+  status: "AVAILABLE" | "SOLD" | "BOOKED" | "UNAVAILABLE";
+  customStatusId: number;
+  specialOffersIds: number[] | null;
+  specialOffers: any | null;
+  responsibleName: string | null;
+  responsibleId: number | null;
+  crmContactName: string | null;
+  crmContactId: number | null;
+  countHistoryRecord: number | null;
+  countDeals: number | null;
+  positionOnFloor: number;
+  layoutCode: string;
+  bookedUntilDate: string | null;
+  bookedUntilTime: string | null;
+}
+
+declare interface IMaxPlan {
+  id: number;
+  lightSideAngle: number;
+  isLightSideVisible: boolean;
+  areas: IMaxPlanArea[];
+  images: IMaxPlanImages;
+  originalLayoutHeight: number;
+  originalLayoutWidth: number;
+  number: number;
+  sectionNumber: number;
+}
+
+declare interface IMaxPlanArea {
+  coordinates: IMaxPlanCoordinate[];
+  propertyId: number;
+}
+
+declare interface IMaxPlanCoordinate {
+  x: number;
+  y: number;
+}
+
+declare interface IMaxPlanImages {
+  source: string;
+  large: string;
+  big: string;
+  preview: string;
+}
+
+// FOR HOUSES
+
+declare interface IHouse {
+  id: number;
+  projectId: number;
+  projectName: string;
+  title: string;
+  type: "RESIDENTIAL" | string;
+  isArchive: boolean;
+  street: string;
+  number: string;
+  facing: string;
+  material: string | null;
+  buildingState: "UNFINISHED" | "BUILT" | "HAND-OVER";
+  developmentStartQuarter: IHouseQuarter | null;
+  developmentEndQuarter: IHouseQuarter | null;
+  salesStart: IHouseMonthYear | null;
+  salesEnd: IHouseMonthYear | null;
+  image: string;
+  fullImage: string;
+  minFloor: number;
+  maxFloor: number;
+  currency: IHouseCurrency;
+  address: IHouseAddress;
+  minPrice: number;
+  minPriceArea: number;
+  propertyCount: string;
+  countFilteredProperty: string;
+  houseBadges: any[];
+  propertyTypes: number[];
+  roomsFilter: string[];
+  roomsWithEuroFilter: string[];
+  landNumber: string | null;
+  hasAvailableProperties: boolean;
+  hasBookedProperties: boolean;
+  contractAddress: string | null;
+  externalId: string;
+  showroom: boolean;
+  commissioningDate: string | null;
+}
+
+declare interface IHouseQuarter {
+  year: string;
+  quarter: number;
+}
+
+declare interface IHouseMonthYear {
+  month: string;
+  year: string;
+}
+
+declare interface IHouseCurrency {
+  id: number;
+  code: string;
+  class: string;
+  symbol: string;
+  title: string;
+  shortName: string;
+  unicodeSymbol: string;
+}
+
+declare interface IHouseAddress {
+  full: string;
+  locality: string | null;
+  district: string | null;
+  region: string | null;
+  street: string;
+  number: string;
+}
+
+declare interface IObjectData {
+  id: number;
+  project_house_id: number;
+  api_url: string;
+  coordinates: string;
+  image_path: string;
+  color: string;
+  parent_id: null | number;
+}
+
+declare interface IFloor {
+  id: number;
+  lightSideAngle: number;
+  isLightSideVisible: boolean;
+  images: {
+    source: string;
+    large: string;
+    big: string;
+    preview: string;
+  };
+  originalLayoutHeight: number;
+  originalLayoutWidth: number;
+  areas: [
+    {
+      propertyId: number;
+      coordinates: {
+        x: number;
+        y: number;
+      }[];
+    },
+  ];
+  number: number;
+  sectionNumber: number;
+}
+
+declare interface ICell {
+  propertyId: number | null;
+}
+
+declare interface ISection {
+  number: number;
+  name: string;
+  cells: ICell[];
+}
+
+declare interface IFloor {
+  number: number;
+  sections: ISection[];
+}
+
+declare interface ISectionName {
+  name: string;
+  number: number;
+}
+
+declare interface IBoard {
+  floors: IFloor[];
+  sectionNames: ISectionName[];
 }

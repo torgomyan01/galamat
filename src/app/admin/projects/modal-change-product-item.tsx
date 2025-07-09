@@ -6,7 +6,9 @@ import {
   ModalHeader,
 } from "@heroui/modal";
 import {
+  addToast,
   Button,
+  NumberInput,
   Select,
   SelectItem,
   SharedSelection,
@@ -17,6 +19,8 @@ import { ActionGetProjectInfo } from "@/app/actions/admin/projects/get-project-i
 import { Spinner } from "@heroui/spinner";
 import { ActionUpdateProjectInfo } from "@/app/actions/admin/projects/change-project-info";
 import { ProjectDataPositions } from "@/utils/consts";
+import { Input } from "@heroui/input";
+import { ActionUpdateProjectInfoAllData } from "@/app/actions/admin/projects/change-project-info-all-data";
 
 interface IThisProps {
   status: boolean;
@@ -30,10 +34,18 @@ function ModalChangeProductItem({ status, onClose, project }: IThisProps) {
   const [loadingChangeHide, setLoadingChangeHide] = useState(false);
   const [loadingSelectPosition, setLoadingSelectPosition] = useState(false);
 
+  const [linkProject, setLinkProject] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
+  const [minPrice, setMinPrice] = useState<number>(1000000);
+
   useEffect(() => {
     ActionGetProjectInfo(project.id).then(({ data, status }) => {
       if (status) {
-        setProjectData(data as IProjectData);
+        const _Data = data as IProjectData;
+        setProjectData(_Data);
+        setLinkProject(_Data.page_url);
+        setAddress(_Data.address);
+        setMinPrice(_Data.min_price);
       }
     });
   }, []);
@@ -60,11 +72,32 @@ function ModalChangeProductItem({ status, onClose, project }: IThisProps) {
     }
   }
 
+  const [loading, setLoading] = useState(false);
+  function saveInfo() {
+    if (projectData) {
+      setLoading(true);
+      ActionUpdateProjectInfoAllData(projectData.id, {
+        page_url: linkProject,
+        address,
+        min_price: minPrice,
+      })
+        .then((res) => {
+          if (res.status) {
+            addToast({
+              title: "Информация успешно сохранена",
+              color: "success",
+            });
+          }
+        })
+        .finally(() => setLoading(false));
+    }
+  }
+
   return (
-    <Modal isOpen={status} onOpenChange={onClose}>
+    <Modal size="lg" isOpen={status} onOpenChange={onClose}>
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1">
-          Изменить {project.projectName} ID: {project.projectId}
+          Изменить {project.title} ID: {project.id}
         </ModalHeader>
         <ModalBody>
           {projectData ? (
@@ -81,6 +114,33 @@ function ModalChangeProductItem({ status, onClose, project }: IThisProps) {
                     <SelectItem key={status.value}>{status.label}</SelectItem>
                   ))}
                 </Select>
+              </div>
+              <div className="mb-4">
+                <Input
+                  label="Ссылка страницы "
+                  placeholder="Напишите ссылку на страницу, на которую вы хотите быть перенаправлены."
+                  value={linkProject}
+                  onChange={(e) => setLinkProject(e.target.value)}
+                  type="text"
+                />
+              </div>
+              <div className="mb-4">
+                <Input
+                  label="Адрес проекта"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  type="text"
+                />
+              </div>
+              <div className="mb-4">
+                <NumberInput
+                  className="w-full"
+                  value={minPrice}
+                  minLength={0}
+                  onValueChange={(value) => setMinPrice(value)}
+                  label="Цена от"
+                  placeholder="Введите минимальную цену, с которой начнутся продажи."
+                />
               </div>
 
               <div>
@@ -104,8 +164,8 @@ function ModalChangeProductItem({ status, onClose, project }: IThisProps) {
           )}
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onPress={onClose}>
-            Закрыть
+          <Button color="primary" onPress={saveInfo} isLoading={loading}>
+            Сохранить
           </Button>
         </ModalFooter>
       </ModalContent>

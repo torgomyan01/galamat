@@ -18,6 +18,9 @@ export async function ActionGetProjectInfo(projectId: number) {
           project_id: projectId,
           hide: false,
           position: "",
+          page_url: "",
+          address: "",
+          min_price: 0,
         },
       });
 

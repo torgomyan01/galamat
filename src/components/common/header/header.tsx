@@ -28,7 +28,7 @@ function Header({ info = true }: IThisProps) {
   const menuItems = [
     {
       name: $t("real_estate"),
-      url: SITE_URL.HOME,
+      url: SITE_URL.REAL_ESTATE,
     },
     {
       name: $t("projects"),

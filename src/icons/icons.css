@@ -76,6 +76,34 @@
     content: "\f070"
 }
 
+.fa-list:before {
+    content: "\f03a"
+}
+
+.fa-map:before {
+    content: "\f279"
+}
+
+.fa-arrow-right:before {
+    content: "\f061"
+}
+
+.fa-rotate-left:before {
+    content: "\f2ea"
+}
+
+.fa-arrow-left:before {
+    content: "\f060"
+}
+
+.fa-pen:before {
+    content: "\f304"
+}
+
+.fa-filter-list:before {
+    content: "\e17c"
+}
+
 
 
 /*---------------------------------*/

@@ -10,7 +10,6 @@ export async function ActionUpdateProjectInfo(
   value: string | number | boolean,
 ) {
   try {
-    // Դինամիկ օբյեկտ ստեղծում՝ ըստ key-ի
     const updateData: Record<string, any> = {
       [key]: value,
     };

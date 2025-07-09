@@ -1,18 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IInterface {
-  modalQuickView: number;
-  modalKP: boolean;
-  modalLogin: boolean;
-  modalQueryRegister: boolean;
+  modalSelectedHouse: IHouse | null;
+  objectInfo: IObjectData[] | null;
 }
 
 // Սկզբնական state
 const initialState: IInterface = {
-  modalQuickView: 0,
-  modalKP: false,
-  modalLogin: false,
-  modalQueryRegister: false,
+  modalSelectedHouse: null,
+  objectInfo: null,
 };
 
 // Ստեղծել slice
@@ -20,26 +16,15 @@ export const modalsSite = createSlice({
   name: "modals",
   initialState,
   reducers: {
-    serModalQuickView: (state, action: PayloadAction<number>) => {
-      state.modalQuickView = action.payload;
+    setHouse: (state, action: PayloadAction<IHouse | null>) => {
+      state.modalSelectedHouse = action.payload;
     },
-    serModalKP: (state, action: PayloadAction<boolean>) => {
-      state.modalKP = action.payload;
-    },
-    serModalLogin: (state, action: PayloadAction<boolean>) => {
-      state.modalLogin = action.payload;
-    },
-    serModalQueryRegister: (state, action: PayloadAction<boolean>) => {
-      state.modalQueryRegister = action.payload;
+    setObjectInfo: (state, action: PayloadAction<IObjectData[] | null>) => {
+      state.objectInfo = action.payload;
     },
   },
 });
 
 // Export actions and reducer
-export const {
-  serModalQuickView,
-  serModalKP,
-  serModalLogin,
-  serModalQueryRegister,
-} = modalsSite.actions;
+export const { setHouse, setObjectInfo } = modalsSite.actions;
 export default modalsSite.reducer;

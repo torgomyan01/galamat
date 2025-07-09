@@ -15,6 +15,7 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  HeroUIProvider,
   ToastProvider,
 } from "@heroui/react";
 
@@ -127,27 +128,29 @@ function AdminMainTemplate({
   return (
     <>
       {success ? (
-        <AppProvider
-          navigation={NAVIGATION}
-          router={routerObj}
-          branding={{
-            logo: "",
-            title: "GALAMAT Admin",
-            homeUrl: `/${SITE_URL.ADMIN}`,
-          }}
-        >
-          <DashboardLayout
-            slots={{
-              toolbarAccount: ToolbarActionsSearch,
+        <HeroUIProvider>
+          <AppProvider
+            navigation={NAVIGATION}
+            router={routerObj}
+            branding={{
+              logo: "",
+              title: "GALAMAT Admin",
+              homeUrl: `/${SITE_URL.ADMIN}`,
             }}
           >
-            <PageContainer className="pt-6">
-              <ToastProvider />
+            <DashboardLayout
+              slots={{
+                toolbarAccount: ToolbarActionsSearch,
+              }}
+            >
+              <PageContainer className="pt-6">
+                <ToastProvider />
 
-              {children}
-            </PageContainer>
-          </DashboardLayout>
-        </AppProvider>
+                {children}
+              </PageContainer>
+            </DashboardLayout>
+          </AppProvider>
+        </HeroUIProvider>
       ) : null}
     </>
   );

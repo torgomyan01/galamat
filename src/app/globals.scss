@@ -506,3 +506,11 @@ select {
     display: none;
   }
 }
+
+
+
+.bottom-scroll-hidden{
+  &::-webkit-scrollbar{
+    height: 0;
+  }
+}

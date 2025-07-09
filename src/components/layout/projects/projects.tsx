@@ -7,6 +7,7 @@ import { Button } from "@heroui/react";
 import clsx from "clsx";
 import { useTranslate } from "@/hooks/useTranslate";
 import "../home/filter-wrapper/filter-wrapper.scss";
+import { mergeComplexesWithProjects } from "@/utils/helpers";
 
 interface IThisProps {
   houses: IProjectStage[];
@@ -16,17 +17,10 @@ interface IThisProps {
 function Projects({ houses, housesDataAdmin }: IThisProps) {
   const $t = useTranslate();
 
-  const filteredResult = houses.filter((house) => {
-    const adminData = housesDataAdmin.find((i) => house.id === i.project_id);
-
-    if (adminData) {
-      if (!adminData.hide) {
-        return house;
-      }
-    } else {
-      return house;
-    }
-  });
+  const mergeProjectProfitDb: IProjectMerged[] = mergeComplexesWithProjects(
+    houses,
+    housesDataAdmin,
+  ).filter((project) => !project.hide);
 
   const [countSplits, setCountSplits] = useState<number>(6);
 
@@ -34,7 +28,7 @@ function Projects({ houses, housesDataAdmin }: IThisProps) {
     setCountSplits(countSplits + 6);
   }
 
-  const result = filteredResult.slice(0, countSplits);
+  const result = mergeProjectProfitDb.slice(0, countSplits);
 
   return (
     <MainTemplate>
@@ -49,12 +43,8 @@ function Projects({ houses, housesDataAdmin }: IThisProps) {
         >
           {result?.length ? (
             <>
-              {result.map((project: IProjectStage) => (
-                <ProductItem
-                  key={`complex-${project.id}`}
-                  project={project}
-                  housesDataAdmin={housesDataAdmin}
-                />
+              {result.map((project: IProjectMerged) => (
+                <ProductItem key={`complex-${project.id}`} project={project} />
               ))}
             </>
           ) : (

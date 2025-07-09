@@ -1,96 +1,64 @@
 "use client";
 
-import { Button, Select, SelectItem, SharedSelection } from "@heroui/react";
+import { Button, Select, SelectItem } from "@heroui/react";
 import SliderInput from "@/components/common/slider-input/slider-input";
 import clsx from "clsx";
-import { useState } from "react";
-import { all } from "@/utils/consts";
 import { useTranslate } from "@/hooks/useTranslate";
+import { RandomKey } from "@/utils/helpers";
+import { useEffect, useState } from "react";
+import { floorSelectItems } from "@/utils/consts";
 
 interface IThisProps {
   className?: string;
-  houses: IProjectStage[];
-  selectRegion: (key: string) => void;
-  selectProject: (key: string) => void;
-  selectFloor: (key: number | string) => void;
-  onSelectRoom: (roomArray: string[]) => void;
-  onSelectMinMax: (prices: number[]) => void;
-  result: number;
-  onClose: () => void;
+  projects: IProjectMerged[];
+  onClose?: () => void;
 }
 
-function HorizontalFilter({
-  className,
-  houses,
-  selectRegion,
-  selectProject,
-  selectFloor,
-  onSelectRoom,
-  onSelectMinMax,
-  result,
-  onClose,
-}: IThisProps) {
+interface IParams {
+  projectId: number;
+  rooms: number[];
+  "price[min]": number;
+  "price[max]": number;
+  minFloor: number;
+  "area[min]": number;
+  "area[max]": number;
+}
+
+function HorizontalFilter({ className, projects, onClose }: IThisProps) {
   const $t = useTranslate();
-  const findRegions = houses
-    .filter((house: IProjectStage) => house.address.region)
-    .map((house: IProjectStage) => house.address.region);
 
-  const [regions, setRegions] = useState<string>(all);
-  const [project, setProject] = useState<string>(all);
-  const [floor, setFloor] = useState<string>(all);
+  const [filterParams, setFilterParams] = useState<IParams>({
+    projectId: 0,
+    rooms: [],
+    "price[min]": 0,
+    "price[max]": 50000000,
+    minFloor: 1,
+    "area[min]": 0,
+    "area[max]": 400,
+  });
 
-  const getProjects = [...new Set(houses.map((house) => house.projectName))];
-  const getFloors = [...new Set(houses.map((house) => house.maxFloor))].sort(
-    (a, b) => a - b,
-  );
+  useEffect(() => {
+    window.history.pushState({}, "", `?filter=${JSON.stringify(filterParams)}`);
+  }, [filterParams]);
 
-  function _selectRegion(keys: SharedSelection) {
-    if (keys.currentKey) {
-      setRegions(keys.currentKey);
-      selectRegion(keys.currentKey);
-    }
+  function ChangeParams(key: string, value: string | number) {
+    const _filterParams: any = { ...filterParams };
+
+    _filterParams[key] = value;
+
+    setFilterParams(_filterParams);
   }
 
-  function _selectProject(keys: SharedSelection) {
-    if (keys.currentKey) {
-      setProject(keys.currentKey);
-      selectProject(keys.currentKey);
-    }
-  }
+  function toggleNumber(num: number) {
+    const _filterParams = { ...filterParams };
 
-  function _selectFloor(keys: SharedSelection) {
-    if (keys.currentKey) {
-      setFloor(keys.currentKey);
-      selectFloor(+keys.currentKey);
-    }
-  }
-
-  function ClearFilter() {
-    setRegions(all);
-    selectRegion(all);
-
-    setProject(all);
-    selectProject(all);
-
-    setFloor(all);
-    selectFloor(all);
-
-    setSelectedRoom([]);
-  }
-
-  const rooms = ["one", "two", "three", "more_than_three"];
-  const [selectedRoom, setSelectedRoom] = useState<string[]>([]);
-
-  function selectRoom(room: string) {
-    if (selectedRoom.includes(room)) {
-      const removeData = selectedRoom.filter((i) => i !== room);
-      setSelectedRoom(removeData);
-      onSelectRoom(removeData);
+    const index = _filterParams.rooms.indexOf(num);
+    if (index === -1) {
+      _filterParams.rooms.push(num);
     } else {
-      const data = [...selectedRoom, room];
-      setSelectedRoom(data);
-      onSelectRoom(data);
+      _filterParams.rooms.splice(index, 1);
     }
+    setFilterParams(_filterParams);
   }
 
   let priceDebounceTimer: NodeJS.Timeout;
@@ -101,8 +69,28 @@ function HorizontalFilter({
     }
 
     priceDebounceTimer = setTimeout(() => {
-      onSelectMinMax(res);
-    }, 1000);
+      const _filterParams: any = { ...filterParams };
+
+      _filterParams["price[min]"] = res[0];
+      _filterParams["price[max]"] = res[1];
+
+      setFilterParams(_filterParams);
+    }, 500);
+  }
+
+  function changeMinMaxPlace(res: number[]) {
+    if (priceDebounceTimer) {
+      clearTimeout(priceDebounceTimer);
+    }
+
+    priceDebounceTimer = setTimeout(() => {
+      const _filterParams: any = { ...filterParams };
+
+      _filterParams["area[min]"] = res[0];
+      _filterParams["area[max]"] = res[1];
+
+      setFilterParams(_filterParams);
+    }, 500);
   }
 
   return (
@@ -113,47 +101,59 @@ function HorizontalFilter({
       </div>
 
       <div className="top-info gap-1">
-        <div className="select-info">
-          <span>{$t("district")}</span>
+        {/*<div className="select-info">*/}
+        {/*  <span>{$t("district")}</span>*/}
 
-          <Select
-            selectedKeys={[`${regions}`]}
-            className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white"
-            variant="bordered"
-            onSelectionChange={_selectRegion}
-          >
-            {[...findRegions, all]?.map((region) => (
-              <SelectItem key={region}>{region}</SelectItem>
-            ))}
-          </Select>
-        </div>
+        {/*  <Select*/}
+        {/*    // selectedKeys={[`${regions}`]}*/}
+        {/*    className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white"*/}
+        {/*    variant="bordered"*/}
+        {/*    // onSelectionChange={_selectRegion}*/}
+        {/*  >*/}
+        {/*    /!*{[...findRegions, all]?.map((region) => (*!/*/}
+        {/*    /!*  <SelectItem key={region}>{region}</SelectItem>*!/*/}
+        {/*    /!*))}*!/*/}
+        {/*    <SelectItem key="hello">hello</SelectItem>*/}
+        {/*  </Select>*/}
+        {/*</div>*/}
         <div className="select-info">
           <span>{$t("residential_complex")}</span>
           <Select
-            selectedKeys={[project]}
-            className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white"
+            placeholder="Выбрайте проект"
+            selectedKeys={[`${filterParams.projectId}`]}
+            className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none"
             variant="bordered"
-            onSelectionChange={_selectProject}
+            onSelectionChange={(e) =>
+              ChangeParams("projectId", e.currentKey ? +e.currentKey : 0)
+            }
           >
-            {[...getProjects, all]?.map((projectName) => (
-              <SelectItem key={projectName}>{projectName}</SelectItem>
+            {projects.map((projectName: IProjectMerged) => (
+              <SelectItem key={`${projectName.project_id}`}>
+                {projectName.title}
+              </SelectItem>
             ))}
           </Select>
         </div>
         <div className="select-info">
           <span>{$t("floor__")}</span>
           <Select
-            selectedKeys={[`${floor}`]}
-            className="md:w-[80px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white"
+            placeholder="Выбрайте этаж"
+            selectedKeys={[filterParams.minFloor]}
+            className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none"
             variant="bordered"
-            onSelectionChange={_selectFloor}
+            onSelectionChange={(e) =>
+              ChangeParams("minFloor", e.currentKey || "0")
+            }
           >
-            {[...getFloors, all]?.map((floor) => (
-              <SelectItem key={`${floor}`}>{floor}</SelectItem>
+            {floorSelectItems.map((_, i) => (
+              <SelectItem key={`${i + 1}`}>Этаж {i + 1}</SelectItem>
             ))}
           </Select>
         </div>
-        <span className="reset hidden md:block" onClick={ClearFilter}>
+        <span
+          className="reset hidden md:block"
+          // onClick={ClearFilter}
+        >
           {$t("reset__")}
         </span>
       </div>
@@ -161,13 +161,15 @@ function HorizontalFilter({
         <div className="room">
           <span>{$t("com__")}</span>
           <div className="items">
-            {rooms.map((room, index) => (
+            {Array.from({ length: 4 }).map((room, index) => (
               <span
-                key={room}
+                key={RandomKey()}
                 className={clsx({
-                  "!bg-blue !text-white": selectedRoom.includes(room),
+                  "!bg-blue !text-white": filterParams.rooms.includes(
+                    index + 1,
+                  ),
                 })}
-                onClick={() => selectRoom(room)}
+                onClick={() => toggleNumber(index + 1)}
               >
                 {index + 1}
               </span>
@@ -188,9 +190,10 @@ function HorizontalFilter({
           <SliderInput
             labelName={$t("area_m")}
             min={10}
-            max={150}
+            max={400}
             step={0.5}
             className="w-full md:w-[200px]"
+            onChangeInput={changeMinMaxPlace}
           />
         </div>
         <div className="w-full flex-jsb-c mt-6 flex md:hidden gap-4">
@@ -199,9 +202,12 @@ function HorizontalFilter({
             variant="flat"
             onPress={onClose}
           >
-            {result} {$t("projects__")}
+            {$t("projects__")}
           </Button>
-          <span className="reset" onClick={ClearFilter}>
+          <span
+            className="reset"
+            // onClick={ClearFilter}
+          >
             {$t("reset__")}
           </span>
         </div>

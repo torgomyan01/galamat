@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export const servLink = "https://pb14286.profitbase.ru/api/v4/json";
 
 export const filesLink = "https://s.galamat.kz";
@@ -18,6 +16,8 @@ export const SITE_URL = {
   FAQ: "/faq",
   CONTACT: "/contact",
   PROJECTS: "/projects",
+  REAL_ESTATE: "/real-estate",
+  PROJECT: "/project",
   ORLEU_PROJECT: "/orleu-project",
   ORLEU_PROJECT_PANORAMA: "/orleu-project/360",
   ADMIN: "admin",
@@ -27,6 +27,7 @@ export const SITE_URL = {
   ADMIN_PAGES: "admin/pages",
   ADMIN_PAGES_HOME: "home",
   ADMIN_PROJECTS: "admin/projects",
+  ADMIN_PROJECTS_HOUSES: "admin/projects/houses",
 };
 
 export const localStorageKeys = {
@@ -39,6 +40,8 @@ export const localStorageKeys = {
 
 export const all = "Все";
 
+export const floorSelectItems = Array.from({ length: 30 });
+
 export const ProjectDataPositions = [
   { value: "business", label: "Бизнес", color: "#DB1D31" },
   { value: "business-plus", label: "Бизнес +", color: "#DB1D31" },
@@ -46,15 +49,6 @@ export const ProjectDataPositions = [
   { value: "comfort", label: "Комфорт", color: "#156E33" },
   { value: "standard", label: "Стандарт", color: "#7B7B7B" },
 ] as const;
-
-export const StartGenerateNewToken = async () => {
-  return axios.post(`${servLink}/authentication`, {
-    type: "api-app",
-    credentials: {
-      pb_api_key: "app-6839b0cd3f5f0",
-    },
-  });
-};
 
 export const formatPrice = (value: number) => {
   if (value >= 1_000_000) {

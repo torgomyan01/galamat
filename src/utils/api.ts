@@ -10,8 +10,8 @@ export const GetToken = () => {
   });
 };
 
-export const GetHouses = (params: object) => {
-  return instance.get("/house", {
+export const GetProjects = (params: object) => {
+  return instance.get("/projects", {
     params,
   });
 };

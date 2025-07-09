@@ -11,6 +11,7 @@ export async function ActionGetProjectsInfo() {
     return {
       status: 1,
       data: result,
+      error: "",
     };
   } catch (error) {
     return {

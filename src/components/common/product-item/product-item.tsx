@@ -1,91 +1,45 @@
 import Image from "next/image";
-import { formatPrice } from "@/utils/consts";
-import moment from "moment";
-import clsx from "clsx";
 import PrintStatus from "@/components/common/product-item/print-status";
+import Link from "next/link";
+import { formatPrice } from "@/utils/consts";
 
 interface IThisProps {
-  project: IProjectStage;
-  housesDataAdmin?: IProjectData[];
+  project: IProjectMerged;
 }
 
-function ProductItem({ project, housesDataAdmin }: IThisProps) {
-  const getInfoOtherProject = housesDataAdmin?.find(
-    (house) => house.project_id === project.id,
-  );
-
-  const count = parseInt(project.countFilteredProperty || "0", 10);
-  const countText = (
-    <p>
-      {count} квартир{" "}
-      <span>
-        {count === 1 ? "а" : count > 1 && count < 5 ? "ы" : ""} в продаже
-      </span>
-    </p>
-  );
-
-  const printData = project.commissioningDate
-    ? moment(project.commissioningDate).format("DD.MM.YYYY")
-    : "";
-
+function ProductItem({ project }: IThisProps) {
   return (
-    <div className="product-item">
-      <div className="texts-wrap">
-        <a href="#" className="name">
-          {project.projectName}
-        </a>
-        <span className="text">от {formatPrice(project.minPrice)}</span>
-        <span className="grey h-[40px]">
-          {project.address.street || "Место пока не написано"}
-        </span>
-        <div className="hide-info">
-          {countText}
-          <div className="links">
-            <span
-              className={clsx({
-                active: project.roomsFilter.includes("one"),
-              })}
-            >
-              1
-            </span>
-            <span
-              className={clsx({
-                active: project.roomsFilter.includes("two"),
-              })}
-            >
-              2
-            </span>
-            <span
-              className={clsx({
-                active: project.roomsFilter.includes("three"),
-              })}
-            >
-              3
-            </span>
-            <span
-              className={clsx({
-                active: project.roomsFilter.includes("more_than_three"),
-              })}
-            >
-              4 и более
-            </span>
-          </div>
-          <span className="date">Ближайшая сдача {printData}</span>
-        </div>
+    <Link
+      href={project?.page_url || "#"}
+      className="w-full bg-white rounded-[16px] p-[15px] cursor-pointer group flex-jsb-c flex-col"
+    >
+      <div className="w-full p-[15px]">
+        <h2 className="text-[22px] md:text-[28px] lg:text-[35px] font-medium">
+          {project.title}
+        </h2>
+        <h3 className="text-[18px] md:text-[23px] text-[#353535]">
+          {project?.address}
+        </h3>
+        <h3 className="text-[18px] md:text-[23px] text-[#353535] opacity-40">
+          от {formatPrice(project?.min_price || 0)}
+        </h3>
       </div>
-      <div className="img-wrap">
-        {getInfoOtherProject ? (
-          <PrintStatus position={getInfoOtherProject.position} />
+      <div className="w-full h-[250px] md:h-[383px] bg-[#E0E0E0] rounded-[7px] overflow-hidden flex-jc-c relative">
+        {project.position ? (
+          <PrintStatus
+            position={project.position}
+            className="absolute top-4 left-4 z-10 text-white px-4 rounded-[4px]"
+          />
         ) : null}
         <Image
-          src={project.fullImage || "/img/def-proj.png"}
-          className="!rounded-[8px] object-[0_50%]"
-          alt="Название Жк"
+          src={project.images[0]?.url || "/img/def-proj.svg"}
+          className="!rounded-[8px] w-full h-full object-cover object-center transition transform group-hover:scale-[1.05]"
+          alt={project.title}
           width={700}
           height={500}
         />
       </div>
-    </div>
+    </Link>
   );
 }
 

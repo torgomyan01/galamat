@@ -1,8 +1,8 @@
 // lib/getHouses.ts
 import { cache } from "./cache";
-import { GetHouses } from "@/utils/api";
+import { GetProjects } from "@/utils/api";
 
-const CACHE_KEY = "houses";
+const CACHE_KEY = "projects";
 
 export async function fetchHouses() {
   const cached = cache.get(CACHE_KEY);
@@ -11,13 +11,13 @@ export async function fetchHouses() {
   }
 
   try {
-    const res = await GetHouses({});
-    // կամ քո ցանկալի params-ները
-    const data = [...res.data.data].filter(
-      (houe: IProjectStage) => houe.type === "RESIDENTIAL",
+    const res = await GetProjects({});
+    const filteredProjects = res.data.filter(
+      (project: IProjectStage) => project.archiveState === "NOT_ARCHIVED",
     );
-    cache.set(CACHE_KEY, data); // պահում ենք cache-ում
-    return data;
+
+    cache.set(CACHE_KEY, filteredProjects);
+    return filteredProjects;
   } catch (e) {
     console.error("Error fetching houses:", e);
     return [];
