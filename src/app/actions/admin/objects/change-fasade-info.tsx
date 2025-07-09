@@ -20,7 +20,6 @@ export async function ActionUpdateFasadeInfo(
       },
       data: updateData,
     });
-
     return {
       status: 1,
       data: result,
