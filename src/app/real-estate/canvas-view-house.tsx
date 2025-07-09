@@ -60,6 +60,13 @@ function CanvasViewHouse({ objectInfo, house, onClose }: IThisProps) {
 
   const [activeHouse, setActiveHouse] = useState<IObjectData | null>(null);
 
+  const [chess, setChess] = useState<boolean>(false);
+
+  function CloseModal() {
+    setChess(false);
+    onClose();
+  }
+
   useEffect(() => {
     if (objectInfo.length) {
       setActiveHouse(objectInfo[0]);
@@ -353,8 +360,6 @@ function CanvasViewHouse({ objectInfo, house, onClose }: IThisProps) {
     redraw();
   }, [polygons, currentPolygon, imageLoaded, scale, offset, hoveredPolygon]);
 
-  const [chess, setChess] = useState<boolean>(false);
-
   return (
     <>
       <div
@@ -366,7 +371,7 @@ function CanvasViewHouse({ objectInfo, house, onClose }: IThisProps) {
             hidden: !chess,
           })}
         >
-          <ChessView activeHouse={activeHouse} />
+          {!chess && <ChessView activeHouse={activeHouse} />}
         </div>
 
         <div
@@ -478,7 +483,7 @@ function CanvasViewHouse({ objectInfo, house, onClose }: IThisProps) {
 
         <i
           className="fa-light fa-xmark absolute top-6 right-6 text-[30px] text-black/60 hover:text-black cursor-pointer z-[1000000000]"
-          onClick={onClose}
+          onClick={CloseModal}
         />
       </div>
 
