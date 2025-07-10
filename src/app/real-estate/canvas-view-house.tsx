@@ -371,7 +371,7 @@ function CanvasViewHouse({ objectInfo, house, onClose }: IThisProps) {
             hidden: !chess,
           })}
         >
-          {!chess && <ChessView activeHouse={activeHouse} />}
+          {chess && <ChessView activeHouse={activeHouse} />}
         </div>
 
         <div

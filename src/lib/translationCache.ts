@@ -1,3 +1,5 @@
+"use server";
+
 import NodeCache from "node-cache";
 import { GetLanguage } from "@/app/actions/admin/language/get-languages";
 const cache = new NodeCache({ stdTTL: 300 }); // պահի 5 րոպե

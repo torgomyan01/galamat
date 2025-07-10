@@ -4,11 +4,12 @@ import { HeroUIProvider, ToastProvider } from "@heroui/react";
 import React, { useEffect, useState } from "react";
 import Header from "@/components/common/header/header";
 import Footer from "@/components/common/footer/footer";
-import { getTranslations } from "@/lib/translationCache";
 import { useDispatch, useSelector } from "react-redux";
 import { setLang, setWords } from "@/redux/translate";
 import { localStorageKeys } from "@/utils/consts";
 import Whatsapp from "@/components/common/whatsapp/whatsapp";
+import Preloader from "@/components/common/preloader/preloader";
+import { getTranslations } from "@/lib/translationCache";
 
 interface IThisProps {
   children?: React.ReactNode;
@@ -46,8 +47,9 @@ function MainTemplate({
 
   function startTranslate(lang: string) {
     dispatch(setLang(lang));
-    getTranslations(lang).then((res) => {
-      dispatch(setWords(res));
+
+    getTranslations(lang).then((trans) => {
+      dispatch(setWords(trans));
 
       setTimeout(() => {
         setLoading(false);
@@ -71,15 +73,7 @@ function MainTemplate({
         </div>
       ) : (
         <>
-          {loading ? (
-            <div className="w-full h-[100dvh] flex-jc-c bg-white fixed top-0 left-0 px-[100px] z-[100000]">
-              <img
-                src="img/preloader.svg"
-                alt="preloader"
-                className="w-full max-w-[500px] h-auto "
-              />
-            </div>
-          ) : null}
+          {loading ? <Preloader /> : null}
 
           {children}
           {footer ? <Footer /> : null}
