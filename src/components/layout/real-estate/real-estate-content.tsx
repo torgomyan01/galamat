@@ -74,7 +74,6 @@ function RealEstateContent({ projects }: IThisProps) {
             projects={projects}
             onClose={() => setMobileFilter(false)}
           />
-
           <div className="tab2-wrap relative">
             <div className="tab2 overflow-x-scroll bottom-scroll-hidden">
               <div className="tabs2">
