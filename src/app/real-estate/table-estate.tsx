@@ -14,13 +14,17 @@ import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-p
 import { Spinner } from "@heroui/spinner";
 import { formatRub } from "@/utils/helpers";
 import StatusTable from "@/app/real-estate/status-table";
-import { useSearchParams } from "next/navigation";
+import { useSelector } from "react-redux";
 
 interface IThisProps {
   projectsIds: number[];
 }
 
 function TableEstate({ projectsIds }: IThisProps) {
+  const filterParams = useSelector(
+    (state: IFilterParamsState) => state.filterParams.params,
+  );
+
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(20);
 
@@ -36,23 +40,20 @@ function TableEstate({ projectsIds }: IThisProps) {
     return property.slice(start, end);
   }, [page, property, rowsPerPage]);
 
-  const searchParams = useSearchParams();
-  const filter = searchParams.get("filter");
-
   useEffect(() => {
     setLoading(true);
     ActionGetProjectsProperty("/property", {
       isArchive: false,
       status: ["AVAILABLE"],
       projectIds: projectsIds,
-      ...JSON.parse(filter || "{}"),
+      ...filterParams,
     })
       .then((result) => {
         const data: IProperty[] = result.data;
         setProperty(data);
       })
       .finally(() => setLoading(false));
-  }, [filter]);
+  }, [filterParams]);
 
   return (
     <Table

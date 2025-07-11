@@ -15,6 +15,7 @@ export async function GetLanguage(parent_id: string) {
     return {
       status: 1,
       data: result || [],
+      error: "",
     };
   } catch (error) {
     return {

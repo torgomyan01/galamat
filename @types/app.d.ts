@@ -13,6 +13,22 @@ declare interface IModalState {
   };
 }
 
+declare interface IParams {
+  projectId: number;
+  rooms: number[];
+  "price[min]": number;
+  "price[max]": number;
+  minFloor: number;
+  "area[min]": number;
+  "area[max]": number;
+}
+
+declare interface IFilterParamsState {
+  filterParams: {
+    params: IParams;
+  };
+}
+
 interface Description {
   title: string | null;
   body: string | null;

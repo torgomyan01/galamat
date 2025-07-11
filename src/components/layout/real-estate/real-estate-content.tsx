@@ -10,7 +10,6 @@ import IconPlans from "@/components/common/icons/icon-plans";
 import clsx from "clsx";
 import TableEstate from "@/app/real-estate/table-estate";
 import RealEstatePlans from "@/app/real-estate/real-estate-plans";
-import { PhotoProvider } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 import Houses from "@/app/real-estate/houses";
 import Facade from "@/app/real-estate/facade";
@@ -64,63 +63,53 @@ function RealEstateContent({ projects }: IThisProps) {
     dispatch(setObjectInfo(null));
   }
 
-  // const _sh = [
-  //   {
-  //     name: "Шахматка",
-  //     icon: <IconShakhmat />,
-  //     content: "Шахматка",
-  //   },
-  // ];
-
   const [mobileFilter, setMobileFilter] = useState<boolean>(false);
 
   return (
-    <PhotoProvider>
-      <MainTemplate>
-        <div className="filter-wrapper">
-          <div className="wrapper !pt-6">
-            <HorizontalFilter
-              className={mobileFilter ? "open" : ""}
-              projects={projects}
-              onClose={() => setMobileFilter(false)}
-            />
-
-            <div className="tab2-wrap relative">
-              <div className="tab2 overflow-x-scroll bottom-scroll-hidden">
-                <div className="tabs2">
-                  {tabItems.map((item, i) => (
-                    <button
-                      key={item.name}
-                      className={clsx("tab-button", {
-                        active: activeTab === i,
-                      })}
-                      onClick={() => setActiveTab(i)}
-                    >
-                      {item.icon}
-                      {item.name}
-                    </button>
-                  ))}
-                </div>
-                <i
-                  className="fa-light fa-filter-list text-[25px] absolute right-0 top-0 bg-[#e8eaef] pl-2 text-black/80"
-                  onClick={() => setMobileFilter(true)}
-                />
-              </div>
-            </div>
-
-            {tabItems[activeTab].content}
-          </div>
-        </div>
-
-        {objectInfo && modalSelectedHouse ? (
-          <CanvasViewHouse
-            house={modalSelectedHouse}
-            objectInfo={objectInfo}
-            onClose={closeModal}
+    <MainTemplate>
+      <div className="filter-wrapper">
+        <div className="wrapper !pt-6">
+          <HorizontalFilter
+            className={mobileFilter ? "open" : ""}
+            projects={projects}
+            onClose={() => setMobileFilter(false)}
           />
-        ) : null}
-      </MainTemplate>
-    </PhotoProvider>
+
+          <div className="tab2-wrap relative">
+            <div className="tab2 overflow-x-scroll bottom-scroll-hidden">
+              <div className="tabs2">
+                {tabItems.map((item, i) => (
+                  <button
+                    key={item.name}
+                    className={clsx("tab-button", {
+                      active: activeTab === i,
+                    })}
+                    onClick={() => setActiveTab(i)}
+                  >
+                    {item.icon}
+                    {item.name}
+                  </button>
+                ))}
+              </div>
+              <i
+                className="fa-light fa-filter-list text-[25px] absolute right-0 top-0 bg-[#e8eaef] pl-2 text-black/80 md:hidden "
+                onClick={() => setMobileFilter(true)}
+              />
+            </div>
+          </div>
+
+          {tabItems[activeTab].content}
+        </div>
+      </div>
+
+      {objectInfo && modalSelectedHouse ? (
+        <CanvasViewHouse
+          house={modalSelectedHouse}
+          objectInfo={objectInfo}
+          onClose={closeModal}
+        />
+      ) : null}
+    </MainTemplate>
   );
 }
 

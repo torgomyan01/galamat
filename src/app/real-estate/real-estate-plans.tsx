@@ -1,16 +1,17 @@
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
 import { Spinner } from "@heroui/spinner";
 import PlanItem from "@/app/real-estate/plan-item";
+import { useSelector } from "react-redux";
 
 interface IThisProps {
   projectsIds: number[];
 }
 
 function RealEstatePlans({ projectsIds }: IThisProps) {
-  const searchParams = useSearchParams();
-  const filter = searchParams.get("filter");
+  const filterParams = useSelector(
+    (state: IFilterParamsState) => state.filterParams.params,
+  );
 
   const [plans, setPlans] = useState<IPlan[] | null>(null);
   const [visibleCount, setVisibleCount] = useState(6);
@@ -21,13 +22,13 @@ function RealEstatePlans({ projectsIds }: IThisProps) {
       isArchive: false,
       status: ["AVAILABLE"],
       projectIds: projectsIds,
-      ...JSON.parse(filter || "{}"),
+      ...filterParams,
     }).then((result) => {
       const data: IPlan[] = result.data;
       setPlans(data);
       setVisibleCount(6); // reset when filter changes
     });
-  }, [filter]);
+  }, [filterParams]);
 
   let successLoadingNew = true;
   useEffect(() => {

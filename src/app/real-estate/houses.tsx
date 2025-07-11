@@ -2,13 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
-import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { formatKzt, getSalesStatus } from "@/utils/helpers";
 import { addToast, Divider } from "@heroui/react";
 import { Spinner } from "@heroui/spinner";
 import { ActionGetObjectInfo } from "@/app/actions/admin/objects/get-object-info";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setHouse, setObjectInfo } from "@/redux/modals";
 import { ActionGetObject } from "@/app/actions/admin/objects/get-objects";
 
@@ -18,8 +17,9 @@ interface IThisProps {
 
 function Houses({ projectsIds }: IThisProps) {
   const dispatch = useDispatch();
-  const searchParams = useSearchParams();
-  const filter = searchParams.get("filter");
+  const filterParams = useSelector(
+    (state: IFilterParamsState) => state.filterParams.params,
+  );
 
   const [houses, setHouses] = useState<IHouse[] | null>(null);
 
@@ -28,11 +28,11 @@ function Houses({ projectsIds }: IThisProps) {
       isArchive: false,
       status: ["AVAILABLE"],
       projectIds: projectsIds,
-      ...JSON.parse(filter || "{}"),
+      ...filterParams,
     }).then((result) => {
       setHouses(result.data);
     });
-  }, [filter]);
+  }, [filterParams]);
 
   function StartViewObject(house: IHouse) {
     addToast({
