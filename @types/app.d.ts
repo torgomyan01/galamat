@@ -139,6 +139,7 @@ declare interface IProjectData {
   page_url: string;
   address: string;
   min_price: number;
+  file_url: string;
 }
 
 declare interface IProjectMerged extends IProjectStage {

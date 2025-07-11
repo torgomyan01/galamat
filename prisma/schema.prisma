@@ -40,6 +40,7 @@ model projects {
   page_url   String  @db.VarChar(250)
   address    String  @db.VarChar(250)
   min_price  Int
+  file_url   String  @db.Text
 }
 
 model objects {

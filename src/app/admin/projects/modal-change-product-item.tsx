@@ -36,6 +36,7 @@ function ModalChangeProductItem({ status, onClose, project }: IThisProps) {
 
   const [linkProject, setLinkProject] = useState<string>("");
   const [address, setAddress] = useState<string>("");
+  const [fileUrl, setFileUrl] = useState<string>("");
   const [minPrice, setMinPrice] = useState<number>(1000000);
 
   useEffect(() => {
@@ -80,6 +81,7 @@ function ModalChangeProductItem({ status, onClose, project }: IThisProps) {
         page_url: linkProject,
         address,
         min_price: minPrice,
+        file_url: fileUrl,
       })
         .then((res) => {
           if (res.status) {
@@ -140,6 +142,13 @@ function ModalChangeProductItem({ status, onClose, project }: IThisProps) {
                   onValueChange={(value) => setMinPrice(value)}
                   label="Цена от"
                   placeholder="Введите минимальную цену, с которой начнутся продажи."
+                />
+              </div>
+              <div className="mb-4">
+                <Input
+                  label="Ссылка документа"
+                  onChange={(e) => setFileUrl(e.target.value)}
+                  type="text"
                 />
               </div>
 

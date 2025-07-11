@@ -492,6 +492,7 @@ function CanvasViewHouse({ objectInfo, house, onClose }: IThisProps) {
           status={viewPlan}
           onClose={() => setViewPlan(false)}
           plan={tooltipData}
+          projectId={house.projectId}
           houseId={objectInfo[0].project_house_id}
         />
       ) : null}

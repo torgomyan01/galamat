@@ -15,12 +15,15 @@ import { Spinner } from "@heroui/spinner";
 import { formatKzt } from "@/utils/helpers";
 import clsx from "clsx";
 import "./_card-popup.scss";
+import { ActionGetProjectInfo } from "@/app/actions/admin/projects/get-project-info";
+import Link from "next/link";
 
 interface IThisProps {
   status: boolean;
   onClose: () => void;
   plan: IFloor;
   houseId: number;
+  projectId: number;
 }
 
 function DrawerViewPlansAndItems({
@@ -28,6 +31,7 @@ function DrawerViewPlansAndItems({
   onClose,
   plan,
   houseId,
+  projectId,
 }: IThisProps) {
   const [areas, setAreas] = useState<IProperty[] | null>(null);
   const [plans, setPlans] = useState<IPlan[] | null>(null);
@@ -39,6 +43,16 @@ function DrawerViewPlansAndItems({
   const [house, setHouse] = useState<IHouse | null>(null);
 
   const [allFloors, setAllFloor] = useState<IFloor[]>([]);
+
+  const [ourProjectDbInfo, serOurProjectDbInfo] = useState<IProjectData | null>(
+    null,
+  );
+
+  useEffect(() => {
+    ActionGetProjectInfo(projectId).then((res) => {
+      serOurProjectDbInfo(res.data as IProjectData);
+    });
+  }, [projectId]);
 
   function ChangeFloor(e: SharedSelection) {
     const value = e.currentKey;
@@ -148,8 +162,6 @@ function DrawerViewPlansAndItems({
     property: IProperty;
   } | null>(null);
 
-  console.log(selectedFullPlan);
-
   function OpenPlanMaxView(plan: IPlan) {
     if (areas) {
       const findArea = areas?.find((_ar) => _ar?.layoutCode === plan.code);
@@ -194,18 +206,20 @@ function DrawerViewPlansAndItems({
                 ) : null}
 
                 {view === "3xl" ? (
-                  <div className="w-full cursor-pointer">
-                    <Image
-                      src={selectedPlan.images.big}
-                      alt="big image plan"
-                      width={1000}
-                      height={500}
-                      className="w-full mt-3 !h-auto"
-                    />
-                  </div>
-                ) : null}
+                  <>
+                    <div className="w-full cursor-pointer">
+                      <Image
+                        src={selectedPlan.images.big}
+                        alt="big image plan"
+                        width={1000}
+                        height={500}
+                        className="w-full mt-3 !h-auto"
+                      />
+                    </div>
 
-                <Divider className="mt-4 mb-8" />
+                    <Divider className="mt-4 mb-8" />
+                  </>
+                ) : null}
 
                 <div className="mt-4">
                   {plans.map((_plan) => (
@@ -214,7 +228,7 @@ function DrawerViewPlansAndItems({
                       onClick={() => OpenPlanMaxView(_plan)}
                       className="w-full p-2 border border-black/10 hover:shadow transition rounded-[8px] flex-js-s flex-col sm:flex-row gap-4 cursor-pointer mb-2"
                     >
-                      <div className="min-w-[180px] sm:h-[100px] w-full bg-blue/20 rounded-[8px] flex-jc-c overflow-hidden">
+                      <div className="max-w-[180px] sm:h-[100px] w-full bg-blue/20 rounded-[8px] flex-jc-c overflow-hidden">
                         <Image
                           src={_plan.image.preview}
                           alt="rec image"
@@ -258,33 +272,46 @@ function DrawerViewPlansAndItems({
                               {selectedPlan.areas.length}-комнатная квартира
                             </span>
                             <span className="status">Свободно</span>
-                            <a href="#" download="" className="download">
-                              <img src="/img/download-icon.svg" alt="" />
-                            </a>
-                            <a href="#" className="view">
-                              Смотреть проект
-                            </a>
+                            {ourProjectDbInfo?.file_url ? (
+                              <Link
+                                href={ourProjectDbInfo?.file_url}
+                                download=""
+                                target="_blank"
+                                className="download"
+                              >
+                                <img src="/img/download-icon.svg" alt="" />
+                              </Link>
+                            ) : null}
+                            {ourProjectDbInfo?.page_url ? (
+                              <Link
+                                href={ourProjectDbInfo?.page_url}
+                                className="view"
+                                target="_blank"
+                              >
+                                Смотреть проект
+                              </Link>
+                            ) : null}
                           </div>
                         </div>
-                        <div className="texts w-[400px]">
-                          <div className="apartment-info">
-                            <h4>Преимущества квартиры:</h4>
-                            <div className="items gap-2">
-                              <div className="item">
-                                <img src="/img/apartment-img1.svg" alt="" />
-                                <span>Кухня- гостинная</span>
-                              </div>
-                              <div className="item">
-                                <img src="/img/apartment-img2.svg" alt="" />
-                                <span>Готовый ремонт</span>
-                              </div>
-                              <div className="item">
-                                <img src="/img/apartment-img3.svg" alt="" />
-                                <span>Солнечная сторона</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        {/*<div className="texts w-[400px]">*/}
+                        {/*  <div className="apartment-info">*/}
+                        {/*    <h4>Преимущества квартиры:</h4>*/}
+                        {/*    <div className="items gap-2">*/}
+                        {/*      <div className="item">*/}
+                        {/*        <img src="/img/apartment-img1.svg" alt="" />*/}
+                        {/*        <span>Кухня- гостинная</span>*/}
+                        {/*      </div>*/}
+                        {/*      <div className="item">*/}
+                        {/*        <img src="/img/apartment-img2.svg" alt="" />*/}
+                        {/*        <span>Готовый ремонт</span>*/}
+                        {/*      </div>*/}
+                        {/*      <div className="item">*/}
+                        {/*        <img src="/img/apartment-img3.svg" alt="" />*/}
+                        {/*        <span>Солнечная сторона</span>*/}
+                        {/*      </div>*/}
+                        {/*    </div>*/}
+                        {/*  </div>*/}
+                        {/*</div>*/}
                       </div>
                       <div className="img-wrap my-4">
                         <img
