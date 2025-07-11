@@ -8,7 +8,6 @@ async function RealEstate() {
     fetchHouses(),
     ActionGetProjectsInfo(),
   ]);
-
   const mergeProjectProfitDb: IProjectMerged[] = mergeComplexesWithProjects(
     housesData,
     housesDataAdmin.data as any,
