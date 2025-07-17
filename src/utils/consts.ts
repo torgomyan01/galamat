@@ -8,7 +8,7 @@ export const SITE_URL = {
   HOME: "/",
   REQUESTS: "/requests",
   OUR_COMPANY: "/our-company",
-  SALES: "/sales",
+  SALES: "/gala-bonus",
   METHODS_PURCHASE: "/methods-purchase",
   SALES_OFFICE: "/sales-office",
   USER_AGREEMENT: "/user-agreement",
@@ -27,6 +27,7 @@ export const SITE_URL = {
   ADMIN_PAGES: "admin/pages",
   ADMIN_PAGES_HOME: "home",
   ADMIN_PROJECTS: "admin/projects",
+  ADMIN_LOTTERY: "admin/lottery",
   ADMIN_PROJECTS_HOUSES: "admin/projects/houses",
 };
 

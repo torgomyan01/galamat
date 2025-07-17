@@ -1,0 +1,234 @@
+import React, { useEffect, useRef, useState } from "react";
+import clsx from "clsx";
+import { Button } from "@heroui/react";
+import { formatKzt } from "@/utils/helpers";
+import { ActionUpdateWinner } from "@/app/actions/phone/change-winner";
+import { ActionGetProbabilities } from "@/app/actions/lottery/get-probabilities";
+import { Spinner } from "@heroui/spinner";
+import { Fade } from "react-awesome-reveal";
+
+interface IWinerItem {
+  price: number;
+  probability: number;
+  rotate: number;
+}
+
+interface IThisProps {
+  data: IDataSendMessage | null;
+}
+
+function BonusBlock({ data }: IThisProps) {
+  const [prices, setPrices] = useState<IProbabilities[]>([]);
+
+  useEffect(() => {
+    ActionGetProbabilities().then((probabilities) => {
+      setPrices(probabilities.data);
+    });
+  }, []);
+
+  const probability = prices.flatMap((price) =>
+    Array.from({ length: price.probability }, () => price.probability),
+  );
+
+  const audio = new Audio("/audio/chick.mp3");
+  function pickRandom(array: number[]) {
+    const index = Math.floor(Math.random() * array.length);
+    return array[index];
+  }
+
+  const rotateBlock = useRef<HTMLDivElement>(null);
+  let successPlay = true;
+
+  function findWinner() {
+    const winnerCount = pickRandom(probability);
+    const winner = prices.find((_p) => _p.probability === winnerCount);
+
+    if (winner) {
+      PrintRotateCalc(winner);
+    }
+  }
+
+  const [winner, setWinner] = useState<IWinerItem | null>(null);
+
+  useEffect(() => {
+    if (winner && data) {
+      ActionUpdateWinner(data.data.id, winner.price).then((winner) => {
+        console.log("winner updated", winner);
+      });
+    }
+  }, [winner]);
+
+  function PrintRotateCalc(winner: IWinerItem) {
+    if (rotateBlock && rotateBlock.current) {
+      if (successPlay) {
+        const emptyLoading =
+          (Math.floor(Math.random() * (25 - 10 + 1)) + 10) * 360;
+
+        const winnerCount = emptyLoading + winner.rotate;
+
+        rotateBlock.current.style.transition =
+          "18s cubic-bezier(0.0, 0.0, 0.1, 1)";
+        rotateBlock.current.style.transform = `rotate(${-winnerCount}deg)`;
+
+        audio.currentTime = 0;
+        audio.play();
+
+        successPlay = false;
+
+        setTimeout(() => {
+          audio.pause();
+          setTimeout(() => {
+            setWinner(winner);
+          }, 2000);
+        }, 1000 * 18);
+      }
+    }
+  }
+
+  return (
+    <div className="bonus-wrap !py-20 relative">
+      <div
+        className={clsx("wrapper relative z-10 visible", {
+          "!invisible": winner,
+        })}
+      >
+        <div className="bonus-info">
+          <div
+            className={clsx("texts transform transition duration-[1s]", {
+              "scale-0": winner,
+            })}
+          >
+            <Fade direction="left" triggerOnce delay={1000}>
+              <h1>Испытай удачу</h1>
+            </Fade>
+            <Fade direction="left" triggerOnce delay={1200}>
+              <p>Получи до 200 000 бонусов на покупку квартиры</p>
+            </Fade>
+            <Fade direction="left" triggerOnce delay={1400}>
+              <Button className="red-btn" onPress={findWinner}>
+                Получить
+              </Button>
+            </Fade>
+          </div>
+          <div className="bonus md:ml-20">
+            {prices.length ? (
+              <div
+                className={clsx(
+                  "min-w-[650px] w-[650px] min-h-[650px] h-[650px] relative transform transition duration-[1s]",
+                  {
+                    "scale-0": winner,
+                  },
+                )}
+              >
+                <img
+                  src="/img/playgon-gal-bonus.svg"
+                  alt="playgon-gal-bonus"
+                  className="absolute left-[50%] top-[29px] transform translate-x-[-50%] z-10 w-[40px]"
+                />
+                <div className="w-full h-full transform rotate-[-21deg]">
+                  <div ref={rotateBlock} className="w-full h-full transition">
+                    <div className="w-full h-full bg-[#3579E0] flex-jc-c rounded-full transform relative overflow-hidden">
+                      <div className="w-1/2 h-1/2 absolute top-0 right-0 playgon-top-right bg-blue flex-jc-c" />
+                      <div className="w-1/2 h-1/2 absolute bottom-0 right-0 playgon-bottom-right bg-blue" />
+                      <div className="w-1/2 h-1/2 absolute bottom-0 left-0 playgon-bottom-left bg-blue" />
+                      <div className="w-1/2 h-1/2 absolute top-0 left-0 playgon-top-left bg-blue" />
+                      {Array.from({ length: 8 }).map((_, i) => (
+                        <div
+                          key={`solid-${i}`}
+                          className="w-[98%] h-[3px] bg-white transform absolute left-[50%] top-[50%]"
+                          style={{
+                            transform: `translate(-50%, -50%) rotate(${i * 45}deg)`,
+                          }}
+                        />
+                      ))}
+                    </div>
+                    <div className="w-full h-full flex-jc-c border-[28px] border-[#21468B] rounded-full overflow-hidden absolute top-0 left-0 shadow-bonus">
+                      <div className="play-btn cursor-pointer z-10 transition-[0.2s] transform active:scale-[0.96]" />
+                    </div>
+
+                    {prices.map((price, i) => (
+                      <div
+                        key={`price-${i}`}
+                        className="absolute left-0 top-[50%] text-white text-[70px] font-bold w-full "
+                        style={{
+                          transform: `translateY(-50%) rotate(${i * 45 + 111}deg)`,
+                        }}
+                      >
+                        <span className="transform rotate-180 inline-block w-[250px]">
+                          {price.price}k
+                        </span>
+
+                        <span className="w-6 h-6 bg-[#FFAB36] shadow-yellow rounded-full absolute right-[2px] top-[50%] transform translate-y-[-50%]"></span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="w-full h-full flex-jc-c">
+                <Spinner color="white" />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div
+        className={clsx(
+          "w-full h-full absolute left-0 top-0 overflow-hidden flex-jc-c invisible",
+          {
+            "!visible": winner,
+          },
+        )}
+      >
+        <img
+          src="/img/winner-right.svg"
+          alt="winner-right.svg"
+          className={clsx(
+            "w-auto h-full absolute right-0 top-0 transition duration-[1s] transform translate-x-[100%]",
+            {
+              "!translate-x-[0]": winner,
+            },
+          )}
+        />
+        <img
+          src="/img/winner-left.svg"
+          alt="winner-left.svg"
+          className={clsx(
+            "w-auto h-full absolute left-0 top-0 transition duration-[1s] transform translate-x-[-100%]",
+            {
+              "!translate-x-[0]": winner,
+            },
+          )}
+        />
+
+        <div
+          className={clsx(
+            "flex-jc-c flex-col transform transition duration-[1s] scale-0",
+            {
+              "scale-100": winner,
+            },
+          )}
+        >
+          <h3 className="text-[45px] text-white mb-4">
+            Поздравляем! вы получили
+          </h3>
+          {winner ? (
+            <h1 className="text-[154.75px] text-white font-bold mb-4">
+              {formatKzt(winner?.price * 1000)
+                .replace(/ тг./g, "")
+                .replace(/ /g, ".")}
+            </h1>
+          ) : null}
+
+          <h3 className="text-[45px] text-white mb-4">Gala Bonus-ов</h3>
+          <Button className="bg-[#DB1D31] text-white rounded-[30px]">
+            Забрать бонусы
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default BonusBlock;

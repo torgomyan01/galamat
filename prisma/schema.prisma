@@ -52,3 +52,19 @@ model objects {
   api_url          String  @db.VarChar(255)
   color            String? @db.VarChar(250)
 }
+
+model lottery {
+  id                Int    @id @default(autoincrement())
+  phone             String @db.VarChar(255)
+  status            String @db.VarChar(255)
+  verification_code Int
+  timeout           String @db.VarChar(250)
+  winner            Int
+}
+
+model probabilities {
+  id          Int @id @default(autoincrement())
+  price       Int
+  probability Int
+  rotate      Int
+}

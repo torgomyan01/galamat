@@ -165,3 +165,24 @@ export const getSalesStatus = (salesStart: IHouseMonthYear | null) => {
     ? "Продажи начались"
     : "Продажи скоро";
 };
+export const normalizeKazakhstanPhoneNumber = (input: string): string => {
+  // Հանում ենք բոլոր ոչ թվերը
+  const digits = input.replace(/\D/g, "");
+
+  return `+${digits}`;
+};
+
+export const getRemainingDaysText90Days = (startISOString: string) => {
+  const startDate = moment(startISOString);
+
+  const endDate = startDate.clone().add(90, "days");
+
+  const now = moment();
+
+  if (now.isAfter(endDate)) {
+    return 0;
+  }
+
+  const duration = moment.duration(endDate.diff(now));
+  return Math.ceil(duration.asDays());
+};

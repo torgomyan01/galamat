@@ -426,3 +426,38 @@ declare interface IBoard {
   floors: IFloor[];
   sectionNames: ISectionName[];
 }
+
+type playingStatus = "no-verified" | "verified" | "played";
+
+declare interface IDataSendMessage {
+  status: "created-db" | "have-db" | "error";
+  data: {
+    id: number;
+    phone: number;
+    status: playingStatus;
+    winner: number;
+    verification_code: number;
+    timeout: string;
+  };
+  dataWhatsappContent: {
+    status: string;
+    requestId: string;
+  };
+  error: "";
+}
+
+declare interface IProbabilities {
+  id: number;
+  price: number;
+  probability: number;
+  rotate: number;
+}
+
+declare interface IPlayer {
+  id: number;
+  phone: string;
+  status: playingStatus;
+  timeout: string;
+  verification_code: number;
+  winner: number;
+}
