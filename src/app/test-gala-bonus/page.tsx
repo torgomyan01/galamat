@@ -32,6 +32,7 @@ function Requests() {
   const [modalCheckPhone, setModalCheckPhone] = useState(false);
 
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [name, setName] = useState("");
 
   const [openBlockCode, setOpenBlockCode] = useState(false);
 
@@ -88,9 +89,17 @@ function Requests() {
       return;
     }
 
+    if (!name) {
+      addToast({
+        title: "Напишите, пожалуйста, ваш имя",
+        color: "warning",
+      });
+      return;
+    }
+
     setLoading(true);
 
-    ActionSendMessage(getFilteredNumber)
+    ActionSendMessage(getFilteredNumber, name)
       .then((result: any) => {
         const checkRemainingDays = getRemainingDaysText90Days(
           result.data.timeout,
@@ -299,6 +308,15 @@ function Requests() {
                         onChange={(e) => setPhoneNumber(e.target.value)}
                         className="w-full bg-transparent text-white text-center text-[20px]"
                         placeholder="Введите номер телефона "
+                      />
+                    </div>
+                    <div className="w-full border-[2px] !border-[#2859AA] rounded-[30px] py-2 mb-4">
+                      <input
+                        required
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className="w-full bg-transparent text-white text-[20px] text-center"
+                        placeholder="Введите ваше имя"
                       />
                     </div>
 

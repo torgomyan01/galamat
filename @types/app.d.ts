@@ -434,6 +434,7 @@ declare interface IDataSendMessage {
   data: {
     id: number;
     phone: number;
+    name: string;
     status: playingStatus;
     winner: number;
     verification_code: number;

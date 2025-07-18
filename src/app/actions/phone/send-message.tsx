@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client";
 import moment from "moment";
 const prisma = new PrismaClient();
 
-export async function ActionSendMessage(number: string) {
+export async function ActionSendMessage(number: string, name: string) {
   try {
     const code = Math.floor(1000 + Math.random() * 9000);
 
@@ -50,6 +50,7 @@ export async function ActionSendMessage(number: string) {
         const createNumber = await prisma.lottery.create({
           data: {
             phone: number,
+            name,
             status: "no-verified",
             verification_code: code,
             winner: 0,
