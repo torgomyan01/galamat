@@ -50,7 +50,7 @@ function BoxItemChess({ property }: IThisProps) {
   }, [selectedFullPlan]);
 
   function OpenModalViewInfo() {
-    if (property) {
+    if (property && property.status === "AVAILABLE") {
       setModalViewProperty(true);
 
       ActionGetProjectsProperty("/plan", {
