@@ -9,7 +9,6 @@ export async function StartParsing() {
       projectId: 53086,
       houseId: 137486,
     });
-
     for (const floor of board.floors) {
       for (const section of floor.sections) {
         for (const cell of section.cells) {
