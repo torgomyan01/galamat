@@ -8,6 +8,7 @@ interface IInterface {
 const initialState: IInterface = {
   params: {
     projectId: 0,
+    houseId: 0,
     rooms: [],
     "price[min]": 0,
     "price[max]": 50000000,

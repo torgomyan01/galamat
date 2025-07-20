@@ -21,6 +21,24 @@ function ChessView({ activeHouse }: IThisProps) {
     }
   }, [activeHouse]);
 
+  const groupedBySection: {
+    [key: string]: { floor: number; cells: ICell[] }[];
+  } = {};
+
+  if (boards) {
+    boards.floors.forEach((floor) => {
+      floor.sections.forEach((section) => {
+        if (!groupedBySection[section.name]) {
+          groupedBySection[section.name] = [];
+        }
+        groupedBySection[section.name].push({
+          floor: floor.number,
+          cells: section.cells,
+        });
+      });
+    });
+  }
+
   return (
     <div className="w-full h-[100dvh] bg-white mt-[-25px] pt-[150px] sm:pt-[100px] px-6">
       <div className="checkerboard-wrap">
@@ -43,36 +61,41 @@ function ChessView({ activeHouse }: IThisProps) {
           </div>
         </div>
         {boards ? (
-          <div className="checkerboard-items2">
-            <div className="checkerboard-item">
-              <span className="title">Секция 1</span>
-              <div className="sect-table overflow-x-scroll w-full">
-                <div className="w-[calc(100vw-50px)]">
-                  {boards.floors.map((board, i) => (
-                    <div key={`board-${i}`} className="flex-js-s gap-4">
-                      <div className="w-8 sm:w-12 h-8 sm:h-12 flex-jc-c mb-4 text-black/60 rounded-[0_6px_6px_0] fixed bg-white shadow">
-                        {board.number}
-                      </div>
-                      <div className="flex-jsb-c gap-10 pl-[40px] sm:pl-[60px]">
-                        {board.sections.map((section, i) => (
+          <div className="flex-jsb-c overflow-x-scroll bottom-scroll-hidden">
+            {Object.entries(groupedBySection).map(
+              ([sectionName, sectionFloors], idx) => (
+                <div key={`section-${idx}`} className="checkerboard-item">
+                  <div className="sect-table w-full flex-js-c">
+                    <div>
+                      {sectionFloors
+                        .sort((a, b) => b.floor - a.floor)
+                        .map((floorItem, i) => (
                           <div
-                            key={`section-${i}`}
-                            className="flex-js-c gap-1 sm:gap-3"
+                            key={`floor-${i}`}
+                            className="flex items-center gap-4 mb-1"
                           >
-                            {section.cells.map((cell, i) => (
-                              <BoxItemChess
-                                key={`cell-${i}`}
-                                propertyId={cell.propertyId || 0}
-                              />
-                            ))}
+                            {/* Հարկի համարը */}
+                            <div className="w-[50px] text-sm font-semibold text-gray-600 text-right">
+                              {floorItem.floor}.
+                            </div>
+
+                            {/* Բջիջները */}
+                            <div className="flex gap-1 sm:gap-3">
+                              {floorItem.cells.map((cell, ci) => (
+                                <BoxItemChess
+                                  key={`cell-${ci}`}
+                                  propertyId={cell.propertyId || 0}
+                                />
+                              ))}
+                            </div>
                           </div>
                         ))}
-                      </div>
                     </div>
-                  ))}
+                  </div>
+                  <span className="title ml-[20px]">Секция {sectionName}</span>
                 </div>
-              </div>
-            </div>
+              ),
+            )}
           </div>
         ) : null}
       </div>

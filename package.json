@@ -36,6 +36,7 @@
     "next": "15.2.4",
     "nextjs-toploader": "^3.7.15",
     "node-cache": "^5.1.2",
+    "node-cron": "^4.2.1",
     "openai": "^4.86.2",
     "react": "^19.0.0",
     "react-awesome-reveal": "^4.3.1",

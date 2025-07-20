@@ -17,6 +17,7 @@ import clsx from "clsx";
 import "./_card-popup.scss";
 import { ActionGetProjectInfo } from "@/app/actions/admin/projects/get-project-info";
 import Link from "next/link";
+import dataProperties from "@/store/data-properties.json";
 
 interface IThisProps {
   status: boolean;
@@ -69,20 +70,20 @@ function DrawerViewPlansAndItems({
 
   useEffect(() => {
     if (status) {
-      const createRequest = selectedPlan.areas.map((area) => {
-        return ActionGetProjectsProperty("/property", {
-          id: area.propertyId,
-        });
-      });
+      const _dataProperties: any = dataProperties;
 
-      Promise.all(createRequest).then((res) => {
-        const _res = [...res];
+      const allProperties: any[] = _dataProperties.flatMap(
+        (group: any) => group.data,
+      );
 
-        const getAreaData = _res.map((property) => property.data[0]);
-        setAreas(getAreaData);
+      const matchedProperties: IProperty[] = selectedPlan.areas
+        .map((area) => {
+          return allProperties.find((item) => item.id === area.propertyId);
+        })
+        .filter(Boolean);
 
-        FindAllPlans(getAreaData);
-      });
+      setAreas(matchedProperties);
+      FindAllPlans(matchedProperties);
 
       ActionGetProjectsProperty("/house", {
         id: houseId,
@@ -125,7 +126,7 @@ function DrawerViewPlansAndItems({
 
       if (findArea?.status === "AVAILABLE") {
         return (
-          <div className="bg-green-500 text-white px-4 py-1 rounded-[4px] text-[14px]">
+          <div className="bg-blue text-white px-4 py-1 rounded-[20px] text-[14px]">
             Свободно
           </div>
         );
@@ -133,7 +134,7 @@ function DrawerViewPlansAndItems({
 
       if (findArea?.status === "BOOKED") {
         return (
-          <div className="bg-[#f69f13] text-white px-4 py-1 rounded-[4px] text-[14px]">
+          <div className="bg-[#f69f13] text-white px-4 py-1 rounded-[20px] text-[14px]">
             Забронировано
           </div>
         );
@@ -141,7 +142,7 @@ function DrawerViewPlansAndItems({
 
       if (findArea?.status === "UNAVAILABLE") {
         return (
-          <div className="bg-[#a7a7a7] text-white px-4 py-1 rounded-[4px] text-[14px]">
+          <div className="bg-[#a7a7a7] text-white px-4 py-1 rounded-[20px] text-[14px]">
             Недоступно
           </div>
         );
@@ -149,7 +150,7 @@ function DrawerViewPlansAndItems({
 
       if (findArea?.status === "SOLD") {
         return (
-          <div className="bg-[#ce2432] text-white px-4 py-1 rounded-[4px] text-[14px]">
+          <div className="bg-[#ce2432] text-white px-4 py-1 rounded-[20px] text-[14px]">
             Продано
           </div>
         );
@@ -187,7 +188,7 @@ function DrawerViewPlansAndItems({
               <div
                 className={clsx("w-full pr-4 h-full border-black/20", {
                   "max-w-full": view === "3xl",
-                  "max-w-[600] border-r hidden md:!block": view === "full",
+                  "max-w-[600px] border-r hidden md:!block": view === "full",
                 })}
               >
                 {house ? (
@@ -243,7 +244,7 @@ function DrawerViewPlansAndItems({
                             {formatKzt(+_plan.priceRange.min)}
                           </h3>
 
-                          {PrintStatus(_plan)}
+                          <div>{PrintStatus(_plan)}</div>
                         </div>
                         <h3 className="text-[15px] text-black/50">
                           {formatKzt(

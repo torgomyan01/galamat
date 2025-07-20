@@ -16,6 +16,8 @@ import Facade from "@/app/real-estate/facade";
 import CanvasViewHouse from "@/app/real-estate/canvas-view-house";
 import { useDispatch, useSelector } from "react-redux";
 import { setHouse, setObjectInfo } from "@/redux/modals";
+import IconShakhmat from "@/components/common/icons/icon-shakhmat";
+import ShakhmatContent from "@/app/real-estate/shakhmat-content";
 
 interface IThisProps {
   projects: IProjectMerged[];
@@ -48,6 +50,11 @@ function RealEstateContent({ projects }: IThisProps) {
       name: "Помещения",
       icon: <i className="fa-regular fa-list mr-2 text-[23px]" />,
       content: <TableEstate projectsIds={projectIds} />,
+    },
+    {
+      name: "Шахматка",
+      icon: <IconShakhmat />,
+      content: <ShakhmatContent />,
     },
   ];
 

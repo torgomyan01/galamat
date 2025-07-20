@@ -16,6 +16,8 @@ import { RandomKey } from "@/utils/helpers";
 import { floorSelectItems } from "@/utils/consts";
 import { useDispatch, useSelector } from "react-redux";
 import { setChangeParams } from "@/redux/filter";
+import { useEffect, useState } from "react";
+import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
 
 interface IThisProps {
   className?: string;
@@ -30,6 +32,20 @@ function HorizontalFilter({ className, projects, onClose }: IThisProps) {
   const filterParams = useSelector(
     (state: IFilterParamsState) => state.filterParams.params,
   );
+
+  const [houses, setHouses] = useState<IHouse[] | null>(null);
+
+  useEffect(() => {
+    if (filterParams.projectId) {
+      ActionGetProjectsProperty("/house", {
+        isArchive: false,
+        status: ["AVAILABLE"],
+        ...filterParams,
+      }).then((result) => {
+        setHouses(result.data);
+      });
+    }
+  }, [filterParams]);
 
   function ChangeParams(key: string, value: string | number) {
     const _filterParams: any = { ...filterParams };
@@ -133,6 +149,25 @@ function HorizontalFilter({ className, projects, onClose }: IThisProps) {
                 ))}
               </Select>
             </div>
+            {houses ? (
+              <div className="select-info">
+                <span>{$t("objects_")}</span>
+                <Select
+                  placeholder="Выбрайте объекты"
+                  selectedKeys={[`${filterParams?.houseId || 0}`]}
+                  className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none"
+                  variant="bordered"
+                  onSelectionChange={(e) =>
+                    ChangeParams("houseId", e.currentKey ? +e.currentKey : 0)
+                  }
+                >
+                  {houses.map((house: IHouse) => (
+                    <SelectItem key={`${house.id}`}>{house.title}</SelectItem>
+                  ))}
+                </Select>
+              </div>
+            ) : null}
+
             <div className="select-info">
               <span>{$t("floor__")}</span>
 
