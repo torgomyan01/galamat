@@ -109,7 +109,6 @@ function Requests() {
 
   function numberSucceed(e: any) {
     e.preventDefault();
-
     if (sendData) {
       if (codeInput) {
         addToast({
