@@ -31,7 +31,6 @@ function ShakhmatContent() {
     }
   }, [filterParams]);
 
-  // Տվյալների վերակազմ սեկտորներով
   const groupedBySection: {
     [key: string]: { floor: number; cells: ICell[] }[];
   } = {};
@@ -89,7 +88,7 @@ function ShakhmatContent() {
                                   key={`floor-${i}`}
                                   className="flex items-center gap-4 mb-1"
                                 >
-                                  <div className="w-[50px] text-sm font-semibold text-gray-600 text-right">
+                                  <div className="w-[20px] text-sm font-semibold text-gray-600 text-right ml-6">
                                     {floorItem.floor}.
                                   </div>
 

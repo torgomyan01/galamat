@@ -2,12 +2,19 @@ import { Spinner } from "@heroui/spinner";
 import clsx from "clsx";
 import { Tooltip } from "@heroui/react";
 import { formatKzt } from "@/utils/helpers";
+import { Modal, ModalBody, ModalContent } from "@heroui/modal";
+import React, { useEffect, useState } from "react";
+import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
+import { ActionGetProjectInfo } from "@/app/actions/admin/projects/get-project-info";
+import Link from "next/link";
 
 interface IThisProps {
   property: IProperty | null;
 }
 
 function BoxItemChess({ property }: IThisProps) {
+  const [modalViewProperty, setModalViewProperty] = useState(false);
+
   function PrintTypePurpose(_property: IProperty) {
     if (_property.typePurpose === "residential") {
       return "Жилое помещение";
@@ -20,6 +27,53 @@ function BoxItemChess({ property }: IThisProps) {
     }
     if (_property.typePurpose === "parking") {
       return "парковка";
+    }
+  }
+
+  const [floor, setFloor] = useState<IFloor | null>(null);
+
+  const [selectedFullPlan, setSelectedFullPlan] = useState<{
+    plan: IPlan;
+    property: IProperty;
+  } | null>(null);
+
+  const [ourProjectDbInfo, serOurProjectDbInfo] = useState<IProjectData | null>(
+    null,
+  );
+
+  useEffect(() => {
+    if (selectedFullPlan) {
+      ActionGetProjectInfo(selectedFullPlan.plan.projectId).then((res) => {
+        serOurProjectDbInfo(res.data as IProjectData);
+      });
+    }
+  }, [selectedFullPlan]);
+
+  function OpenModalViewInfo() {
+    if (property) {
+      setModalViewProperty(true);
+
+      ActionGetProjectsProperty("/plan", {
+        isArchive: false,
+        status: ["AVAILABLE"],
+        layoutCode: [property.layoutCode],
+      }).then((result) => {
+        setSelectedFullPlan({ plan: result.data[0], property });
+      });
+
+      ActionGetProjectsProperty("/floor", {
+        isArchive: false,
+        status: ["AVAILABLE"],
+        houseId: property.house_id,
+      }).then((result) => {
+        const fontFloor = result.find((floor: any) =>
+          floor.areas.some((_a: any) => _a.propertyId === property.id),
+        );
+
+        if (fontFloor) {
+          setFloor(fontFloor);
+        }
+      });
     }
   }
 
@@ -61,6 +115,7 @@ function BoxItemChess({ property }: IThisProps) {
                   property?.status === "UNAVAILABLE",
               },
             )}
+            onClick={OpenModalViewInfo}
           >
             {property ? (
               property.rooms_amount
@@ -72,6 +127,86 @@ function BoxItemChess({ property }: IThisProps) {
       ) : (
         <div className="bg-transparent w-8 sm:w-12 h-8 sm:h-12 flex-jc-c mb-4 text-white rounded-[6px]" />
       )}
+
+      {modalViewProperty ? (
+        <Modal
+          size="full"
+          isOpen={modalViewProperty}
+          onOpenChange={() => setModalViewProperty(false)}
+          className="bg-[#e8eaef]"
+        >
+          <ModalContent>
+            <ModalBody>
+              <div className="wrapper bg-[#e8eaef] !p-0">
+                <div id="card-popup" className=" bg-[#e8eaef] mfp-with-anim">
+                  {selectedFullPlan && floor ? (
+                    <div className="popup-body !bg-[#e8eaef]">
+                      <div className="info flex-jsb-s lg:gap-10 flex-col lg:flex-row">
+                        <div className="texts lg:min-w-[350px]">
+                          <div className="top-info">
+                            <h2>ЖК {selectedFullPlan.property.projectName}</h2>
+                            <span className="nomer">
+                              {floor.areas.length}-комнатная квартира
+                            </span>
+                            <span className="status">Свободно</span>
+                            {ourProjectDbInfo?.file_url ? (
+                              <Link
+                                href={ourProjectDbInfo?.file_url}
+                                download=""
+                                target="_blank"
+                                className="download"
+                              >
+                                <img src="/img/download-icon.svg" alt="" />
+                              </Link>
+                            ) : null}
+                            {ourProjectDbInfo?.page_url ? (
+                              <Link
+                                href={ourProjectDbInfo?.page_url}
+                                className="view"
+                                target="_blank"
+                              >
+                                Смотреть проект
+                              </Link>
+                            ) : null}
+                          </div>
+                          {/*<div className="apartment-info">*/}
+                          {/*  <h4>Преимущества квартиры:</h4>*/}
+                          {/*  <div className="items">*/}
+                          {/*    <div className="item">*/}
+                          {/*      <img src="img/apartment-img1.svg" alt="" />*/}
+                          {/*      <span>Кухня- гостинная</span>*/}
+                          {/*    </div>*/}
+                          {/*    <div className="item">*/}
+                          {/*      <img src="img/apartment-img2.svg" alt="" />*/}
+                          {/*      <span>Готовый ремонт</span>*/}
+                          {/*    </div>*/}
+                          {/*    <div className="item">*/}
+                          {/*      <img src="img/apartment-img3.svg" alt="" />*/}
+                          {/*      <span>Солнечная сторона</span>*/}
+                          {/*    </div>*/}
+                          {/*  </div>*/}
+                          {/*</div>*/}
+                        </div>
+                        <div className="img-wrap">
+                          <img
+                            src={selectedFullPlan.plan.image.big}
+                            alt=""
+                            className="w-full"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="w-full h-[400px] flex-jc-c">
+                      <Spinner />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      ) : null}
     </>
   );
 }

@@ -86,12 +86,10 @@ function ChessView({ activeHouse }: IThisProps) {
                               key={`floor-${i}`}
                               className="flex items-center gap-4 mb-1"
                             >
-                              {/* Հարկի համարը */}
-                              <div className="w-[50px] text-sm font-semibold text-gray-600 text-right">
+                              <div className="w-[20px] text-sm font-semibold text-gray-600 text-right">
                                 {floorItem.floor}.
                               </div>
 
-                              {/* Բջիջները */}
                               <div className="flex gap-1 sm:gap-3">
                                 {floorItem.cells.map((cell, ci) => (
                                   <BoxItemChess
