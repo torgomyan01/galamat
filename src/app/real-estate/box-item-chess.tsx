@@ -2,37 +2,30 @@ import { Spinner } from "@heroui/spinner";
 import clsx from "clsx";
 import { Tooltip } from "@heroui/react";
 import { formatKzt } from "@/utils/helpers";
-import dataProperties from "@/store/data-properties.json";
 
 interface IThisProps {
-  propertyId: number;
+  property: IProperty | null;
 }
 
-function BoxItemChess({ propertyId }: IThisProps) {
-  const _dataProperties: any = dataProperties;
-
-  const property = _dataProperties
-    .flatMap((group: any) => group.data)
-    .find((item: any) => item.id === propertyId);
-
-  function PrintTypePurpose(property: IProperty) {
-    if (property.typePurpose === "residential") {
+function BoxItemChess({ property }: IThisProps) {
+  function PrintTypePurpose(_property: IProperty) {
+    if (_property.typePurpose === "residential") {
       return "Жилое помещение";
     }
-    if (property.typePurpose === "apartment") {
+    if (_property.typePurpose === "apartment") {
       return "Квартира";
     }
-    if (property.typePurpose === "office") {
+    if (_property.typePurpose === "office") {
       return "Офис";
     }
-    if (property.typePurpose === "parking") {
+    if (_property.typePurpose === "parking") {
       return "парковка";
     }
   }
 
   return (
     <>
-      {propertyId ? (
+      {property ? (
         <Tooltip
           content={
             <div className="px-1 py-2">

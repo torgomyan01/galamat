@@ -2,8 +2,9 @@
 
 import cron from "node-cron";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
-import fs from "fs";
-import path from "path";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 declare global {
   // eslint-disable-next-line no-var
@@ -12,85 +13,92 @@ declare global {
 
 export async function StartParsing() {
   try {
-    console.log("Starting Parsing...");
+    console.log("🚀 Սկսում ենք տվյալների քաշումը և գրանցումը");
 
     if (globalThis.cronJob) {
       globalThis.cronJob.stop();
     }
 
-    StartParsingProperties(() => {
-      console.log("end parsing property...");
-      // setTimeout(() => {
-      //   StartParsingPlans();
-      // }, 2000);
-    });
+    // Առաջին անգամ անմիջապես քաշում է
+    await StartParsingOnce();
 
-    global.cronJob = cron.schedule("0 * * * *", () => {
-      StartParsingProperties(() => {
-        console.log("end parsing property...");
-        // setTimeout(() => {
-        //   StartParsingPlans();
-        // }, 2000);
-      });
+    // Ամեն ժամը մեկ կրկնվող գործ
+    globalThis.cronJob = cron.schedule("0 * * * *", async () => {
+      console.log(
+        "⏰ CRON: սկսում է տվյալների թարմացումը:",
+        new Date().toISOString(),
+      );
+      await StartParsingOnce();
     });
 
     return 1;
-  } catch {
+  } catch (err) {
+    console.error("❌ StartParsing error:", err);
     return 0;
   }
 }
 
-function StartParsingProperties(callBack: () => void) {
-  ActionGetProjectsProperty("/board", {}).then((result) => {
-    const board: IBoard = result;
+async function StartParsingOnce() {
+  try {
+    const board = await ActionGetProjectsProperty("/board", {
+      projectId: 53086,
+      houseId: 137486,
+    });
 
-    const setPromise = board.floors.flatMap((floor: any) =>
-      floor.sections.flatMap((section: any) =>
-        section.cells.map((cell: any) =>
-          ActionGetProjectsProperty("/property", {
-            id: cell.propertyId,
-          }),
-        ),
-      ),
-    );
+    const cells: any[] = [];
 
-    Promise.all(setPromise).then((res) => {
-      console.log("📦 Pulled", res.length, "properties");
-
-      const dirPath = path.join(process.cwd(), "src/store");
-      const filePath = path.join(dirPath, "data-properties.json");
-
-      if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath, { recursive: true });
-      }
-
-      fs.writeFile(filePath, JSON.stringify(res, null, 2), (err) => {
-        if (err) {
-          console.error("❌ Error writing file:", err);
-        } else {
-          console.log("✅ Data saved to src/store/data.json");
-        }
-        callBack();
+    board.floors.forEach((floor: any) => {
+      floor.sections.forEach((section: any) => {
+        section.cells.forEach((cell: any) => {
+          cells.push(cell);
+        });
       });
     });
-  });
+
+    console.log(`📦 Սկսում ենք քաշել ${cells.length} property`);
+
+    for (let i = 0; i < cells.length; i++) {
+      const cell = cells[i];
+
+      try {
+        const { data } = await ActionGetProjectsProperty("/property", {
+          id: cell.propertyId,
+        });
+
+        if (data && data[0]) {
+          await prisma.property.upsert({
+            where: { property_id: cell.propertyId },
+            update: { data: data[0] },
+            create: {
+              property_id: cell.propertyId,
+              data: data[0],
+            },
+          });
+
+          console.log(
+            `✅ [${i + 1}/${cells.length}] property_id=${cell.propertyId} ավելացվել կամ թարմացվել է`,
+          );
+        } else {
+          console.warn(
+            `⚠️ [${i + 1}/${cells.length}] property_id=${cell.propertyId} — data դատարկ էր`,
+          );
+        }
+
+        await sleep(500); // դանդաղեցման ժամանակ՝ 0.5 վրկ
+      } catch (err) {
+        console.error(
+          `❌ [${i + 1}/${cells.length}] Սխալ property_id=${cell.propertyId}:`,
+          err,
+        );
+      }
+    }
+
+    console.log("🎉 Բոլոր property-ները ավարտված են");
+  } catch (err) {
+    console.error("❌ StartParsingOnce error:", err);
+  }
 }
 
-// function StartParsingPlans() {
-//   ActionGetProjectsProperty("/plan", {}).then((result) => {
-//     const dirPath = path.join(process.cwd(), "src/store");
-//     const filePath = path.join(dirPath, "data-plans.json");
-//
-//     if (!fs.existsSync(dirPath)) {
-//       fs.mkdirSync(dirPath, { recursive: true });
-//     }
-//
-//     fs.writeFile(filePath, JSON.stringify(result.data, null, 2), (err) => {
-//       if (err) {
-//         console.error("❌ Error writing file:", err);
-//       } else {
-//         console.log("✅ Data saved to src/store/data.json");
-//       }
-//     });
-//   });
-// }
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

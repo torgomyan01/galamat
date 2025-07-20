@@ -17,7 +17,6 @@ import clsx from "clsx";
 import "./_card-popup.scss";
 import { ActionGetProjectInfo } from "@/app/actions/admin/projects/get-project-info";
 import Link from "next/link";
-import dataProperties from "@/store/data-properties.json";
 
 interface IThisProps {
   status: boolean;
@@ -70,20 +69,20 @@ function DrawerViewPlansAndItems({
 
   useEffect(() => {
     if (status) {
-      const _dataProperties: any = dataProperties;
+      const createRequest = selectedPlan.areas.map((area) => {
+        return ActionGetProjectsProperty("/property", {
+          id: area.propertyId,
+        });
+      });
 
-      const allProperties: any[] = _dataProperties.flatMap(
-        (group: any) => group.data,
-      );
+      Promise.all(createRequest).then((res) => {
+        const _res = [...res];
 
-      const matchedProperties: IProperty[] = selectedPlan.areas
-        .map((area) => {
-          return allProperties.find((item) => item.id === area.propertyId);
-        })
-        .filter(Boolean);
+        const getAreaData = _res.map((property) => property.data[0]);
+        setAreas(getAreaData);
 
-      setAreas(matchedProperties);
-      FindAllPlans(matchedProperties);
+        FindAllPlans(getAreaData);
+      });
 
       ActionGetProjectsProperty("/house", {
         id: houseId,

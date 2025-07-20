@@ -69,3 +69,9 @@ model probabilities {
   probability Int
   rotate      Int
 }
+
+model property {
+  id          Int  @id @default(autoincrement())
+  property_id Int  @unique
+  data        Json
+}
