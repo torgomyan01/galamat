@@ -103,7 +103,6 @@ function TableEstate({ projectsIds }: IThisProps) {
         <TableColumn key="status">Статус</TableColumn>
         <TableColumn key="count-rooms">Кол-во комнат</TableColumn>
         <TableColumn key="name-project">Название ЖК</TableColumn>
-        <TableColumn key="name-house">Название дома</TableColumn>
         <TableColumn key="number-place">Номер помещения</TableColumn>
         <TableColumn key="count-place">Площадь, м²</TableColumn>
         <TableColumn key="entrance">Подъезд</TableColumn>
@@ -124,7 +123,6 @@ function TableEstate({ projectsIds }: IThisProps) {
             </TableCell>
             <TableCell>{plan.rooms_amount}</TableCell>
             <TableCell>{plan.projectName}</TableCell>
-            <TableCell>{plan.houseName}</TableCell>
             <TableCell>{plan.number}</TableCell>
             <TableCell>{plan.area.area_total} м²</TableCell>
             <TableCell>{plan.sectionName}</TableCell>
