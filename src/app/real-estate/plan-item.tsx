@@ -23,7 +23,7 @@ function PlanItem({ plan, plans }: IThisProps) {
           className="img-wrap cursor-pointer"
         >
           <Image
-            src={plan.image.source}
+            src={plan.image.preview}
             alt={plan.projectName}
             width={600}
             height={600}

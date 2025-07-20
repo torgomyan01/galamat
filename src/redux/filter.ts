@@ -11,7 +11,7 @@ const initialState: IInterface = {
     rooms: [],
     "price[min]": 0,
     "price[max]": 50000000,
-    minFloor: 1,
+    minFloor: 0,
     "area[min]": 0,
     "area[max]": 400,
   },

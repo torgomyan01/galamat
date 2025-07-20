@@ -1,6 +1,14 @@
 "use client";
 
-import { Button, Select, SelectItem } from "@heroui/react";
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Select,
+  SelectItem,
+} from "@heroui/react";
 import SliderInput from "@/components/common/slider-input/slider-input";
 import clsx from "clsx";
 import { useTranslate } from "@/hooks/useTranslate";
@@ -35,11 +43,18 @@ function HorizontalFilter({ className, projects, onClose }: IThisProps) {
     const _filterParams = { ...filterParams };
 
     const index = _filterParams.rooms.indexOf(num);
+    const oldRooms = [..._filterParams.rooms];
+
     if (index === -1) {
-      _filterParams.rooms.push(num);
+      oldRooms.push(num);
+
+      _filterParams.rooms = oldRooms;
     } else {
-      _filterParams.rooms.splice(index, 1);
+      oldRooms.splice(index, 1);
+
+      _filterParams.rooms = oldRooms;
     }
+
     dispatch(setChangeParams(_filterParams));
   }
 
@@ -120,19 +135,38 @@ function HorizontalFilter({ className, projects, onClose }: IThisProps) {
             </div>
             <div className="select-info">
               <span>{$t("floor__")}</span>
-              <Select
-                placeholder="Выбрайте этаж"
-                selectedKeys={[filterParams?.minFloor]}
-                className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none"
-                variant="bordered"
-                onSelectionChange={(e) =>
-                  ChangeParams("minFloor", e.currentKey || "0")
-                }
-              >
-                {floorSelectItems.map((_, i) => (
-                  <SelectItem key={`${i + 1}`}>Этаж {i + 1}</SelectItem>
-                ))}
-              </Select>
+
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button
+                    variant="bordered"
+                    className="md:w-[160px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none !flex-jsb-c"
+                  >
+                    {filterParams.minFloor || (
+                      <span className="opacity-60">Выберите этаж</span>
+                    )}
+                    <i className="fa-regular fa-chevron-down text-[12px] opacity-90"></i>
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  aria-label="Select Floor"
+                  className="max-h-[300px] overflow-y-auto"
+                >
+                  {floorSelectItems.map((floor) => (
+                    <DropdownItem
+                      key={`floor-${floor}`}
+                      onPress={() => ChangeParams("minFloor", floor)}
+                    >
+                      <div className="w-full flex-jsb-c">
+                        {floor}
+                        {floor === filterParams.minFloor ? (
+                          <i className="fa-solid fa-check mr-1 text-blue"></i>
+                        ) : null}
+                      </div>
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
             </div>
             <span
               className="reset hidden md:block"

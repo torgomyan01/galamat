@@ -108,6 +108,10 @@
     content: "\f522"
 }
 
+.fa-chevron-down:before {
+    content: "\f078"
+}
+
 
 
 /*---------------------------------*/

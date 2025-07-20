@@ -18,7 +18,7 @@ import { ActionUpdateCode } from "@/app/actions/phone/update-now";
 import { Fade } from "react-awesome-reveal";
 
 function Requests() {
-  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
+  const [isAuthorized, setIsAuthorized] = useState<boolean>(true);
 
   useEffect(() => {
     const pass = prompt("Password");

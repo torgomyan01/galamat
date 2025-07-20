@@ -41,7 +41,7 @@ export const localStorageKeys = {
 
 export const all = "Все";
 
-export const floorSelectItems = Array.from({ length: 30 });
+export const floorSelectItems = Array.from({ length: 30 }, (_, i) => i + 1);
 
 export const ProjectDataPositions = [
   { value: "business", label: "Бизнес", color: "#DB1D31" },
