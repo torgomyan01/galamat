@@ -78,28 +78,41 @@ function OurCompany({ houses, housesDataAdmin }: IThisProps) {
               Купить квартиру
             </a>
 
-            <Swiper
-              modules={[Autoplay]}
-              spaceBetween={16}
-              slidesPerView={4}
-              loop={true}
-              autoplay={{
-                delay: 5000,
-                disableOnInteraction: false,
-              }}
-              pagination={{ clickable: true }}
-              className="why-us-swiper w-full"
-            >
-              {sliderHero.map((item, i) => (
-                <SwiperSlide
-                  key={`home-ads-${i}`}
-                  className="swiper-slide !h-[170px]"
-                >
-                  <b className="block text-blue text-[28px]">{item.title}</b>
-                  <span>{item.text}</span>
-                </SwiperSlide>
-              ))}
-            </Swiper>
+            <div className="w-[calc(100%-20px)] md:w-full">
+              <Swiper
+                modules={[Autoplay]}
+                spaceBetween={16}
+                slidesPerView={4}
+                loop={true}
+                autoplay={{
+                  delay: 5000,
+                  disableOnInteraction: false,
+                }}
+                pagination={{ clickable: true }}
+                className="why-us-swiper"
+                breakpoints={{
+                  300: {
+                    slidesPerView: 1,
+                    spaceBetween: 0,
+                  },
+                  768: {
+                    slidesPerView: 2,
+                    spaceBetween: 16,
+                  },
+                  1024: {
+                    slidesPerView: 4,
+                    spaceBetween: 16,
+                  },
+                }}
+              >
+                {sliderHero.map((item, i) => (
+                  <SwiperSlide key={`home-ads-${i}`} className="!h-[170px]">
+                    <b className="block text-blue text-[28px]">{item.title}</b>
+                    <span>{item.text}</span>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
           </div>
         </div>
       </div>
@@ -131,7 +144,7 @@ function OurCompany({ houses, housesDataAdmin }: IThisProps) {
             </a>
             <a href="#" className="benefits-item item5">
               <span className="text">
-                Профессиональная Профессиональная управляющая компания
+                Профессиональная управляющая компания
               </span>
               <img src="/img/benefits-img.svg" alt="" />
             </a>
@@ -154,6 +167,20 @@ function OurCompany({ houses, housesDataAdmin }: IThisProps) {
             }}
             pagination={{ clickable: true }}
             className="completed-projects-swiper w-full"
+            breakpoints={{
+              300: {
+                slidesPerView: 1,
+                spaceBetween: 0,
+              },
+              768: {
+                slidesPerView: 2,
+                spaceBetween: 16,
+              },
+              1024: {
+                slidesPerView: 3,
+                spaceBetween: 16,
+              },
+            }}
           >
             {mergeProjectProfitDb.map((item, i) => (
               <SwiperSlide key={`home-ads-${i}`}>
