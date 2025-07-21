@@ -12,6 +12,7 @@ import { setChangeParams } from "@/redux/filter";
 import { useDispatch, useSelector } from "react-redux";
 import { SITE_URL } from "@/utils/consts";
 import Link from "next/link";
+import HistorySection from "@/components/common/history-section/history-section";
 
 const sliderHero = [
   {
@@ -78,7 +79,7 @@ function OurCompany({ houses, housesDataAdmin }: IThisProps) {
               Купить квартиру
             </a>
 
-            <div className="w-[calc(100%-20px)] md:w-full">
+            <div className="w-[calc(100%-20px)] lg:w-full">
               <Swiper
                 modules={[Autoplay]}
                 spaceBetween={16}
@@ -191,7 +192,9 @@ function OurCompany({ houses, housesDataAdmin }: IThisProps) {
                 >
                   <span
                     className="img-wrap"
-                    style={{ backgroundImage: `url(${item.images[0].url})` }}
+                    style={{
+                      backgroundImage: `url(${item.images[0]?.url || ""})`,
+                    }}
                   />
                   <b className="name">ЖК {item.title}</b>
                   <span className="address">{item.address}</span>
@@ -202,6 +205,8 @@ function OurCompany({ houses, housesDataAdmin }: IThisProps) {
           </Swiper>
         </div>
       </div>
+
+      <HistorySection />
     </MainTemplate>
   );
 }

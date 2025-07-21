@@ -1,7 +1,7 @@
 import Image from "next/image";
 import PrintStatus from "@/components/common/product-item/print-status";
 import Link from "next/link";
-import { formatPrice, SITE_URL } from "@/utils/consts";
+import { formatPrice } from "@/utils/consts";
 import { useDispatch, useSelector } from "react-redux";
 import { setChangeParams } from "@/redux/filter";
 
@@ -26,7 +26,7 @@ function ProductItem({ project }: IThisProps) {
 
   return (
     <Link
-      href={SITE_URL.REAL_ESTATE}
+      href={project.page_url}
       onClick={() => ChangeParams("projectId", project.project_id)}
       className="w-full bg-white rounded-[16px] p-[15px] cursor-pointer group flex-jsb-c flex-col"
     >
