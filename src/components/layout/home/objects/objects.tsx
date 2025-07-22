@@ -3,7 +3,6 @@ import { useState } from "react";
 import clsx from "clsx";
 
 import OurObjects from "@/components/layout/home/objects/our-objects";
-import PhotoSphereViewer from "@/components/layout/home/objects/ponarama";
 import { useTranslate } from "@/hooks/useTranslate";
 
 function Objects() {
