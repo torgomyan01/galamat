@@ -8,6 +8,8 @@ import { Spinner } from "@heroui/spinner";
 import { Fade } from "react-awesome-reveal";
 import axios from "axios";
 import { Modal, ModalBody, ModalContent } from "@heroui/modal";
+import { useTranslate } from "@/hooks/useTranslate";
+import Link from "next/link";
 
 interface IWinerItem {
   price: number;
@@ -20,6 +22,7 @@ interface IThisProps {
 }
 
 function BonusBlock({ data }: IThisProps) {
+  const $t = useTranslate();
   const [prices, setPrices] = useState<IProbabilities[]>([]);
 
   useEffect(() => {
@@ -103,7 +106,10 @@ function BonusBlock({ data }: IThisProps) {
           },
         })
         .then(({ data }) => {
-          setUserBonusLink(data);
+          const match = data.match(/<a\s+href="([^"]+)"/);
+          if (match && match[1]) {
+            setUserBonusLink(match[1].trim());
+          }
         });
     } else {
       addToast({
@@ -128,14 +134,14 @@ function BonusBlock({ data }: IThisProps) {
               })}
             >
               <Fade direction="left" triggerOnce delay={1000}>
-                <h1>Испытай удачу</h1>
+                <h1>{$t("try_your_luck")}</h1>
               </Fade>
               <Fade direction="left" triggerOnce delay={1200}>
-                <p>Получи до 200 000 бонусов на покупку квартиры</p>
+                <p>{$t("get_up_to")}</p>
               </Fade>
               <Fade direction="left" triggerOnce delay={1400}>
                 <Button className="red-btn" onPress={findWinner}>
-                  Получить
+                  {$t("get__")}
                 </Button>
               </Fade>
             </div>
@@ -255,7 +261,7 @@ function BonusBlock({ data }: IThisProps) {
               className="bg-[#DB1D31] text-white rounded-[30px]"
               onPress={fintWallet}
             >
-              Забрать бонусы
+              {$t("claim_bonuses")}
             </Button>
           </div>
         </div>
@@ -268,10 +274,15 @@ function BonusBlock({ data }: IThisProps) {
         <ModalContent className="bg-blue">
           <ModalBody>
             {userBonusLink ? (
-              <div
-                className="modal-find-bonus"
-                dangerouslySetInnerHTML={{ __html: userBonusLink }}
-              />
+              <div className="w-full h-[200px] flex-jc-c">
+                <Link
+                  href={userBonusLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button className="red-btn">{$t("get__")}</Button>
+                </Link>
+              </div>
             ) : (
               <div className="w-full h-[150px] flex-jc-c">
                 <Spinner color="white" />

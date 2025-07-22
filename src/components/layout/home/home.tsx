@@ -9,12 +9,16 @@ import VideoBlock from "@/components/layout/home/video-block/video-block";
 import OurOffice from "@/components/layout/home/our-office/our-office";
 import React from "react";
 
+// interface IThisProps {
+//   projects: IProjectMerged[];
+// }
+
 export default function Home() {
   return (
     <MainTemplate>
       <AdsSlider />
+      {/*<Filter projects={projects} />*/}
       <Objects />
-      {/*<FilterWrapper _houses={houses} />*/}
       <LeaveRequest />
       <WhyUs />
       <VideoBlock />

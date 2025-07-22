@@ -51,9 +51,7 @@ function MainTemplate({
     getTranslations(lang).then((trans) => {
       dispatch(setWords(trans));
 
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000);
+      setLoading(false);
     });
   }
 

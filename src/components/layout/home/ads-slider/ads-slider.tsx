@@ -40,7 +40,7 @@ function AdsSlider() {
             slidesPerView={1}
             loop={true}
             autoplay={{
-              delay: 5000,
+              delay: 3000,
               disableOnInteraction: false,
             }}
             pagination={{ clickable: true }}
@@ -64,8 +64,6 @@ function AdsSlider() {
               </>
             ))}
           </Swiper>
-
-          <div className="swiper-pagination"></div>
         </div>
       </div>
     </div>

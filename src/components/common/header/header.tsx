@@ -153,11 +153,11 @@ function Header({ info = true }: IThisProps) {
                   </li>
                 ))}
               </ul>
-              <div className="btns">
+              <div className="btns !flex-js-c gap-4">
                 <Select
                   selectedKeys={[`${activeLang}`]}
-                  className="w-[80px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] hidden md:inline-block"
-                  variant="bordered"
+                  className="w-[80px] rounded-[4px] outline-[#b2b2b2]"
+                  radius="sm"
                   onSelectionChange={selectLanguage}
                 >
                   {languages.map((lang) => (

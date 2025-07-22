@@ -1,16 +1,14 @@
-"use client";
+"use server";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { StartParsing } from "@/app/actions/start-crone/start-crone";
 
 async function Page() {
-  useEffect(() => {
-    StartParsing().then((res) => {
-      if (res) {
-        console.log("StartParsing");
-      }
-    });
-  }, []);
+  StartParsing().then((res) => {
+    if (res) {
+      console.log("StartParsing");
+    }
+  });
 
   return <h1>404</h1>;
 }

@@ -4,6 +4,12 @@ import { fetchHouses } from "@/lib/getHouses";
 import { ActionGetProjectsInfo } from "@/app/actions/projects/get-projects";
 import OurCompany from "@/app/our-company/our-company";
 
+export async function generateMetadata() {
+  return {
+    title: "О компании",
+  };
+}
+
 async function Requests() {
   const [housesData, housesDataAdmin] = await Promise.all([
     fetchHouses(),

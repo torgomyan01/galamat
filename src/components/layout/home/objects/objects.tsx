@@ -13,7 +13,19 @@ function Objects() {
   const tabContents = [
     {
       name: "360°",
-      content: <PhotoSphereViewer />,
+      content: (
+        <iframe
+          width="100%"
+          height="640"
+          frameBorder="0"
+          allow="xr-spatial-tracking; gyroscope; accelerometer"
+          allowFullScreen
+          scrolling="no"
+          className="rounded-[8px]"
+          src="https://kuula.co/share/collection/7D5Ns?logo=1&info=0&logosize=110&fs=0&vr=0&autop=10&thumbs=-1&inst=ru"
+        />
+      ),
+      // content: <PhotoSphereViewer />,
     },
     {
       name: $t("office_"),

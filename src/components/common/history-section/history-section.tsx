@@ -72,7 +72,7 @@ function HistorySection() {
         onUpdate(e) {
           const percent = e.progress * 100;
 
-          if (slideRef.current && percent < 80) {
+          if (slideRef.current && percent < 90) {
             slideRef.current.style.transform = `translateY(-${percent}%)`;
           }
 
@@ -136,7 +136,7 @@ function HistorySection() {
 
         <div className="w-full lg:grid grid-cols-2 gap-12 mt-10 ">
           <div className="w-full hidden lg:block">
-            <div className="w-full h-[70vh] bg-blue p-6 rounded-[16px] relative">
+            <div className="w-full h-[60vh] bg-blue p-6 rounded-[16px] relative">
               <h4 className="text-[30px] text-white w-full max-w-[289px] font-medium leading-normal">
                 Углубитесь в нашу историю
               </h4>
@@ -148,8 +148,8 @@ function HistorySection() {
             </div>
           </div>
 
-          <div className="w-full h-[70vh] overflow-hidden">
-            <div ref={slideRef} className="w-full">
+          <div className="w-full h-[60vh] overflow-hidden relative">
+            <div ref={slideRef} className="w-full duration-100">
               {items.map((item, i) => (
                 <div
                   key={`vert-slider-${i}`}
@@ -191,6 +191,8 @@ function HistorySection() {
                 </div>
               ))}
             </div>
+
+            <div className="bottom-gradient"></div>
           </div>
         </div>
       </div>

@@ -75,9 +75,9 @@ function OurCompany({ houses, housesDataAdmin }: IThisProps) {
               демонстрирует устойчивый рост, реализуя проекты, направленные на
               повышение качества жизни граждан.
             </p>
-            <a href="#" className="red-btn">
+            <Link href={SITE_URL.PROJECT} className="red-btn">
               Купить квартиру
-            </a>
+            </Link>
 
             <div className="w-[calc(100%-20px)] lg:w-full">
               <Swiper
