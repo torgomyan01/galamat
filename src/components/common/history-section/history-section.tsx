@@ -4,61 +4,64 @@ import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import clsx from "clsx";
+import { useTranslate } from "@/hooks/useTranslate";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const items = [
-  {
-    year: 2018,
-    title: "Начало истории",
-    text: "Компания сделала стратегический шаг — основалась в Астане и уверенно заявила о себе на рынке столицы, открыв новую главу в своем развитии.",
-  },
-  {
-    year: 2018,
-    title: "Первый проект",
-    text: "В этом году компания реализовала свой первый проект — жилой комплекс комфорт-класса Barys City. Концепция комплекса была тесно связана с его локацией: Barys City расположен в спортивном сердце Астаны, рядом со стадионами «Астана Арена», «Барыс Арена», «Сарыарка» и ледовым дворцом «Алау».",
-  },
-  {
-    year: 2019,
-    title: "",
-    text: "Жилой комплекс Seven House введен в эксплуатацию в 2019 году. Проект бизнес-класса, расположенный в непосредственной близости к деловому центру Астаны. Комплекс состоит из 9 этажей и включает всего 192 квартиры, что подчеркивает его уютный формат и приватность.",
-  },
-  {
-    year: 2020,
-    title: "",
-    text: "Введены в эксплуатацию два жилых комплекса — Galamat Towers и Galamat Park. Проекты реализованы в единой европейской концепции с продуманной внутренней инфраструктурой. 20- и 9-этажные дома стали флагманом компании Galamat, объединив в себе современные технологии и комфорт",
-  },
-  {
-    year: 2021,
-    title: "",
-    text: "В 2021 году введён в эксплуатацию жилой комплекс комфорт-класса Tole Bi — уникальный проект с просторными квартирами и тщательно благоустроенной территорией. Он сочетает в себе современные строительные технологии, выразительную архитектуру и выгодное расположение — рядом с ключевыми магистралями и знаковыми объектами левобережья столицы.",
-  },
-  {
-    year: 2022,
-    title: "",
-    text: "Компания продолжила активное развитие, реализовав сразу три проекта: Prime Garden 1, Prime Garden 2 и Homeland. Эти жилые комплексы стали новым этапом — с ещё более высоким уровнем качества, комфорта и архитектурных решений, основанных на опыте и достижениях предыдущих лет.",
-  },
-  {
-    year: 2023,
-    title: "",
-    text: "Год запомнился сразу двумя важными событиями: вводом в эксплуатацию жилого комплекса Sunland и проведением масштабного розыгрыша квартиры среди подписчиков Galamat в социальных сетях, который стал ярким примером открытости и лояльности компании к своей аудитории.",
-  },
-  {
-    year: 2024,
-    title: "",
-    text: "Введён в эксплуатацию жилой комплекс Tengri, расположенный напротив самой большой мечети Центральной Азии. Проект стал знаковым для компании благодаря своему уникальному расположению. ",
-  },
-  {
-    year: 2025,
-    title: "",
-    text: "Компания продолжила укреплять свои позиции на рынке: был открыт офис сервисной компании для повышения качества обслуживания клиентов, начал работу новый офис отдела продаж.",
-  },
-];
-
 function HistorySection() {
+  const $t = useTranslate();
+
   const sectionRef = useRef(null);
   const slideRef: any = useRef(null);
   const progressRefs = useRef<HTMLDivElement[]>([]);
+
+  const items = [
+    {
+      year: 2018,
+      title: $t("of_the_story"),
+      text: $t("the_company_made_a_strategic"),
+    },
+    {
+      year: 2018,
+      title: $t("first_project"),
+      text: $t("this_year_the_company_i"),
+    },
+    {
+      year: 2019,
+      title: "",
+      text: $t("the_residential_complex"),
+    },
+    {
+      year: 2020,
+      title: "",
+      text: $t("two_residential_complexes"),
+    },
+    {
+      year: 2021,
+      title: "",
+      text: $t("two_residential_complexes"),
+    },
+    {
+      year: 2022,
+      title: "",
+      text: $t("the_company_continued__"),
+    },
+    {
+      year: 2023,
+      title: "",
+      text: $t("the_year_was_memorable_for"),
+    },
+    {
+      year: 2024,
+      title: "",
+      text: $t("the_tengri_residential_complex"),
+    },
+    {
+      year: 2025,
+      title: "",
+      text: $t("the_company_continued_to_strengthen"),
+    },
+  ];
 
   const [activeItem, setActiveItem] = useState<number>(0);
 
@@ -127,18 +130,17 @@ function HistorySection() {
     <section ref={sectionRef}>
       <div className="wrapper !pt-[20px]">
         <h3 className="text-[30px] md:text-[45px] font-medium text-[#353535] mb-3">
-          История
+          {$t("story")}
         </h3>
         <p className="text-[#626262] text-[16px] md:text-[20px] w-full max-w-[981px]">
-          В 2018 году компания сделала стратегический шаг, выйдя на рынок
-          столицы Казахстана — Астаны, открыв новую страницу в своем развитии.
+          {$t("in_the_company")}
         </p>
 
         <div className="w-full lg:grid grid-cols-2 gap-12 mt-10 ">
-          <div className="w-full hidden lg:block">
+          <div className="w-full hidden lg:!block">
             <div className="w-full h-[60vh] bg-blue p-6 rounded-[16px] relative">
               <h4 className="text-[30px] text-white w-full max-w-[289px] font-medium leading-normal">
-                Углубитесь в нашу историю
+                {$t("delve_into_our_history")}
               </h4>
               <img
                 src="/img/image-bg-def.svg"

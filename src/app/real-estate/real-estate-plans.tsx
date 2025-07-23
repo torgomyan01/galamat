@@ -18,11 +18,23 @@ function RealEstatePlans({ projectsIds }: IThisProps) {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   useEffect(() => {
+    const _filterParams: any = { ...filterParams };
+
+    if (!_filterParams.projectId) {
+      delete _filterParams["projectId"];
+    }
+
+    if (!_filterParams.houseId) {
+      delete _filterParams["houseId"];
+    } else {
+      _filterParams.houseId = [filterParams.houseId];
+    }
+
     ActionGetProjectsProperty("/plan", {
       isArchive: false,
       status: ["AVAILABLE"],
       projectIds: projectsIds,
-      ...filterParams,
+      ..._filterParams,
     }).then((result) => {
       const data: IPlan[] = result.data;
       setPlans(data);

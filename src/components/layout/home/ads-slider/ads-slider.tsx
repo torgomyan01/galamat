@@ -1,32 +1,36 @@
+"use client";
+
 import "./ads-slider.scss";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/pagination";
-import { Autoplay, Pagination } from "swiper/modules";
 
-import LeftSlider from "@/components/layout/home/ads-slider/left-slider";
 import Image from "next/image";
 import Link from "next/link";
-import { filesLink } from "@/utils/consts";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+
+import LeftSlider from "@/components/layout/home/ads-slider/left-slider";
 import { ActionGetSlidersFade } from "@/app/actions/admin/pages/home/slider-fade/get-sliders-fade";
+import { filesLink } from "@/utils/consts";
 
 function AdsSlider() {
   const activeLang = useSelector(
     (state: IStateTranslate) => state.translateSite.selectedLang,
   );
 
-  const [items, setItems] = useState<ISliderItem[] | null>(null);
+  const [items, setItems] = useState<ISliderItem[]>([]);
 
-  useEffect(getSliders, []);
-
-  function getSliders() {
+  useEffect(() => {
     ActionGetSlidersFade("slider-carousel").then(({ data }) => {
       setItems(data as ISliderItem[]);
     });
-  }
+  }, []);
+
+  // Flatten all slide items from children
+  const allSlides = items.flatMap((item) => item.children ?? []);
 
   return (
     <div className="info-block">
@@ -34,36 +38,42 @@ function AdsSlider() {
         <div className="info">
           <LeftSlider />
 
-          <Swiper
-            modules={[Pagination, Autoplay]}
-            spaceBetween={50}
-            slidesPerView={1}
-            loop={true}
-            autoplay={{
-              delay: 3000,
-              disableOnInteraction: false,
-            }}
-            pagination={{ clickable: true }}
-            className="info-swiper rounded-[16px] overflow-hidden"
-          >
-            {items?.map((item: ISliderItem) => (
-              <>
-                {item.children?.map((sliderItem) => (
+          {allSlides.length > 1 && (
+            <Swiper
+              modules={[Pagination, Autoplay]}
+              spaceBetween={30}
+              slidesPerView={1}
+              loop={true}
+              autoplay={{
+                delay: 3000,
+                disableOnInteraction: false,
+              }}
+              pagination={{ clickable: true }}
+              className="info-swiper rounded-[16px] overflow-hidden"
+            >
+              {allSlides.map((sliderItem) => {
+                const imagePath = sliderItem.children?.find(
+                  (child) => child.lang_key === activeLang,
+                )?.image_path;
+
+                return (
                   <SwiperSlide key={`home-slider-ads-${sliderItem.id}`}>
                     <Link href={sliderItem.url} className="w-full h-auto">
-                      <Image
-                        className="w-full h-full object-cover rounded-[20px]"
-                        src={`${filesLink}${sliderItem.children?.find((_child) => _child.lang_key === activeLang)?.image_path}`}
-                        alt="У нас есть новый офис"
-                        width={1000}
-                        height={700}
-                      />
+                      {imagePath && (
+                        <Image
+                          className="w-full h-full object-cover rounded-[20px]"
+                          src={`${filesLink}${imagePath}`}
+                          alt="Слайд"
+                          width={1000}
+                          height={700}
+                        />
+                      )}
                     </Link>
                   </SwiperSlide>
-                ))}
-              </>
-            ))}
-          </Swiper>
+                );
+              })}
+            </Swiper>
+          )}
         </div>
       </div>
     </div>

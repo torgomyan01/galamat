@@ -7,13 +7,27 @@ import React, { useEffect, useState } from "react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
 import { ActionGetProjectInfo } from "@/app/actions/admin/projects/get-project-info";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 interface IThisProps {
   property: IProperty | null;
 }
 
 function BoxItemChess({ property }: IThisProps) {
+  const filterParams = useSelector(
+    (state: IFilterParamsState) => state.filterParams.params,
+  );
+
   const [modalViewProperty, setModalViewProperty] = useState(false);
+  const [floor, setFloor] = useState<IFloor | null>(null);
+  const [selectedFullPlan, setSelectedFullPlan] = useState<{
+    plan: IPlan;
+    property: IProperty;
+  } | null>(null);
+
+  const [ourProjectDbInfo, serOurProjectDbInfo] = useState<IProjectData | null>(
+    null,
+  );
 
   function PrintTypePurpose(_property: IProperty) {
     if (_property.typePurpose === "residential") {
@@ -28,18 +42,8 @@ function BoxItemChess({ property }: IThisProps) {
     if (_property.typePurpose === "parking") {
       return "парковка";
     }
+    return "";
   }
-
-  const [floor, setFloor] = useState<IFloor | null>(null);
-
-  const [selectedFullPlan, setSelectedFullPlan] = useState<{
-    plan: IPlan;
-    property: IProperty;
-  } | null>(null);
-
-  const [ourProjectDbInfo, serOurProjectDbInfo] = useState<IProjectData | null>(
-    null,
-  );
 
   useEffect(() => {
     if (selectedFullPlan) {
@@ -49,8 +53,22 @@ function BoxItemChess({ property }: IThisProps) {
     }
   }, [selectedFullPlan]);
 
+  if (!property) {
+    return (
+      <div className="bg-transparent w-8 sm:w-12 h-8 sm:h-12 flex-jc-c mb-4 text-white rounded-[6px]" />
+    );
+  }
+
+  const checkRooms = !filterParams.rooms.includes(property.rooms_amount || 0);
+  const isHidden =
+    checkRooms ||
+    filterParams["area[min]"] >= property.area.area_total ||
+    filterParams["area[max]"] <= property.area.area_total ||
+    filterParams["price[min]"] >= property.price.value ||
+    filterParams["price[max]"] <= property.price.value;
+
   function OpenModalViewInfo() {
-    if (property && property.status === "AVAILABLE") {
+    if (property && property.status === "AVAILABLE" && !isHidden) {
       setModalViewProperty(true);
 
       ActionGetProjectsProperty("/plan", {
@@ -69,7 +87,6 @@ function BoxItemChess({ property }: IThisProps) {
         const fontFloor = result.find((floor: any) =>
           floor.areas.some((_a: any) => _a.propertyId === property.id),
         );
-
         if (fontFloor) {
           setFloor(fontFloor);
         }
@@ -77,58 +94,51 @@ function BoxItemChess({ property }: IThisProps) {
     }
   }
 
+  const baseClasses = clsx(
+    "bg-blue w-8 sm:w-12 h-8 sm:h-12 flex-jc-c mb-4 text-white rounded-[6px] cursor-pointer hover:opacity-90 transition",
+    {
+      "!bg-blue": property.status === "AVAILABLE",
+      "!bg-[#f69f13]": property.status === "BOOKED",
+      "!bg-[#a7a7a7]": property.status === "UNAVAILABLE",
+      "!bg-[#ce2432]": property.status === "SOLD",
+      "!cursor-default":
+        property.status === "SOLD" || property.status === "UNAVAILABLE",
+      "!opacity-30 !cursor-default": isHidden,
+    },
+  );
+
+  const boxContent = (
+    <div className={baseClasses} onClick={OpenModalViewInfo}>
+      {property.rooms_amount}
+    </div>
+  );
+
   return (
     <>
-      {property ? (
+      {isHidden ? (
+        boxContent
+      ) : (
         <Tooltip
           content={
             <div className="px-1 py-2">
-              {property ? (
-                <>
-                  <div className="w-full flex-js-c">
-                    <div className="w-8 h-8 bg-blue rounded-[6px] flex-jc-c text-white mr-2">
-                      {property.rooms_amount}
-                    </div>
-                    {PrintTypePurpose(property)}
-                  </div>
-
-                  <div className="mt-4 text-[25px] font-medium">
-                    {formatKzt(property.price.value)}
-                  </div>
-
-                  <div className="mt-2">{property.area.area_total}/м²</div>
-                </>
-              ) : null}
+              <div className="w-full flex-js-c">
+                <div className="w-8 h-8 bg-blue rounded-[6px] flex-jc-c text-white mr-2">
+                  {property.rooms_amount}
+                </div>
+                {PrintTypePurpose(property)}
+              </div>
+              <div className="mt-4 text-[25px] font-medium">
+                {formatKzt(property.price.value)}
+              </div>
+              <div className="mt-2">{property.area.area_total}/м²</div>
             </div>
           }
         >
-          <div
-            className={clsx(
-              "bg-blue w-8 sm:w-12 h-8 sm:h-12 flex-jc-c mb-4 text-white rounded-[6px] cursor-pointer hover:opacity-90 transition",
-              {
-                "!bg-blue": property?.status === "AVAILABLE",
-                "!bg-[#f69f13]": property?.status === "BOOKED",
-                "!bg-[#a7a7a7]": property?.status === "UNAVAILABLE",
-                "!bg-[#ce2432]": property?.status === "SOLD",
-                "!cursor-default":
-                  property?.status === "SOLD" ||
-                  property?.status === "UNAVAILABLE",
-              },
-            )}
-            onClick={OpenModalViewInfo}
-          >
-            {property ? (
-              property.rooms_amount
-            ) : (
-              <Spinner size="sm" color="white" />
-            )}
-          </div>
+          {boxContent}
         </Tooltip>
-      ) : (
-        <div className="bg-transparent w-8 sm:w-12 h-8 sm:h-12 flex-jc-c mb-4 text-white rounded-[6px]" />
       )}
 
-      {modalViewProperty ? (
+      {modalViewProperty && (
         <Modal
           size="full"
           isOpen={modalViewProperty}
@@ -149,43 +159,26 @@ function BoxItemChess({ property }: IThisProps) {
                               {floor.areas.length}-комнатная квартира
                             </span>
                             <span className="status">Свободно</span>
-                            {ourProjectDbInfo?.file_url ? (
+                            {ourProjectDbInfo?.file_url && (
                               <Link
-                                href={ourProjectDbInfo?.file_url}
+                                href={ourProjectDbInfo.file_url}
                                 download=""
                                 target="_blank"
                                 className="download"
                               >
                                 <img src="/img/download-icon.svg" alt="" />
                               </Link>
-                            ) : null}
-                            {ourProjectDbInfo?.page_url ? (
+                            )}
+                            {ourProjectDbInfo?.page_url && (
                               <Link
-                                href={ourProjectDbInfo?.page_url}
+                                href={ourProjectDbInfo.page_url}
                                 className="view"
                                 target="_blank"
                               >
                                 Смотреть проект
                               </Link>
-                            ) : null}
+                            )}
                           </div>
-                          {/*<div className="apartment-info">*/}
-                          {/*  <h4>Преимущества квартиры:</h4>*/}
-                          {/*  <div className="items">*/}
-                          {/*    <div className="item">*/}
-                          {/*      <img src="img/apartment-img1.svg" alt="" />*/}
-                          {/*      <span>Кухня- гостинная</span>*/}
-                          {/*    </div>*/}
-                          {/*    <div className="item">*/}
-                          {/*      <img src="img/apartment-img2.svg" alt="" />*/}
-                          {/*      <span>Готовый ремонт</span>*/}
-                          {/*    </div>*/}
-                          {/*    <div className="item">*/}
-                          {/*      <img src="img/apartment-img3.svg" alt="" />*/}
-                          {/*      <span>Солнечная сторона</span>*/}
-                          {/*    </div>*/}
-                          {/*  </div>*/}
-                          {/*</div>*/}
                         </div>
                         <div className="img-wrap">
                           <img
@@ -206,7 +199,7 @@ function BoxItemChess({ property }: IThisProps) {
             </ModalBody>
           </ModalContent>
         </Modal>
-      ) : null}
+      )}
     </>
   );
 }

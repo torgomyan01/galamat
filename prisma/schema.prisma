@@ -9,7 +9,7 @@ datasource db {
 
 model languages {
   id        Int     @id @default(autoincrement())
-  name      String  @db.VarChar(250)
+  name      String  @db.Text
   key       String? @db.VarChar(250)
   parent_id String? @db.VarChar(10)
 }
@@ -72,6 +72,6 @@ model probabilities {
 
 model property {
   id          Int  @id @default(autoincrement())
-  property_id Int  @unique
+  property_id Int
   data        Json
 }

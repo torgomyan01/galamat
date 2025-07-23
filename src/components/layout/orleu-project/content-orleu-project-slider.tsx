@@ -23,6 +23,15 @@ const images = [
   "/img/halls-img6.png",
 ];
 
+const imagesMax = [
+  "/img/halls-img1-max.jpg",
+  "/img/halls-img2-max.jpg",
+  "/img/halls-img3-max.jpg",
+  "/img/halls-img4-max.jpg",
+  "/img/halls-img5-max.jpg",
+  "/img/halls-img6-max.jpg",
+];
+
 function ContentOrleuProjectSlider() {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -71,7 +80,7 @@ function ContentOrleuProjectSlider() {
         thumbnail={true}
         elementClassNames="hidden"
       >
-        {images.map((image, i) => (
+        {imagesMax.map((image, i) => (
           <a key={`lg-item-${i}`} data-src={image}>
             <Image
               src={image}

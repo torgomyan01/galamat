@@ -42,11 +42,24 @@ function TableEstate({ projectsIds }: IThisProps) {
 
   useEffect(() => {
     setLoading(true);
+
+    const _filterParams: any = { ...filterParams };
+
+    if (!_filterParams.projectId) {
+      delete _filterParams["projectId"];
+    }
+
+    if (!_filterParams.houseId) {
+      delete _filterParams["houseId"];
+    } else {
+      _filterParams.houseId = [filterParams.houseId];
+    }
+
     ActionGetProjectsProperty("/property", {
       isArchive: false,
       status: ["AVAILABLE"],
       projectIds: projectsIds,
-      ...filterParams,
+      ..._filterParams,
     })
       .then((result) => {
         const data: IProperty[] = result.data;

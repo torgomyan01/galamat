@@ -15,6 +15,8 @@ import { Modal, ModalBody, ModalContent } from "@heroui/modal";
 import SendRequest from "@/components/layout/orleu-project/send-request";
 import OreluMobileHeader from "@/components/layout/orleu-project/orelu-mobile-header";
 import ContentOrleuProjectSliderMobile from "@/components/layout/orleu-project/content-orleu-project-slider-mobile";
+import Link from "next/link";
+import { SITE_URL } from "@/utils/consts";
 
 function OrleuProject() {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,8 +26,8 @@ function OrleuProject() {
       <div className="w-full h-full bg-white pt-5">
         <div className="wrapper">
           <div className="breadcrumbs">
-            <a href="#">Главная</a>
-            <a href="#">Проекты</a>
+            <Link href={SITE_URL.HOME}>Главная</Link>
+            <Link href={SITE_URL.PROJECT}>Проекты</Link>
             <span>ЖК Orleu</span>
           </div>
         </div>

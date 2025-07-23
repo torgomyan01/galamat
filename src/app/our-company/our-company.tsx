@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SITE_URL } from "@/utils/consts";
 import Link from "next/link";
 import HistorySection from "@/components/common/history-section/history-section";
+import { useTranslate } from "@/hooks/useTranslate";
 
 const sliderHero = [
   {
@@ -45,6 +46,8 @@ interface IThisProps {
 function OurCompany({ houses, housesDataAdmin }: IThisProps) {
   const dispatch = useDispatch();
 
+  const $t = useTranslate();
+
   const mergeProjectProfitDb: IProjectMerged[] = mergeComplexesWithProjects(
     houses,
     housesDataAdmin,
@@ -67,16 +70,10 @@ function OurCompany({ houses, housesDataAdmin }: IThisProps) {
       <div className="why-us-wrap">
         <div className="wrapper">
           <div className="why-us-info">
-            <h2>Почему мы?</h2>
-            <p>
-              Galamat обладает 20-летним опытом успешной деятельности в сфере
-              строительства на территории Республики Казахстан. Компания
-              заслуженно входит в число ведущих девелоперов столицы и ежегодно
-              демонстрирует устойчивый рост, реализуя проекты, направленные на
-              повышение качества жизни граждан.
-            </p>
+            <h2>{$t("why_us_")}</h2>
+            <p>{$t("galamat_has_20_years_of")}</p>
             <Link href={SITE_URL.PROJECT} className="red-btn">
-              Купить квартиру
+              {$t("buy_an_apartment")}
             </Link>
 
             <div className="w-[calc(100%-20px)] lg:w-full">
@@ -86,7 +83,7 @@ function OurCompany({ houses, housesDataAdmin }: IThisProps) {
                 slidesPerView={4}
                 loop={true}
                 autoplay={{
-                  delay: 5000,
+                  delay: 8000,
                   disableOnInteraction: false,
                 }}
                 pagination={{ clickable: true }}
@@ -120,32 +117,33 @@ function OurCompany({ houses, housesDataAdmin }: IThisProps) {
 
       <div className="benefits-buying !mt-[60px]">
         <div className="wrapper">
-          <h2>Приемущества покупки квартир в у нас</h2>
+          <h2>{$t("advantages_of_buying")}</h2>
           <div className="benefits-items">
             <a href="#" className="benefits-item item1">
               <span className="text">
-                Квартиры <br />с повышенной комфортностью
+                {$t("apartments__")} <br /> {$t("with_increased_comfort")}
               </span>
               <img src="/img/benefits-img.svg" alt="" />
             </a>
             <a href="#" className="benefits-item item2">
               <span className="text">
-                Доступные <br />
-                цены
+                {$t("available")}
+                <br />
+                {$t("prices")}
               </span>
               <img src="/img/benefits-img.svg" alt="" />
             </a>
             <a href="#" className="benefits-item item3">
-              <span className="text">Квартира с техникой и шкафами</span>
+              <span className="text">{$t("apartment_with_appliances")}</span>
               <img src="/img/benefits-img.svg" alt="" />
             </a>
             <a href="#" className="benefits-item item4">
-              <span className="text">Всегда сдаем вовремя</span>
+              <span className="text">{$t("we_always_deliver_on_time")}</span>
               <img src="/img/benefits-img.svg" alt="" />
             </a>
             <a href="#" className="benefits-item item5">
               <span className="text">
-                Профессиональная управляющая компания
+                {$t("professional_management_company")}
               </span>
               <img src="/img/benefits-img.svg" alt="" />
             </a>
@@ -155,7 +153,7 @@ function OurCompany({ houses, housesDataAdmin }: IThisProps) {
 
       <div className="completed-projects !mt-[60px]">
         <div className="wrapper">
-          <h2>Реалезованные проекты</h2>
+          <h2>{$t("completed_projects")}</h2>
 
           <Swiper
             modules={[Autoplay]}
