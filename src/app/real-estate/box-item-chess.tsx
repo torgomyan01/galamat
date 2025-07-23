@@ -59,7 +59,9 @@ function BoxItemChess({ property }: IThisProps) {
     );
   }
 
-  const checkRooms = !filterParams.rooms.includes(property.rooms_amount || 0);
+  const _checkR = filterParams.rooms.includes(property.rooms_amount || 0);
+
+  const checkRooms = filterParams.rooms.length ? !_checkR : _checkR;
   const isHidden =
     checkRooms ||
     filterParams["area[min]"] >= property.area.area_total ||
