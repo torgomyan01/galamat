@@ -25,6 +25,7 @@ export const SITE_URL = {
   ADMIN_LOGIN: "admin/login",
   ADMIN_PAGES: "admin/pages",
   ADMIN_PAGES_HOME: "home",
+  ADMIN_PAGES_COMPANY: "company",
   ADMIN_PROJECTS: "admin/projects",
   ADMIN_LOTTERY: "admin/lottery",
   ADMIN_PROJECTS_HOUSES: "admin/projects/houses",

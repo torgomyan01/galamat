@@ -75,3 +75,9 @@ model property {
   property_id Int
   data        Json
 }
+
+model pages_sections {
+  id        Int    @id @default(autoincrement())
+  key       String @db.VarChar(255)
+  body_json Json?
+}

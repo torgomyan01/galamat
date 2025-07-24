@@ -33,7 +33,6 @@ export async function StartParsing() {
                 where: { id: existing.id },
                 data: { data },
               });
-              console.log(`🔁 Updated property_id: ${propertyId}`);
             } else {
               await prisma.property.create({
                 data: {
@@ -52,7 +51,6 @@ export async function StartParsing() {
 
     return 1;
   } catch (error) {
-    console.error("❌ Cron initialization error:", error);
-    return 0;
+    return error;
   }
 }

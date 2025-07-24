@@ -265,30 +265,37 @@ function DrawerViewPlansAndItems({
                   <div className="popup-body h-full">
                     <div className="info h-full">
                       <div className="w-full flex-js-s md:flex-jsb-e gap-6 pr-6 flex-col md:flex-row">
-                        <div className="texts w-[400px]">
-                          <div className="top-info">
-                            <h2>ЖК {selectedFullPlan.property.projectName}</h2>
-                            <span className="nomer">
+                        <div className="texts w-full">
+                          <div className="top-info w-full">
+                            <div className="flex-jsb-c w-full">
+                              <div className="flex-js-c gap-4">
+                                <h2>
+                                  ЖК {selectedFullPlan.property.projectName}
+                                </h2>
+                                <span className="status !mb-1">Свободно</span>
+                              </div>
+
+                              {ourProjectDbInfo?.page_url ? (
+                                <Link
+                                  href={ourProjectDbInfo?.page_url}
+                                  className="view"
+                                  target="_blank"
+                                >
+                                  Смотреть проект
+                                </Link>
+                              ) : null}
+                            </div>
+                            <span className="nomer !max-w-full">
                               {selectedPlan.areas.length}-комнатная квартира
                             </span>
-                            <span className="status">Свободно</span>
                             {ourProjectDbInfo?.file_url ? (
                               <Link
-                                href={ourProjectDbInfo?.file_url}
-                                download=""
+                                href={selectedFullPlan.plan.image.big}
                                 target="_blank"
                                 className="download"
+                                download={`${selectedFullPlan.property.projectName}-${selectedFullPlan.property.id}.jpeg`}
                               >
                                 <img src="/img/download-icon.svg" alt="" />
-                              </Link>
-                            ) : null}
-                            {ourProjectDbInfo?.page_url ? (
-                              <Link
-                                href={ourProjectDbInfo?.page_url}
-                                className="view"
-                                target="_blank"
-                              >
-                                Смотреть проект
                               </Link>
                             ) : null}
                           </div>

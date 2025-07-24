@@ -1,7 +1,5 @@
 "use server";
 
-import { fetchHouses } from "@/lib/getHouses";
-import { ActionGetProjectsInfo } from "@/app/actions/projects/get-projects";
 import OurCompany from "@/app/our-company/our-company";
 
 export async function generateMetadata() {
@@ -11,17 +9,7 @@ export async function generateMetadata() {
 }
 
 async function Requests() {
-  const [housesData, housesDataAdmin] = await Promise.all([
-    fetchHouses(),
-    ActionGetProjectsInfo(),
-  ]);
-
-  return (
-    <OurCompany
-      houses={housesData as IProjectStage[]}
-      housesDataAdmin={housesDataAdmin.data as IProjectData[]}
-    />
-  );
+  return <OurCompany />;
 }
 
 export default Requests;

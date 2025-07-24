@@ -6,9 +6,10 @@ import { addToast } from "@heroui/react";
 
 interface IThisProps {
   projects: IProjectMerged[];
+  fakeItem?: number;
 }
 
-function Facade({ projects }: IThisProps) {
+function Facade({ projects, fakeItem = 0 }: IThisProps) {
   const [project, setProject] = useState<IProjectMerged | null>(null);
   const [objectInfo, setObjectInfo] = useState<IObjectData | null>(null);
 
@@ -56,6 +57,21 @@ function Facade({ projects }: IThisProps) {
             </div>
             <div className="px-2 py-4 pb-0">
               <h2 className="font-medium text-[24px]">{project.title}</h2>
+            </div>
+          </div>
+        ))}
+
+        {Array.from({ length: fakeItem }).map((_, i) => (
+          <div
+            key={`project-fake-${i}`}
+            className="w-full bg-white p-4 rounded-[12px] cursor-pointer group"
+          >
+            <div className="w-full h-[350px] relative rounded-[10px] overflow-hidden">
+              <img
+                src="/img/soon.png"
+                alt="house image"
+                className="w-full h-full object-cover transition group-hover:scale-[1.02]"
+              />
             </div>
           </div>
         ))}

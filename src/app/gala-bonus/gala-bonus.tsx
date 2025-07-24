@@ -159,13 +159,13 @@ function GalaBonus() {
           <div className="wrapper">
             <div className="bonus-info">
               <div className="texts">
-                <Fade direction="left" triggerOnce delay={3000}>
+                <Fade direction="left" triggerOnce delay={2000}>
                   <h1>Gala Bonus</h1>
                 </Fade>
-                <Fade direction="left" triggerOnce delay={3200}>
+                <Fade direction="left" triggerOnce delay={2200}>
                   <p>{$t("gala_description")}</p>
                 </Fade>
-                <Fade direction="left" triggerOnce delay={3400}>
+                <Fade direction="left" triggerOnce delay={2400}>
                   <Button
                     onPress={() => setModalCheckPhone(true)}
                     className="red-btn"

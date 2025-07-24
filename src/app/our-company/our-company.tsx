@@ -1,19 +1,18 @@
 "use client";
-import { formatKzt, mergeComplexesWithProjects } from "@/utils/helpers";
 
 import MainTemplate from "@/components/common/main-template/main-template";
-import React from "react";
+import React, { useState } from "react";
 import "./_why-us.scss";
 import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
-import { setChangeParams } from "@/redux/filter";
-import { useDispatch, useSelector } from "react-redux";
 import { SITE_URL } from "@/utils/consts";
 import Link from "next/link";
 import HistorySection from "@/components/common/history-section/history-section";
 import { useTranslate } from "@/hooks/useTranslate";
+import Image from "next/image";
+import CompletedProjects from "@/app/our-company/completed-projects";
 
 const sliderHero = [
   {
@@ -38,32 +37,10 @@ const sliderHero = [
   },
 ];
 
-interface IThisProps {
-  houses: IProjectStage[];
-  housesDataAdmin: IProjectData[];
-}
-
-function OurCompany({ houses, housesDataAdmin }: IThisProps) {
-  const dispatch = useDispatch();
-
+function OurCompany() {
   const $t = useTranslate();
 
-  const mergeProjectProfitDb: IProjectMerged[] = mergeComplexesWithProjects(
-    houses,
-    housesDataAdmin,
-  ).filter((project) => !project.hide);
-
-  const filterParams = useSelector(
-    (state: IFilterParamsState) => state.filterParams.params,
-  );
-
-  function ChangeParams(key: string, value: string | number) {
-    const _filterParams: any = { ...filterParams };
-
-    _filterParams[key] = value;
-
-    dispatch(setChangeParams(_filterParams));
-  }
+  const [siccessHistory, setSongHistory] = useState<boolean>(false);
 
   return (
     <MainTemplate>
@@ -119,92 +96,67 @@ function OurCompany({ houses, housesDataAdmin }: IThisProps) {
         <div className="wrapper">
           <h2>{$t("advantages_of_buying")}</h2>
           <div className="benefits-items">
-            <a href="#" className="benefits-item item1">
-              <span className="text">
-                {$t("apartments__")} <br /> {$t("with_increased_comfort")}
-              </span>
-              <img src="/img/benefits-img.svg" alt="" />
-            </a>
-            <a href="#" className="benefits-item item2">
-              <span className="text">
-                {$t("available")}
-                <br />
-                {$t("prices")}
-              </span>
-              <img src="/img/benefits-img.svg" alt="" />
-            </a>
-            <a href="#" className="benefits-item item3">
+            <div className="benefits-item item1">
+              <span className="text">{$t("with_increased_comfort")}</span>
+              <Image
+                src="/img/our-company/best-locations-in-capital-city.png"
+                alt=""
+                width={600}
+                height={300}
+                className="absolute right-0 bottom-0"
+              />
+            </div>
+            <div className="benefits-item item2">
+              <span className="text">{$t("available")}</span>
+              <Image
+                src="/img/our-company/affordable-prices.png"
+                alt=""
+                width={500}
+                height={400}
+                className="absolute right-0 bottom-0 w-[90%] h-auto"
+              />
+            </div>
+            <div className="benefits-item item3">
               <span className="text">{$t("apartment_with_appliances")}</span>
-              <img src="/img/benefits-img.svg" alt="" />
-            </a>
-            <a href="#" className="benefits-item item4">
-              <span className="text">{$t("we_always_deliver_on_time")}</span>
-              <img src="/img/benefits-img.svg" alt="" />
-            </a>
-            <a href="#" className="benefits-item item5">
-              <span className="text">
+              <Image
+                src="/img/our-company/loyalty-program.png"
+                alt=""
+                width={500}
+                height={500}
+                className="absolute right-[-20px] bottom-[-50px] w-[280px] lg:min-w-[120%] h-auto"
+              />
+            </div>
+            <div className="benefits-item item4">
+              <span className="text w-full !max-w-[150px]">
+                {$t("we_always_deliver_on_time")}
+              </span>
+              <Image
+                src="/img/our-company/we-always-deliver-on-time.png"
+                alt=""
+                width={500}
+                height={500}
+                className="absolute right-0 top-0 w-full h-full object-cover"
+              />
+            </div>
+            <div className="benefits-item item5">
+              <span className="text w-full !max-w-[200px]">
                 {$t("professional_management_company")}
               </span>
-              <img src="/img/benefits-img.svg" alt="" />
-            </a>
+              <Image
+                src="/img/our-company/face-id-and-smart-locks.jpg"
+                alt=""
+                width={500}
+                height={500}
+                className="absolute right-0 top-0 w-full max-w-[400px] h-full object-cover object-center"
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="completed-projects !mt-[60px]">
-        <div className="wrapper">
-          <h2>{$t("completed_projects")}</h2>
+      <CompletedProjects onSuccess={(val) => setSongHistory(val)} />
 
-          <Swiper
-            modules={[Autoplay]}
-            spaceBetween={16}
-            slidesPerView={3}
-            loop={true}
-            autoplay={{
-              delay: 5000,
-              disableOnInteraction: false,
-            }}
-            pagination={{ clickable: true }}
-            className="completed-projects-swiper w-full"
-            breakpoints={{
-              300: {
-                slidesPerView: 1,
-                spaceBetween: 0,
-              },
-              768: {
-                slidesPerView: 2,
-                spaceBetween: 16,
-              },
-              1024: {
-                slidesPerView: 3,
-                spaceBetween: 16,
-              },
-            }}
-          >
-            {mergeProjectProfitDb.map((item, i) => (
-              <SwiperSlide key={`home-ads-${i}`}>
-                <Link
-                  href={SITE_URL.REAL_ESTATE}
-                  className="completed-projects-item cursor-pointer"
-                  onClick={() => ChangeParams("projectId", item.project_id)}
-                >
-                  <span
-                    className="img-wrap"
-                    style={{
-                      backgroundImage: `url(${item.images[0]?.url || ""})`,
-                    }}
-                  />
-                  <b className="name">ЖК {item.title}</b>
-                  <span className="address">{item.address}</span>
-                  <span className="date">от {formatKzt(item.min_price)}</span>
-                </Link>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-      </div>
-
-      <HistorySection />
+      {siccessHistory ? <HistorySection /> : null}
     </MainTemplate>
   );
 }

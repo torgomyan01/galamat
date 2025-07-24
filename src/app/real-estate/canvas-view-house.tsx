@@ -482,7 +482,7 @@ function CanvasViewHouse({ objectInfo, house, onClose }: IThisProps) {
         </div>
 
         <i
-          className="fa-light fa-xmark absolute top-6 right-6 text-[30px] text-black/60 hover:text-black cursor-pointer z-[1000000000]"
+          className="fa-light fa-xmark bg-white w-[40px] h-[40px] rounded-full flex-jc-c absolute top-6 right-6 text-[30px] text-black/60 hover:text-black cursor-pointer z-[1000000000]"
           onClick={CloseModal}
         />
       </div>

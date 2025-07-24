@@ -1,6 +1,5 @@
 import "./why-us.scss";
 import { Fade } from "react-awesome-reveal";
-import clsx from "clsx";
 import { useTranslate } from "@/hooks/useTranslate";
 
 function WhyUs() {
@@ -32,12 +31,7 @@ function WhyUs() {
           <div className="info-items">
             <Fade cascade direction="up" damping={0.4} triggerOnce>
               {dataWhyUs.map((item, index) => (
-                <div
-                  key={`why-${index}`}
-                  className={clsx("info-item", {
-                    active: index === 0,
-                  })}
-                >
+                <div key={`why-${index}`} className="info-item">
                   <h2>{item.title}</h2>
                   <h3>{item.text}</h3>
                 </div>

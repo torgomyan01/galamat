@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import clsx from "clsx";
@@ -18,52 +18,65 @@ function HistorySection() {
   const items = [
     {
       year: 2018,
+      image: "2018.webp",
       title: $t("of_the_story"),
       text: $t("the_company_made_a_strategic"),
     },
     {
-      year: 2018,
-      title: $t("first_project"),
-      text: $t("this_year_the_company_i"),
-    },
-    {
       year: 2019,
+      image: "2019.webp",
       title: "",
       text: $t("the_residential_complex"),
     },
     {
-      year: 2020,
-      title: "",
-      text: $t("two_residential_complexes"),
-    },
-    {
       year: 2021,
+      image: "2021.webp",
       title: "",
       text: $t("two_residential_complexes"),
     },
     {
       year: 2022,
+      image: "2022.webp",
       title: "",
       text: $t("the_company_continued__"),
     },
     {
       year: 2023,
+      image: "2023.webp",
       title: "",
       text: $t("the_year_was_memorable_for"),
     },
     {
       year: 2024,
+      image: "2024.webp",
       title: "",
       text: $t("the_tengri_residential_complex"),
     },
     {
       year: 2025,
+      image: "2025.webp",
       title: "",
       text: $t("the_company_continued_to_strengthen"),
     },
   ];
+  const [visibleImage, setVisibleImage] = useState<string | null>(null);
 
   const [activeItem, setActiveItem] = useState<number>(0);
+
+  useEffect(() => {
+    const current = items[activeItem - 1]?.image;
+    if (!current) {
+      setVisibleImage(items[0].image);
+      return;
+    }
+
+    setVisibleImage(null);
+    const timeout = setTimeout(() => {
+      setVisibleImage(current);
+    }, 50);
+
+    return () => clearTimeout(timeout);
+  }, [activeItem]);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -98,7 +111,6 @@ function HistorySection() {
               return;
             }
 
-            // Նվազեցնում ենք itemStart-ը, կրճատում ենք itemEnd-ը
             const earlyStartOffset = pixelPerItem * 0.25;
             const fasterEndOffset = pixelPerItem * 0.15;
 
@@ -138,15 +150,19 @@ function HistorySection() {
 
         <div className="w-full lg:grid grid-cols-2 gap-12 mt-10 ">
           <div className="w-full hidden lg:!block">
-            <div className="w-full h-[60vh] bg-blue p-6 rounded-[16px] relative">
-              <h4 className="text-[30px] text-white w-full max-w-[289px] font-medium leading-normal">
+            <div className="w-full h-[60vh] bg-blue p-6 rounded-[16px] relative overflow-hidden">
+              <h4 className="text-[30px] text-white w-full max-w-[289px] font-medium leading-normal opacity-0">
                 {$t("delve_into_our_history")}
               </h4>
-              <img
-                src="/img/image-bg-def.svg"
-                alt="image-bg-def.svg"
-                className="absolute left-[50%] top-[50%] transform translate-x-[-50%] translate-y-[-50%]"
-              />
+
+              {visibleImage && (
+                <img
+                  src={`/img/our-company/${visibleImage}`}
+                  alt="history background"
+                  className="absolute left-0 top-0 w-full h-full object-center object-cover fade-in"
+                  key={visibleImage} // կարեւոր է՝ որպեսզի React-ը վերաբեռնի
+                />
+              )}
             </div>
           </div>
 

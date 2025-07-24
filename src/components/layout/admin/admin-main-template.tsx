@@ -56,8 +56,8 @@ const NAVIGATION: Navigation = [
         icon: "",
       },
       {
-        segment: "traffic",
-        title: "Traffic",
+        segment: SITE_URL.ADMIN_PAGES_COMPANY,
+        title: "О компании",
         icon: "",
       },
     ],

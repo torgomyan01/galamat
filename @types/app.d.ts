@@ -463,3 +463,10 @@ declare interface IPlayer {
   verification_code: number;
   winner: number;
 }
+
+declare interface IDataOldProjects {
+  image_url: string;
+  name: string;
+  address: string;
+  date: string;
+}

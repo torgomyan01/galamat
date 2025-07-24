@@ -44,7 +44,7 @@ function LeaveRequest() {
     <div className="leave-request mt-12">
       <div className="wrapper">
         <div className="leave-request-info">
-          <Fade direction="left" className="md:w-[55%]" triggerOnce>
+          <Fade direction="left" className="md:w-[55%] " triggerOnce>
             <div className="info">
               <div className="texts">
                 <h2>{$t("leave_a_request")}</h2>
@@ -52,7 +52,7 @@ function LeaveRequest() {
               </div>
               <div className="img-wrap">
                 <Image
-                  src="/img/leave-request-img.svg"
+                  src="/img/leav-request.png"
                   alt="def image"
                   width={130}
                   height={130}
