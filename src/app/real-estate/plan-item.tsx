@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { formatKzt, getDiscountPrices } from "@/utils/helpers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DiwiderViewPlanInfo from "@/app/real-estate/diwider-view-plan-info";
 import { motionOptionText } from "@/utils/consts";
 import { motion } from "framer-motion";
+import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
 
 interface IThisProps {
   plan: IPlan;
@@ -14,6 +15,16 @@ function PlanItem({ plan, plans }: IThisProps) {
   const getPrice = getDiscountPrices(+plan.priceRange.min);
 
   const [openDrawer, setDrawer] = useState(false);
+
+  const [property, setProperty] = useState<IProperty | null>(null);
+
+  useEffect(() => {
+    ActionGetProjectsProperty("/property", {
+      id: plan.properties[0],
+    }).then(({ data }) => {
+      setProperty(data[0]);
+    });
+  }, []);
 
   return (
     <>
@@ -65,6 +76,7 @@ function PlanItem({ plan, plans }: IThisProps) {
         <div className="infos !mb-0">
           <b>{plan.roomsAmount} ком. кв</b>
           <b>{plan.areaRange.min} м</b>
+          {property ? <b>этаж {property.floor}</b> : null}
         </div>
         {/*<div className="style-btns">*/}
         {/*  <div className="red-btn">Скидка до {getPrice.percent.toFixed()}%</div>*/}
