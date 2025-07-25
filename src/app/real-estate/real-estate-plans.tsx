@@ -78,7 +78,7 @@ function RealEstatePlans({ projectsIds }: IThisProps) {
       {plans ? (
         <>
           <div className="cards">
-            {plans.slice(0, visibleCount).map((plan: IPlan, index) => (
+            {plans.slice(0, visibleCount).map((plan: IPlan) => (
               <PlanItem key={`key-plan-${plan.id}`} plan={plan} plans={plans} />
             ))}
           </div>
