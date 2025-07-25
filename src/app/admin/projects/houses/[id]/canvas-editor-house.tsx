@@ -67,11 +67,10 @@ function CanvasEditorHouse({ objectInfo, house }: IThisProps) {
       status: ["AVAILABLE"],
       houseId: house.id,
     }).then((result) => {
-      console.log(result);
       setFloor(result);
     });
 
-    ActionGetObject(house.id).then((res) => {
+    ActionGetObject(objectInfo.id).then((res) => {
       const Data = [...res.data].map((object) => {
         return {
           id: object.id,
