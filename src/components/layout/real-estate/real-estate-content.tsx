@@ -18,6 +18,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { setHouse, setObjectInfo } from "@/redux/modals";
 import IconShakhmat from "@/components/common/icons/icon-shakhmat";
 import ShakhmatContent from "@/app/real-estate/shakhmat-content";
+import { BreadcrumbItem, Breadcrumbs } from "@heroui/react";
+import { useTranslate } from "@/hooks/useTranslate";
+import { SITE_URL } from "@/utils/consts";
 
 interface IThisProps {
   projects: IProjectMerged[];
@@ -25,6 +28,8 @@ interface IThisProps {
 
 function RealEstateContent({ projects }: IThisProps) {
   const dispatch = useDispatch();
+  const $t = useTranslate();
+
   const [activeTab, setActiveTab] = useState(0);
 
   const projectIds = projects.map((project) => project.project_id);
@@ -75,7 +80,12 @@ function RealEstateContent({ projects }: IThisProps) {
   return (
     <MainTemplate>
       <div className="filter-wrapper">
-        <div className="wrapper !pt-6">
+        <div className="wrapper !pt-1">
+          <Breadcrumbs className="mb-10 text-[14px]">
+            <BreadcrumbItem href={SITE_URL.HOME}>{$t("home__")}</BreadcrumbItem>
+            <BreadcrumbItem>{$t("real_estate")}</BreadcrumbItem>
+          </Breadcrumbs>
+
           <HorizontalFilter
             className={mobileFilter ? "open" : ""}
             projects={projects}

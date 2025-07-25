@@ -36,7 +36,7 @@ function Header({ info = true }: IThisProps) {
     },
     {
       name: $t("bid"),
-      url: SITE_URL.REQUESTS,
+      url: `${SITE_URL.HOME}#leave-request`,
     },
     {
       name: $t("about_company"),
@@ -49,6 +49,10 @@ function Header({ info = true }: IThisProps) {
     {
       name: $t("methods_purchase"),
       url: SITE_URL.METHODS_PURCHASE,
+    },
+    {
+      name: $t("calculator"),
+      url: SITE_URL.CALCULATOR,
     },
   ];
 

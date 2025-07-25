@@ -3,11 +3,12 @@
 import MainTemplate from "@/components/common/main-template/main-template";
 import React, { useState } from "react";
 import ProductItem from "@/components/common/product-item/product-item";
-import { Button } from "@heroui/react";
+import { BreadcrumbItem, Breadcrumbs, Button } from "@heroui/react";
 import clsx from "clsx";
 import { useTranslate } from "@/hooks/useTranslate";
 import "../home/filter-wrapper/filter-wrapper.scss";
 import { mergeComplexesWithProjects } from "@/utils/helpers";
+import { SITE_URL } from "@/utils/consts";
 
 interface IThisProps {
   houses: IProjectStage[];
@@ -33,6 +34,11 @@ function Projects({ houses, housesDataAdmin }: IThisProps) {
   return (
     <MainTemplate>
       <div className="wrapper !pt-10">
+        <Breadcrumbs className="mb-10 text-[14px]">
+          <BreadcrumbItem href={SITE_URL.HOME}>{$t("home__")}</BreadcrumbItem>
+          <BreadcrumbItem>{$t("projects")}</BreadcrumbItem>
+        </Breadcrumbs>
+
         <div
           className={clsx(
             "w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 ",

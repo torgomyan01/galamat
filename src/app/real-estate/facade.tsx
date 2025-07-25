@@ -47,13 +47,15 @@ function Facade({ projects, fakeItem = 0 }: IThisProps) {
             onClick={() => StartViewObject(project)}
           >
             <div className="w-full h-[300px] relative rounded-[10px] overflow-hidden">
-              <Image
-                src={project.images[0]?.url}
-                alt="house image"
-                width={500}
-                height={500}
-                className="w-full h-full object-cover transition group-hover:scale-[1.02]"
-              />
+              {project.images[0] ? (
+                <Image
+                  src={project.images[0]?.url}
+                  alt="house image"
+                  width={500}
+                  height={500}
+                  className="w-full h-full object-cover transition group-hover:scale-[1.02]"
+                />
+              ) : null}
             </div>
             <div className="px-2 py-4 pb-0">
               <h2 className="font-medium text-[24px]">{project.title}</h2>

@@ -41,7 +41,7 @@ function LeaveRequest() {
   }
 
   return (
-    <div className="leave-request mt-12">
+    <div id="leave-request" className="leave-request mt-12">
       <div className="wrapper">
         <div className="leave-request-info">
           <Fade direction="left" className="md:w-[55%] " triggerOnce>

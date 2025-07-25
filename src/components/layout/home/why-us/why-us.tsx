@@ -24,7 +24,7 @@ function WhyUs() {
   ];
 
   return (
-    <div className="why-us md:!mt-[80px]">
+    <div className="why-us !mt-6 md:!mt-[80px]">
       <div className="wrapper">
         <h2 className="main-title">{$t("why_us_")}</h2>
         <div className="info">

@@ -18,6 +18,7 @@ export const SITE_URL = {
   PROJECTS: "/projects",
   REAL_ESTATE: "/real-estate",
   PROJECT: "/project",
+  CALCULATOR: "/calculator",
   ORLEU_PROJECT: "/orleu-project",
   ORLEU_PROJECT_PANORAMA: "/orleu-project/360",
   ADMIN: "admin",
@@ -39,6 +40,17 @@ export const localStorageKeys = {
   userAdmin: "userAdmin",
   languages: "languages",
   cookieComplete: "cookieComplete",
+};
+
+export const motionOptionText = {
+  init: {
+    opacity: 0,
+    y: "30px",
+  },
+  animate: {
+    opacity: 1,
+    y: 0,
+  },
 };
 
 export const all = "Все";

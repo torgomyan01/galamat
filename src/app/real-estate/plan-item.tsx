@@ -2,6 +2,8 @@ import Image from "next/image";
 import { formatKzt, getDiscountPrices } from "@/utils/helpers";
 import { useState } from "react";
 import DiwiderViewPlanInfo from "@/app/real-estate/diwider-view-plan-info";
+import { motionOptionText } from "@/utils/consts";
+import { motion } from "framer-motion";
 
 interface IThisProps {
   plan: IPlan;
@@ -15,7 +17,16 @@ function PlanItem({ plan, plans }: IThisProps) {
 
   return (
     <>
-      <div className="card">
+      <motion.div
+        initial="init"
+        whileInView="animate"
+        transition={{
+          duration: 0.5,
+        }}
+        viewport={{ once: true, amount: 0.1 }}
+        variants={motionOptionText}
+        className="card"
+      >
         <span className="name">ЖК {plan.projectName}</span>
         <span className="date">{plan.address.full}</span>
         <div
@@ -30,14 +41,26 @@ function PlanItem({ plan, plans }: IThisProps) {
           />
         </div>
         <div className="prices">
-          <span className="new-price">{formatKzt(getPrice.present)} </span>
+          <motion.span
+            initial={{ scale: 1 }}
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 1.5 }}
+            className="new-price"
+          >
+            {formatKzt(getPrice.present)}{" "}
+          </motion.span>
           {/*<span className="old-price">{formatPrice(getPrice.previous)}</span>*/}
         </div>
         <div className="ipoteka">
           <span className="grey">Цена за м²</span>
-          <span className="blue">
+          <motion.span
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
+            className="blue"
+          >
             {formatKzt(+plan.priceRange.min / +plan.areaRange.min)}
-          </span>
+          </motion.span>
         </div>
         <div className="infos !mb-0">
           <b>{plan.roomsAmount} ком. кв</b>
@@ -47,7 +70,7 @@ function PlanItem({ plan, plans }: IThisProps) {
         {/*  <div className="red-btn">Скидка до {getPrice.percent.toFixed()}%</div>*/}
         {/*  <div className="blue-bt">Без отделки</div>*/}
         {/*</div>*/}
-      </div>
+      </motion.div>
 
       {openDrawer ? (
         <DiwiderViewPlanInfo

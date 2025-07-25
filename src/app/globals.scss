@@ -329,7 +329,7 @@ select {
 .swiper-pagination {
   @include flex;
   padding: 0 40px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   @media(max-width: 1024px){
     margin-bottom: 10px;
     padding: 0 20px;

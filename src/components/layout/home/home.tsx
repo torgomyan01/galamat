@@ -10,6 +10,8 @@ import OurOffice from "@/components/layout/home/our-office/our-office";
 import React from "react";
 import Filter from "@/components/layout/home/filter/filter";
 import { useTranslate } from "@/hooks/useTranslate";
+import { motion } from "framer-motion";
+import { motionOptionText } from "@/utils/consts";
 
 interface IThisProps {
   projects: IProjectMerged[];
@@ -21,12 +23,22 @@ export default function Home({ projects }: IThisProps) {
   return (
     <MainTemplate>
       <AdsSlider />
-
-      <div className="wrapper !mb-[-20px]">
-        <h3 className="text-[30px] md:text-[45px] font-bold text-[#353535]">
-          {$t("projects")} Galamat
-        </h3>
-      </div>
+      <motion.div
+        initial={"init"}
+        whileInView={"animate"}
+        transition={{
+          duration: 0.5,
+          delay: 0.5,
+        }}
+        viewport={{ once: true, amount: 0.1 }}
+        variants={motionOptionText}
+      >
+        <div className="wrapper !mb-[-20px]">
+          <h3 className="text-[32px] md:text-[45px] font-medium text-[#353535]">
+            {$t("projects")} Galamat
+          </h3>
+        </div>
+      </motion.div>
       <Filter projects={projects} />
       <Objects />
       <LeaveRequest />

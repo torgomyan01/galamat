@@ -12,12 +12,12 @@ import {
 import SliderInput from "@/components/common/slider-input/slider-input";
 import clsx from "clsx";
 import { useTranslate } from "@/hooks/useTranslate";
-import { RandomKey } from "@/utils/helpers";
-import { floorSelectItems } from "@/utils/consts";
+import { floorSelectItems, motionOptionText } from "@/utils/consts";
 import { useDispatch, useSelector } from "react-redux";
 import { setChangeParams } from "@/redux/filter";
 import { useEffect, useState } from "react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
+import { motion } from "framer-motion";
 
 interface IThisProps {
   className?: string;
@@ -131,7 +131,17 @@ function HorizontalFilter({ className, projects, onClose }: IThisProps) {
             {/*    <SelectItem key="hello">hello</SelectItem>*/}
             {/*  </Select>*/}
             {/*</div>*/}
-            <div className="select-info">
+            <motion.div
+              initial={"init"}
+              whileInView={"animate"}
+              transition={{
+                duration: 0.5,
+                delay: 0.6,
+              }}
+              viewport={{ once: true, amount: 0.1 }}
+              variants={motionOptionText}
+              className="select-info"
+            >
               <span>{$t("residential_complex")}</span>
               <Select
                 placeholder="Выбрайте проект"
@@ -148,9 +158,13 @@ function HorizontalFilter({ className, projects, onClose }: IThisProps) {
                   </SelectItem>
                 ))}
               </Select>
-            </div>
+            </motion.div>
             {houses ? (
-              <div className="select-info">
+              <motion.div
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="select-info"
+              >
                 <span>{$t("objects_")}</span>
                 <Select
                   placeholder="Выбрайте объекты"
@@ -165,10 +179,20 @@ function HorizontalFilter({ className, projects, onClose }: IThisProps) {
                     <SelectItem key={`${house.id}`}>{house.title}</SelectItem>
                   ))}
                 </Select>
-              </div>
+              </motion.div>
             ) : null}
 
-            <div className="select-info">
+            <motion.div
+              initial={"init"}
+              whileInView={"animate"}
+              transition={{
+                duration: 0.5,
+                delay: 0.6,
+              }}
+              viewport={{ once: true, amount: 0.1 }}
+              variants={motionOptionText}
+              className="select-info"
+            >
               <span>{$t("floor__")}</span>
 
               <Dropdown>
@@ -202,7 +226,7 @@ function HorizontalFilter({ className, projects, onClose }: IThisProps) {
                   ))}
                 </DropdownMenu>
               </Dropdown>
-            </div>
+            </motion.div>
             <span
               className="reset hidden md:block"
               // onClick={ClearFilter}
@@ -215,8 +239,16 @@ function HorizontalFilter({ className, projects, onClose }: IThisProps) {
               <span>{$t("com__")}</span>
               <div className="items">
                 {Array.from({ length: 4 }).map((room, index) => (
-                  <span
-                    key={RandomKey()}
+                  <motion.span
+                    initial="init"
+                    whileInView="animate"
+                    transition={{
+                      duration: 0.5,
+                      delay: index * 0.1,
+                    }}
+                    viewport={{ once: true, amount: 0.1 }}
+                    variants={motionOptionText}
+                    key={`rooms-${index}`}
                     className={clsx({
                       "!bg-blue !text-white": filterParams?.rooms?.includes(
                         index + 1,
@@ -225,11 +257,21 @@ function HorizontalFilter({ className, projects, onClose }: IThisProps) {
                     onClick={() => toggleNumber(index + 1)}
                   >
                     {index + 1}
-                  </span>
+                  </motion.span>
                 ))}
               </div>
             </div>
-            <div className="filter-block mt-5 md:mt-0">
+            <motion.div
+              initial="init"
+              whileInView="animate"
+              transition={{
+                duration: 0.5,
+                delay: 0.9,
+              }}
+              viewport={{ once: true, amount: 0.1 }}
+              variants={motionOptionText}
+              className="filter-block mt-5 md:mt-0"
+            >
               <SliderInput
                 labelName={$t("price")}
                 min={1000000}
@@ -248,7 +290,7 @@ function HorizontalFilter({ className, projects, onClose }: IThisProps) {
                 className="w-full md:w-[200px]"
                 onChangeInput={changeMinMaxPlace}
               />
-            </div>
+            </motion.div>
             <div className="w-full flex-jsb-c mt-6 flex md:hidden gap-4">
               <Button
                 className="rounded-[6px] bg-blue text-white"

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { ActionGetSlidersFade } from "@/app/actions/admin/pages/home/slider-fade/get-sliders-fade";
 import { filesLink } from "@/utils/consts";
 import { useSelector } from "react-redux";
+import { Skeleton } from "@heroui/react";
 
 function LeftSlider() {
   const activeLang = useSelector(
@@ -25,38 +26,44 @@ function LeftSlider() {
   }
 
   return (
-    <Swiper
-      modules={[Autoplay, EffectFade]}
-      effect="fade"
-      fadeEffect={{ crossFade: true }}
-      allowTouchMove={false}
-      spaceBetween={0}
-      slidesPerView={1}
-      loop={true}
-      autoplay={{
-        delay: 4000,
-        disableOnInteraction: false, // Keep autoplay on user interaction
-      }}
-      className="w-full md:!w-[32.5%] md:h-[510px] mb-4 md:mb-0 rounded-[20px] overflow-hidden"
-    >
-      {items?.map((item: ISliderItem) => (
-        <>
-          {item.children?.map((sliderItem) => (
-            <SwiperSlide key={`home-slider-ads-${sliderItem.id}`}>
-              <div className="w-full h-full rounded-[20px] overflow-hidden">
-                <Image
-                  src={`${filesLink}${sliderItem.children?.find((_child) => _child.lang_key === activeLang)?.image_path}`}
-                  alt="ads-for-map.png"
-                  width={500}
-                  height={600}
-                  className="w-full h-auto"
-                />
-              </div>
-            </SwiperSlide>
+    <>
+      {items?.length ? (
+        <Swiper
+          modules={[Autoplay, EffectFade]}
+          effect="fade"
+          fadeEffect={{ crossFade: true }}
+          allowTouchMove={false}
+          spaceBetween={0}
+          slidesPerView={1}
+          loop={true}
+          autoplay={{
+            delay: 4000,
+            disableOnInteraction: false, // Keep autoplay on user interaction
+          }}
+          className="w-full md:!w-[32.5%] md:h-[510px] mb-4 md:mb-0 rounded-[20px] overflow-hidden"
+        >
+          {items?.map((item: ISliderItem) => (
+            <>
+              {item.children?.map((sliderItem) => (
+                <SwiperSlide key={`home-slider-ads-${sliderItem.id}`}>
+                  <div className="w-full h-full rounded-[20px] overflow-hidden">
+                    <Image
+                      src={`${filesLink}${sliderItem.children?.find((_child) => _child.lang_key === activeLang)?.image_path}`}
+                      alt="ads-for-map.png"
+                      width={500}
+                      height={600}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </>
           ))}
-        </>
-      ))}
-    </Swiper>
+        </Swiper>
+      ) : (
+        <Skeleton className="w-full md:!w-[32.5%] md:h-[510px] mb-4 md:mb-0 rounded-[20px] overflow-hidden" />
+      )}
+    </>
   );
 }
 

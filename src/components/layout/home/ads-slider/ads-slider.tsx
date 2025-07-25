@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import LeftSlider from "@/components/layout/home/ads-slider/left-slider";
 import { ActionGetSlidersFade } from "@/app/actions/admin/pages/home/slider-fade/get-sliders-fade";
 import { filesLink } from "@/utils/consts";
+import { Skeleton } from "@heroui/react";
 
 function AdsSlider() {
   const activeLang = useSelector(
@@ -38,7 +39,7 @@ function AdsSlider() {
         <div className="info">
           <LeftSlider />
 
-          {allSlides.length > 1 && (
+          {allSlides.length > 1 ? (
             <Swiper
               modules={[Pagination, Autoplay]}
               spaceBetween={30}
@@ -49,7 +50,7 @@ function AdsSlider() {
                 disableOnInteraction: false,
               }}
               pagination={{ clickable: true }}
-              className="info-swiper rounded-[16px] overflow-hidden"
+              className="info-swiper rounded-[16px] overflow-hidden h-[510px]"
             >
               {allSlides.map((sliderItem) => {
                 const imagePath = sliderItem.children?.find(
@@ -61,7 +62,7 @@ function AdsSlider() {
                     <Link href={sliderItem.url} className="w-full h-auto">
                       {imagePath && (
                         <Image
-                          className="w-full h-full object-cover rounded-[20px]"
+                          className="w-full h-full object-cover rounded-[20px] h-[510px]"
                           src={`${filesLink}${imagePath}`}
                           alt="Слайд"
                           width={1000}
@@ -73,6 +74,8 @@ function AdsSlider() {
                 );
               })}
             </Swiper>
+          ) : (
+            <Skeleton className="info-swiper w-full h-[510px] rounded-[24px]" />
           )}
         </div>
       </div>

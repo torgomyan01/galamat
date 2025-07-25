@@ -13,6 +13,7 @@ import HistorySection from "@/components/common/history-section/history-section"
 import { useTranslate } from "@/hooks/useTranslate";
 import Image from "next/image";
 import CompletedProjects from "@/app/our-company/completed-projects";
+import { BreadcrumbItem, Breadcrumbs } from "@heroui/react";
 
 const sliderHero = [
   {
@@ -46,6 +47,11 @@ function OurCompany() {
     <MainTemplate>
       <div className="why-us-wrap">
         <div className="wrapper">
+          <Breadcrumbs className="mb-10 text-[14px]">
+            <BreadcrumbItem href={SITE_URL.HOME}>{$t("home__")}</BreadcrumbItem>
+            <BreadcrumbItem>{$t("about_company")}</BreadcrumbItem>
+          </Breadcrumbs>
+
           <div className="why-us-info">
             <h2>{$t("why_us_")}</h2>
             <p>{$t("galamat_has_20_years_of")}</p>

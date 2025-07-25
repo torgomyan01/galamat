@@ -1,7 +1,7 @@
 "use client";
 
 import { HeroUIProvider, ToastProvider } from "@heroui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Header from "@/components/common/header/header";
 import Footer from "@/components/common/footer/footer";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,7 +31,9 @@ function MainTemplate({
   const getLanguage = useSelector(
     (state: IStateTranslate) => state.translateSite.selectedLang,
   );
-  const [loading, setLoading] = useState(true);
+  const words = useSelector(
+    (state: IStateTranslate) => state.translateSite.words,
+  );
 
   useEffect(() => {
     document.body.style.backgroundColor = bodyColor;
@@ -57,8 +59,6 @@ function MainTemplate({
 
     getTranslations(lang).then((trans) => {
       dispatch(setWords(trans));
-
-      setLoading(false);
     });
   }
 
@@ -78,10 +78,14 @@ function MainTemplate({
         </div>
       ) : (
         <>
-          {loading ? <Preloader /> : null}
-
-          {children}
-          {footer ? <Footer /> : null}
+          {words ? (
+            <>
+              {children}
+              {footer ? <Footer /> : null}
+            </>
+          ) : (
+            <Preloader />
+          )}
         </>
       )}
       <Whatsapp />
