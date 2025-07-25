@@ -158,19 +158,18 @@ function BoxItemChess({ property }: IThisProps) {
                           <div className="top-info">
                             <h2>ЖК {selectedFullPlan.property.projectName}</h2>
                             <span className="nomer">
-                              {floor.areas.length}-комнатная квартира
+                              {selectedFullPlan.property.rooms_amount}-комнатная
+                              квартира
                             </span>
                             <span className="status">Свободно</span>
-                            {ourProjectDbInfo?.file_url && (
-                              <Link
-                                href={ourProjectDbInfo.file_url}
-                                download=""
-                                target="_blank"
-                                className="download"
-                              >
-                                <img src="/img/download-icon.svg" alt="" />
-                              </Link>
-                            )}
+                            <Link
+                              href={selectedFullPlan.plan.image.big}
+                              target="_blank"
+                              className="download"
+                              download={`${selectedFullPlan.property.projectName}-${selectedFullPlan.property.id}.jpeg`}
+                            >
+                              <img src="/img/download-icon.svg" alt="" />
+                            </Link>
                             {ourProjectDbInfo?.page_url && (
                               <Link
                                 href={ourProjectDbInfo.page_url}
