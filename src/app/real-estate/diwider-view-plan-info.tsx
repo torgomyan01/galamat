@@ -1,5 +1,4 @@
 import { Divider, Drawer, DrawerBody, DrawerContent } from "@heroui/react";
-import { PhotoView } from "react-photo-view";
 import { useEffect, useState } from "react";
 import { formatKzt, getClosestPlansByPrice, RandomKey } from "@/utils/helpers";
 import Image from "next/image";
@@ -32,15 +31,13 @@ function DiwiderViewPlanInfo({ status, plan, plans, onClose }: IThisProps) {
     <Drawer isOpen={status} onOpenChange={onClose} radius="none" size="4xl">
       <DrawerContent>
         <DrawerBody>
-          <PhotoView src={selectedPlan.image.big}>
-            <div className="w-full min-h-[500px]">
-              <img
-                src={selectedPlan.image.big}
-                alt={selectedPlan.projectName}
-                className="w-full cursor-pointer mt-8"
-              />
-            </div>
-          </PhotoView>
+          <div className="w-full min-h-[500px]">
+            <img
+              src={selectedPlan.image.big}
+              alt={selectedPlan.projectName}
+              className="w-full cursor-pointer mt-8"
+            />
+          </div>
 
           <Divider className="my-4" />
 

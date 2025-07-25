@@ -70,7 +70,7 @@ function HowPlaying() {
   return (
     <section ref={sectionRef}>
       <div className="wrapper !pt-[20px]">
-        <div className="w-full lg:grid grid-cols-2 gap-12 mt-10 ">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 mt-10 ">
           <div className="w-full hidden lg:block">
             <div className="w-full h-[605px] bg-blue p-6 rounded-[16px] relative">
               <h4 className="text-[30px] text-white w-full max-w-[289px] font-medium leading-normal">

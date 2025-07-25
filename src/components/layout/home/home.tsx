@@ -9,19 +9,22 @@ import VideoBlock from "@/components/layout/home/video-block/video-block";
 import OurOffice from "@/components/layout/home/our-office/our-office";
 import React from "react";
 import Filter from "@/components/layout/home/filter/filter";
+import { useTranslate } from "@/hooks/useTranslate";
 
 interface IThisProps {
   projects: IProjectMerged[];
 }
 
 export default function Home({ projects }: IThisProps) {
+  const $t = useTranslate();
+
   return (
     <MainTemplate>
       <AdsSlider />
 
       <div className="wrapper !mb-[-20px]">
-        <h3 className="text-[45px] font-bold text-[#353535]">
-          Проекты Galamat
+        <h3 className="text-[30px] md:text-[45px] font-bold text-[#353535]">
+          {$t("projects")} Galamat
         </h3>
       </div>
       <Filter projects={projects} />

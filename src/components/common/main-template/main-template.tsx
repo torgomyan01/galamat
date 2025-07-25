@@ -10,12 +10,14 @@ import { localStorageKeys } from "@/utils/consts";
 import Whatsapp from "@/components/common/whatsapp/whatsapp";
 import Preloader from "@/components/common/preloader/preloader";
 import { getTranslations } from "@/lib/translationCache";
+import CookieComponent from "@/components/common/main-template/cookie";
 
 interface IThisProps {
   children?: React.ReactNode;
   pageOff?: boolean;
   footer?: boolean;
   headerInfo?: boolean;
+  bodyColor?: string;
 }
 
 function MainTemplate({
@@ -23,12 +25,17 @@ function MainTemplate({
   pageOff = false,
   footer = true,
   headerInfo = true,
+  bodyColor = "#e8eaef",
 }: IThisProps) {
   const dispatch = useDispatch();
   const getLanguage = useSelector(
     (state: IStateTranslate) => state.translateSite.selectedLang,
   );
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    document.body.style.backgroundColor = bodyColor;
+  }, [bodyColor]);
 
   useEffect(() => {
     startTranslate(getLanguage);
@@ -78,6 +85,8 @@ function MainTemplate({
         </>
       )}
       <Whatsapp />
+
+      <CookieComponent />
     </HeroUIProvider>
   );
 }

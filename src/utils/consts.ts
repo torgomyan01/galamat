@@ -13,6 +13,7 @@ export const SITE_URL = {
   USER_AGREEMENT: "/user-agreement",
   SEND_CALLBACK: "/send-callback",
   FAQ: "/faq",
+  COOKIE: "/cookie",
   CONTACT: "/contact",
   PROJECTS: "/projects",
   REAL_ESTATE: "/real-estate",
@@ -37,6 +38,7 @@ export const localStorageKeys = {
   tokenAdmin: "tokenAdmin",
   userAdmin: "userAdmin",
   languages: "languages",
+  cookieComplete: "cookieComplete",
 };
 
 export const all = "Все";

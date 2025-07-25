@@ -73,7 +73,7 @@ function HistorySection() {
     setVisibleImage(null);
     const timeout = setTimeout(() => {
       setVisibleImage(current);
-    }, 50);
+    }, 10);
 
     return () => clearTimeout(timeout);
   }, [activeItem]);
@@ -150,19 +150,16 @@ function HistorySection() {
 
         <div className="w-full lg:grid grid-cols-2 gap-12 mt-10 ">
           <div className="w-full hidden lg:!block">
-            <div className="w-full h-[60vh] bg-blue p-6 rounded-[16px] relative overflow-hidden">
+            <div className="w-full h-[60vh] bg-gray-100 p-6 rounded-[16px] relative overflow-hidden">
               <h4 className="text-[30px] text-white w-full max-w-[289px] font-medium leading-normal opacity-0">
                 {$t("delve_into_our_history")}
               </h4>
 
-              {visibleImage && (
-                <img
-                  src={`/img/our-company/${visibleImage}`}
-                  alt="history background"
-                  className="absolute left-0 top-0 w-full h-full object-center object-cover fade-in"
-                  key={visibleImage} // կարեւոր է՝ որպեսզի React-ը վերաբեռնի
-                />
-              )}
+              <img
+                src={`/img/our-company/${visibleImage}`}
+                alt="history background"
+                className="absolute left-0 top-0 w-full h-full object-center object-cover"
+              />
             </div>
           </div>
 

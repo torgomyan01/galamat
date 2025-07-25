@@ -2,7 +2,7 @@ import React from "react";
 
 function Preloader() {
   return (
-    <div className="w-full h-[100dvh] flex-jc-c bg-white fixed top-0 left-0 px-[100px] z-[100000]">
+    <div className="w-full h-[100dvh] flex-jc-c bg-white fixed top-0 left-0 px-[100px] z-[100000000000000]">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="512"

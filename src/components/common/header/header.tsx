@@ -120,7 +120,10 @@ function Header({ info = true }: IThisProps) {
                 />
               </Link>
             </div>
-            <Link href="tel: +7 700 108 5757" className="border-btn order-call">
+            <Link
+              href="tel: +7 700 108 5757"
+              className="border-btn order-call !h-[40px]"
+            >
               {$t("request_call")}
             </Link>
             <Select

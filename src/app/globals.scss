@@ -514,3 +514,13 @@ select {
     height: 0;
   }
 }
+
+
+.bottom-gradient{
+  width: 100%;
+  height: 300px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, transparent, #E8EAEF);
+}

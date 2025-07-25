@@ -64,7 +64,7 @@ function Facade({ projects, fakeItem = 0 }: IThisProps) {
         {Array.from({ length: fakeItem }).map((_, i) => (
           <div
             key={`project-fake-${i}`}
-            className="w-full bg-white p-4 rounded-[12px] cursor-pointer group"
+            className="w-full bg-white p-4 rounded-[12px] cursor-pointer group hidden sm:!block"
           >
             <div className="w-full h-[350px] relative rounded-[10px] overflow-hidden">
               <img

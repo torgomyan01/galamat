@@ -21,6 +21,7 @@ import { useTranslate } from "@/hooks/useTranslate";
 
 function GalaBonus() {
   const $t = useTranslate();
+
   const [modalCheckPhone, setModalCheckPhone] = useState(false);
 
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -159,13 +160,13 @@ function GalaBonus() {
           <div className="wrapper">
             <div className="bonus-info">
               <div className="texts">
-                <Fade direction="left" triggerOnce delay={2000}>
+                <Fade direction="left" triggerOnce delay={1000}>
                   <h1>Gala Bonus</h1>
                 </Fade>
-                <Fade direction="left" triggerOnce delay={2200}>
+                <Fade direction="left" triggerOnce delay={1200}>
                   <p>{$t("gala_description")}</p>
                 </Fade>
-                <Fade direction="left" triggerOnce delay={2400}>
+                <Fade direction="left" triggerOnce delay={1400}>
                   <Button
                     onPress={() => setModalCheckPhone(true)}
                     className="red-btn"
@@ -175,7 +176,7 @@ function GalaBonus() {
                 </Fade>
               </div>
               <div className="bonus">
-                <Fade direction="right" triggerOnce delay={4400}>
+                <Fade direction="right" triggerOnce delay={1400}>
                   <img src="/img/gala-bonus-role.svg" alt="" />
                 </Fade>
               </div>
@@ -212,6 +213,9 @@ function GalaBonus() {
       <Modal
         isOpen={modalCheckPhone}
         onOpenChange={() => setModalCheckPhone(false)}
+        classNames={{
+          wrapper: "!z-[100000000]",
+        }}
       >
         <ModalContent className="bg-blue">
           <ModalBody>
