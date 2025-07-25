@@ -4,7 +4,7 @@ import OurCompany from "@/app/our-company/our-company";
 
 export async function generateMetadata() {
   return {
-    title: "О компании",
+    title: "Почему мы?\n",
   };
 }
 

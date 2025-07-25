@@ -55,7 +55,7 @@ function OurCompany() {
           <div className="why-us-info">
             <h2>{$t("why_us_")}</h2>
             <p>{$t("galamat_has_20_years_of")}</p>
-            <Link href={SITE_URL.PROJECT} className="red-btn">
+            <Link href={SITE_URL.PROJECTS} className="red-btn">
               {$t("buy_an_apartment")}
             </Link>
 
