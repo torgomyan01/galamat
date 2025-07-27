@@ -4,10 +4,11 @@ import clsx from "clsx";
 
 import OurObjects from "@/components/layout/home/objects/our-objects";
 import { useTranslate } from "@/hooks/useTranslate";
+import ObjectsOffice from "@/components/layout/home/objects/objects-office";
 
 function Objects() {
   const $t = useTranslate();
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(2);
 
   const tabContents = [
     {
@@ -32,7 +33,7 @@ function Objects() {
     },
     {
       name: $t("objects_"),
-      content: <OurObjects height={500} className="h-[60vh]" />,
+      content: <ObjectsOffice />,
     },
   ];
 
