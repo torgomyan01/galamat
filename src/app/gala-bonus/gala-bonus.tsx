@@ -16,8 +16,10 @@ import { ActionCheckCode } from "@/app/actions/phone/check-code";
 import moment from "moment";
 import { ActionUpdateCode } from "@/app/actions/phone/update-now";
 import { Fade } from "react-awesome-reveal";
-import HowPlaying from "@/app/gala-bonus/how-playing";
+// import HowPlaying from "@/app/gala-bonus/how-playing";
 import { useTranslate } from "@/hooks/useTranslate";
+
+type PlayerStatus = "phone-success" | "wait-day" | "start";
 
 function GalaBonus() {
   const $t = useTranslate();
@@ -31,9 +33,7 @@ function GalaBonus() {
 
   const [phoneSucceed, setPhoneSucceed] = useState<boolean>(false);
 
-  const [startPlying, setStartPlying] = useState<
-    "phone-success" | "wait-day" | "start"
-  >("phone-success");
+  const [startPlying, setStartPlying] = useState<PlayerStatus>("phone-success");
 
   const [loading, setLoading] = useState(false);
 
@@ -153,9 +153,9 @@ function GalaBonus() {
     }
   }
 
-  return (
-    <MainTemplate>
-      {startPlying === "phone-success" ? (
+  function PrintBlock(status: PlayerStatus) {
+    if (status === "phone-success") {
+      return (
         <div className="bonus-wrap">
           <div className="wrapper">
             <div className="bonus-info">
@@ -183,9 +183,15 @@ function GalaBonus() {
             </div>
           </div>
         </div>
-      ) : startPlying === "start" ? (
-        <BonusBlock data={sendData} />
-      ) : (
+      );
+    }
+
+    if (status === "start") {
+      return <BonusBlock data={sendData} />;
+    }
+
+    if (status === "wait-day") {
+      return (
         <div className="bonus-wrap">
           <div className="wrapper">
             <div className="bonus-info">
@@ -206,9 +212,15 @@ function GalaBonus() {
             </div>
           </div>
         </div>
-      )}
+      );
+    }
+  }
 
-      <HowPlaying />
+  return (
+    <MainTemplate>
+      {PrintBlock(startPlying)}
+
+      {/*<HowPlaying />*/}
 
       <Modal
         isOpen={modalCheckPhone}

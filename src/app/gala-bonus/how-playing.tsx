@@ -1,6 +1,6 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import { useTranslate } from "@/hooks/useTranslate";
 
@@ -14,25 +14,31 @@ function HowPlaying() {
 
   const [activeItem, setActiveItem] = useState<number>(0);
 
-  const items = [
-    {
-      year: "",
-      title: $t("try_your_luck"),
-      text: $t("play_gala_fortuna"),
-    },
-    {
-      year: "",
-      title: $t("get_bonuses"),
-      text: $t("get_bonuses_win_and"),
-    },
-    {
-      year: "",
-      title: $t("buy_an_apartment_at_a_discount"),
-      text: $t("take_part_and_get_bonuses_for"),
-    },
-  ];
+  const items = useMemo(
+    () => [
+      {
+        year: "",
+        title: $t("try_your_luck"),
+        text: $t("play_gala_fortuna"),
+        image: "slide-1.png",
+      },
+      {
+        year: "",
+        title: $t("get_bonuses"),
+        text: $t("get_bonuses_win_and"),
+        image: "slide-2.png",
+      },
+      {
+        year: "",
+        title: $t("buy_an_apartment_at_a_discount"),
+        text: $t("take_part_and_get_bonuses_for"),
+        image: "slide-3.png",
+      },
+    ],
+    [$t],
+  );
 
-  useLayoutEffect(() => {
+  useMemo(() => {
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
         id: "history-trigger",
@@ -51,7 +57,10 @@ function HowPlaying() {
           const countItems = 100 / items.length;
           const getItem = Math.floor(percent / countItems); // ✅ now starts at 0
           const findActiveItemBlock = getItem + 1;
-          setActiveItem(findActiveItemBlock);
+
+          if (findActiveItemBlock < items.length) {
+            setActiveItem(findActiveItemBlock);
+          }
 
           const getActiveLine = progressRefs.current[getItem];
           const res = Math.abs(percent - getItem * countItems);
@@ -65,21 +74,21 @@ function HowPlaying() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [sectionRef, slideRef]);
 
   return (
     <section ref={sectionRef}>
       <div className="wrapper !pt-[20px]">
         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 mt-10 ">
           <div className="w-full hidden lg:block">
-            <div className="w-full h-[605px] bg-blue p-6 rounded-[16px] relative">
-              <h4 className="text-[30px] text-white w-full max-w-[289px] font-medium leading-normal">
-                {$t("how_to_get_bonuses")}
-              </h4>
+            <div className="w-full h-[668px] bg-blue p-6 rounded-[16px] relative overflow-hidden">
+              {/*<h4 className="text-[30px] text-white w-full max-w-[289px] font-medium leading-normal">*/}
+              {/*  {$t("how_to_get_bonuses")}*/}
+              {/*</h4>*/}
               <img
-                src="/img/image-bg-def.svg"
+                src={`/img/gala-bonus/${items[activeItem].image}`}
                 alt="image-bg-def.svg"
-                className="absolute left-[50%] top-[50%] transform translate-x-[-50%] translate-y-[-50%]"
+                className="absolute left-0 top-0 w-full h-full object-cover object-left-top"
               />
             </div>
           </div>
