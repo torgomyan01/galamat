@@ -40,7 +40,7 @@ function LeftSlider() {
             delay: 4000,
             disableOnInteraction: false, // Keep autoplay on user interaction
           }}
-          className="w-full md:!w-[32.5%] md:h-[510px] mb-4 md:mb-0 rounded-[20px] overflow-hidden"
+          className="w-full md:!w-[32.5%] lg:h-[510px] mb-4 md:mb-0 rounded-[20px] overflow-hidden"
         >
           {items?.map((item: ISliderItem) => (
             <>
@@ -52,7 +52,7 @@ function LeftSlider() {
                       alt="ads-for-map.png"
                       width={500}
                       height={600}
-                      className="w-full h-auto"
+                      className="w-full lg:h-[510px] object-cover"
                     />
                   </div>
                 </SwiperSlide>

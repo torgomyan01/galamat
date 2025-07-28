@@ -97,7 +97,7 @@ function BoxItemChess({ property }: IThisProps) {
   }
 
   const baseClasses = clsx(
-    "bg-blue w-8 sm:w-12 h-8 sm:h-12 flex-jc-c mb-4 text-white rounded-[6px] cursor-pointer hover:opacity-90 transition",
+    "bg-blue w-8 sm:w-12 h-8 sm:h-12 flex-jc-c mb-1 sm:mb-4 text-white rounded-[6px] cursor-pointer hover:opacity-90 transition",
     {
       "!bg-blue": property.status === "AVAILABLE",
       "!bg-[#f69f13]": property.status === "BOOKED",
@@ -144,12 +144,22 @@ function BoxItemChess({ property }: IThisProps) {
         <Modal
           size="full"
           isOpen={modalViewProperty}
-          onOpenChange={() => setModalViewProperty(false)}
           className="bg-[#e8eaef]"
+          hideCloseButton={true}
         >
           <ModalContent>
             <ModalBody>
               <div className="wrapper bg-[#e8eaef] !p-0">
+                <div className="flex-je-c px-[130px] pt-6">
+                  <button
+                    className="text-[#6B6B6B]"
+                    onClick={() => setModalViewProperty(false)}
+                  >
+                    Закрыть карточку
+                    <i className="fa-regular fa-xmark ml-2"></i>
+                  </button>
+                </div>
+
                 <div id="card-popup" className=" bg-[#e8eaef] mfp-with-anim">
                   {selectedFullPlan && floor ? (
                     <div className="popup-body !bg-[#e8eaef]">

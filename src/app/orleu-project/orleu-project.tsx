@@ -27,7 +27,7 @@ function OrleuProject() {
         <div className="wrapper">
           <div className="breadcrumbs">
             <Link href={SITE_URL.HOME}>Главная</Link>
-            <Link href={SITE_URL.PROJECT}>Проекты</Link>
+            <Link href={SITE_URL.PROJECTS}>Проекты</Link>
             <span>ЖК Orleu</span>
           </div>
         </div>

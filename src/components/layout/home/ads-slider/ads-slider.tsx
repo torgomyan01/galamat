@@ -50,7 +50,7 @@ function AdsSlider() {
                 disableOnInteraction: false,
               }}
               pagination={{ clickable: true }}
-              className="info-swiper rounded-[16px] overflow-hidden h-[510px]"
+              className="info-swiper rounded-[16px] overflow-hidden lg:h-[510px]"
             >
               {allSlides.map((sliderItem) => {
                 const imagePath = sliderItem.children?.find(
@@ -62,7 +62,7 @@ function AdsSlider() {
                     <Link href={sliderItem.url} className="w-full h-auto">
                       {imagePath && (
                         <Image
-                          className="w-full h-full object-cover rounded-[20px] h-[510px]"
+                          className="w-full object-cover rounded-[20px] lg:h-[510px] object-left-top"
                           src={`${filesLink}${imagePath}`}
                           alt="Слайд"
                           width={1000}

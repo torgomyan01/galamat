@@ -126,13 +126,13 @@ function Header({ info = true }: IThisProps) {
             </div>
             <Link
               href="tel: +7 700 108 5757"
-              className="border-btn order-call !h-[40px]"
+              className="border-btn order-call !h-[40px] flex-jc-c"
             >
               {$t("request_call")}
             </Link>
             <Select
               selectedKeys={[`${activeLang}`]}
-              className="w-[80px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] hidden md:inline-block"
+              className="w-[80px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] hidden md:!block"
               variant="bordered"
               onSelectionChange={selectLanguage}
             >
@@ -140,6 +140,7 @@ function Header({ info = true }: IThisProps) {
                 <SelectItem key={lang.key}>{lang.name}</SelectItem>
               ))}
             </Select>
+
             <div
               className={clsx("drop-menu", { "is-active": mobileMenu })}
               onClick={() => setMobileMenu(!mobileMenu)}
@@ -156,7 +157,14 @@ function Header({ info = true }: IThisProps) {
               <ul className="main-menu">
                 {menuItems.map((menuItem, i) => (
                   <li key={`desktop-menu-${i}`}>
-                    <Link href={menuItem.url}>{menuItem.name}</Link>
+                    <Link
+                      href={menuItem.url}
+                      className={clsx({
+                        "!opacity-70": menuItem.url === pathname,
+                      })}
+                    >
+                      {menuItem.name}
+                    </Link>
                   </li>
                 ))}
               </ul>

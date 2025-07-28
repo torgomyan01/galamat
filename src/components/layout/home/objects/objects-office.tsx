@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 
 function ObjectsOffice() {
   const mapRef = useRef<HTMLDivElement>(null);
+  const isOpenedRef = useRef(false);
 
   useEffect(() => {
     const scriptId = "objects-office";
@@ -17,58 +18,76 @@ function ObjectsOffice() {
         controls: [],
       });
 
-      const CustomLayout = ymaps.templateLayoutFactory.createClass(
-        `
-          <div class="project-card" style="cursor: pointer;">
-            <div class="project-card-header">
-              <h2 class="project-title">ЖК ORLEU</h2>
-              <h3 class="project-price">от 13,560,000</h3>
-            </div>
-            <div class="project-image-wrapper">
-              <img
-                src="img/project-orleu.png"
-                class="project-image"
-                alt="Project Title"
-              />
-            </div>
+      // ✅ Custom HTML Layout (Visual only — not interactive via DOM)
+      const CardLayout = ymaps.templateLayoutFactory.createClass(`
+        <div class="project-card" style="cursor: pointer;">
+          <div class="project-card-header">
+            <h2 class="project-title">ЖК ORLEU</h2>
+            <h3 class="project-price">от 13,560,000</h3>
           </div>
-        `,
-        {
-          build() {
-            CustomLayout.superclass.build.call(this);
-            this.getParentElement().addEventListener("click", () => {
-              window.open("/orleu-project", "_blank");
-            });
-          },
-        },
-      );
+          <div class="project-image-wrapper">
+            <img
+              src="img/project-orleu.png"
+              class="project-image"
+              alt="Project Title"
+              style="width: 100%; border-radius: 8px;"
+            />
+          </div>
+        </div>
+      `);
 
-      const placemark = new ymaps.Placemark(
+      // ✅ Initial Small Icon Placemark
+      const smallPlacemark = new ymaps.Placemark(
         [51.128943, 71.490211],
         {
           hintContent: "ЖК ORLEU",
         },
         {
-          iconLayout: "default#imageWithContent",
-          iconImageHref: "", // No background image
-          iconImageSize: [300, 320],
-          iconContentOffset: [0, 0],
-          iconContentLayout: CustomLayout,
-          iconShape: {
-            type: "Rectangle",
-            coordinates: [
-              [0, 0],
-              [300, 320],
-            ],
-          },
+          iconLayout: "default#image",
+          iconImageHref: "/img/icons/map-icon.svg",
+          iconImageSize: [40, 70],
         },
       );
 
-      placemark.events.add("click", function () {
-        window.open("/orleu-project", "_blank");
+      // ✅ On click, replace icon with Card Placemark
+      smallPlacemark.events.add("click", () => {
+        if (isOpenedRef.current) {
+          return;
+        }
+        isOpenedRef.current = true;
+
+        map.geoObjects.remove(smallPlacemark);
+
+        const cardPlacemark = new ymaps.Placemark(
+          [51.128943, 71.490211],
+          {
+            hintContent: "ЖК ORLEU",
+          },
+          {
+            iconLayout: "default#imageWithContent",
+            iconImageHref: "", // transparent background
+            iconImageSize: [300, 320],
+            iconContentOffset: [0, 0],
+            iconContentLayout: CardLayout,
+            iconShape: {
+              type: "Rectangle",
+              coordinates: [
+                [0, 0],
+                [300, 320],
+              ],
+            },
+          },
+        );
+
+        // ✅ Add real click handler through Yandex API
+        cardPlacemark.events.add("click", () => {
+          window.open("/orleu-project", "_blank");
+        });
+
+        map.geoObjects.add(cardPlacemark);
       });
 
-      map.geoObjects.add(placemark);
+      map.geoObjects.add(smallPlacemark);
     };
 
     const loadScript = () => {
