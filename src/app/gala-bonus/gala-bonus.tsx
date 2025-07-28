@@ -3,7 +3,7 @@
 import MainTemplate from "@/components/common/main-template/main-template";
 import "./gala-bonus.scss";
 import React, { useEffect, useState } from "react";
-import { addToast, Button, Checkbox, InputOtp } from "@heroui/react";
+import { addToast, Button, Checkbox, InputOtp, Tooltip } from "@heroui/react";
 import { Modal, ModalBody, ModalContent } from "@heroui/modal";
 import BonusBlock from "@/app/gala-bonus/bonus-block";
 import { InputMask } from "@react-input/mask";
@@ -16,10 +16,14 @@ import { ActionCheckCode } from "@/app/actions/phone/check-code";
 import moment from "moment";
 import { ActionUpdateCode } from "@/app/actions/phone/update-now";
 import { Fade } from "react-awesome-reveal";
-// import HowPlaying from "@/app/gala-bonus/how-playing";
+import HowPlaying from "@/app/gala-bonus/how-playing";
 import { useTranslate } from "@/hooks/useTranslate";
+import clsx from "clsx";
+import { Spinner } from "@heroui/spinner";
+import { ActionSendNumberBitrix } from "@/app/actions/lottery/send-number-bitrix";
+import { ActionUpdateStatus } from "@/app/actions/lottery/update-status";
 
-type PlayerStatus = "phone-success" | "wait-day" | "start";
+type PlayerStatus = "phone-success" | "wait-day" | "start" | "winnings-taken";
 
 function GalaBonus() {
   const $t = useTranslate();
@@ -42,7 +46,10 @@ function GalaBonus() {
 
   useEffect(() => {
     if (sendData) {
-      if (sendData.data.status === "played") {
+      if (
+        sendData.data.status === "played" ||
+        sendData.data.status === "winnings-taken"
+      ) {
         setStartPlying("wait-day");
         setModalCheckPhone(false);
       } else if (sendData.data.status === "verified") {
@@ -109,6 +116,9 @@ function GalaBonus() {
       .finally(() => setLoading(false));
   }
 
+  const [userBonusLink, setUserBonusLink] = useState("");
+  const [modalFindLink, setModalFindLink] = useState<boolean>(false);
+
   const [loadingCheckCode, setLoadingCheckCode] = useState(false);
 
   function numberSucceed(e: any) {
@@ -153,20 +163,56 @@ function GalaBonus() {
     }
   }
 
-  function PrintBlock(status: PlayerStatus) {
-    if (status === "phone-success") {
-      return (
-        <div className="bonus-wrap">
+  function fintWallet() {
+    if (sendData) {
+      setModalFindLink(true);
+
+      ActionSendNumberBitrix(sendData.data.id).then((res) => {
+        const match = res.match(/<a\s+href="([^"]+)"/);
+        if (match && match[1]) {
+          setUserBonusLink(match[1].trim());
+        }
+      });
+    } else {
+      addToast({
+        title: "Произошла ошибка, пожалуйста, обновите страницу.",
+        color: "danger",
+      });
+    }
+  }
+
+  const [loadingFindBonus, setLoadingFindBonus] = useState(false);
+
+  function ChangeStatus() {
+    if (sendData) {
+      setLoadingFindBonus(true);
+
+      ActionUpdateStatus(sendData?.data.id, "winnings-taken")
+        .then(() => {
+          window.open(userBonusLink, "_blank");
+        })
+        .finally(() => setLoadingFindBonus(false));
+    }
+  }
+
+  return (
+    <MainTemplate>
+      <div className="w-full h-[600px] min-[322px]:h-[620px] min-[400px]:h-[650px] min-[500px]:h-[800px] min-[590px]:h-[860px] md:h-[450px] min-[900px]:h-[560px] min-[1050px]:h-[650px] min-[1200px]:h-[720px]">
+        <div
+          className={clsx("bonus-wrap hidden", {
+            "!block": startPlying === "phone-success",
+          })}
+        >
           <div className="wrapper">
             <div className="bonus-info">
               <div className="texts">
-                <Fade direction="left" triggerOnce delay={1000}>
+                <Fade direction="left" triggerOnce delay={500}>
                   <h1>Gala Bonus</h1>
                 </Fade>
-                <Fade direction="left" triggerOnce delay={1200}>
+                <Fade direction="left" triggerOnce delay={700}>
                   <p>{$t("gala_description")}</p>
                 </Fade>
-                <Fade direction="left" triggerOnce delay={1400}>
+                <Fade direction="left" triggerOnce delay={900}>
                   <Button
                     onPress={() => setModalCheckPhone(true)}
                     className="red-btn"
@@ -176,34 +222,55 @@ function GalaBonus() {
                 </Fade>
               </div>
               <div className="bonus">
-                <Fade direction="right" triggerOnce delay={1400}>
+                <Fade direction="right" triggerOnce delay={500}>
                   <img src="/img/gala-bonus-role.svg" alt="" />
                 </Fade>
               </div>
             </div>
           </div>
         </div>
-      );
-    }
 
-    if (status === "start") {
-      return <BonusBlock data={sendData} />;
-    }
+        <div
+          className={clsx("hidden", {
+            "!block": startPlying === "start",
+          })}
+        >
+          <BonusBlock data={sendData} />
+        </div>
 
-    if (status === "wait-day") {
-      return (
-        <div className="bonus-wrap">
+        <div
+          className={clsx("bonus-wrap hidden", {
+            "!block": startPlying === "wait-day",
+          })}
+        >
           <div className="wrapper">
             <div className="bonus-info">
               <div className="texts">
                 <h1>Gala Bonus</h1>
                 <p>{$t("you_have_already_participated")}</p>
                 {sendData ? (
-                  <h3 className="text-[30px] text-white tracking-[-0.9px] flex-js-c gap-3">
-                    <img src="/img/icons/time-white.svg" alt="time-white.svg" />
-                    {getRemainingDaysText90Days(sendData.data.timeout)}{" "}
-                    {$t("days__")}
-                  </h3>
+                  <div>
+                    <h3 className="text-[30px] text-white tracking-[-0.9px] flex-js-c gap-3">
+                      <img
+                        src="/img/icons/time-white.svg"
+                        alt="time-white.svg"
+                      />
+                      {getRemainingDaysText90Days(sendData.data.timeout)}{" "}
+                      {$t("days__")}
+                    </h3>
+
+                    {sendData.data.status === "played" ? (
+                      <Tooltip content="Вы еще не получили бонусы">
+                        <Button
+                          onPress={fintWallet}
+                          color="danger"
+                          className="bg-[#CE2432] mt-4 rounded-full"
+                        >
+                          Получить бонусы
+                        </Button>
+                      </Tooltip>
+                    ) : null}
+                  </div>
                 ) : null}
               </div>
               <div className="bonus">
@@ -212,15 +279,9 @@ function GalaBonus() {
             </div>
           </div>
         </div>
-      );
-    }
-  }
+      </div>
 
-  return (
-    <MainTemplate>
-      {PrintBlock(startPlying)}
-
-      {/*<HowPlaying />*/}
+      <HowPlaying />
 
       <Modal
         isOpen={modalCheckPhone}
@@ -335,6 +396,31 @@ function GalaBonus() {
                   {$t("send")}
                 </Button>
               </form>
+            )}
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      <Modal
+        isOpen={modalFindLink}
+        onOpenChange={() => setModalFindLink(false)}
+      >
+        <ModalContent className="bg-blue">
+          <ModalBody>
+            {userBonusLink ? (
+              <div className="w-full h-[200px] flex-jc-c">
+                <Button
+                  className="red-btn"
+                  onPress={ChangeStatus}
+                  isLoading={loadingFindBonus}
+                >
+                  {$t("get__")}
+                </Button>
+              </div>
+            ) : (
+              <div className="w-full h-[150px] flex-jc-c">
+                <Spinner color="white" />
+              </div>
             )}
           </ModalBody>
         </ModalContent>

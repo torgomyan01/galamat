@@ -428,7 +428,7 @@ declare interface IBoard {
   sectionNames: ISectionName[];
 }
 
-type playingStatus = "no-verified" | "verified" | "played";
+type playingStatus = "no-verified" | "verified" | "played" | "winnings-taken";
 
 declare interface IDataSendMessage {
   status: "created-db" | "have-db" | "error";

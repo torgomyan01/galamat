@@ -6,10 +6,10 @@ import { ActionUpdateWinner } from "@/app/actions/phone/change-winner";
 import { ActionGetProbabilities } from "@/app/actions/lottery/get-probabilities";
 import { Spinner } from "@heroui/spinner";
 import { Fade } from "react-awesome-reveal";
-import axios from "axios";
 import { Modal, ModalBody, ModalContent } from "@heroui/modal";
 import { useTranslate } from "@/hooks/useTranslate";
-import Link from "next/link";
+import { ActionUpdateStatus } from "@/app/actions/lottery/update-status";
+import { ActionSendNumberBitrix } from "@/app/actions/lottery/send-number-bitrix";
 
 interface IWinerItem {
   price: number;
@@ -97,25 +97,32 @@ function BonusBlock({ data }: IThisProps) {
   function fintWallet() {
     if (data) {
       setModalFindLink(true);
-      axios
-        .get("https://bitrix.galamat.kz/services/webhooks/gen_link/index.php", {
-          params: {
-            name: data.data.name,
-            phone: data.data.phone,
-            balance: data.data.winner,
-          },
-        })
-        .then(({ data }) => {
-          const match = data.match(/<a\s+href="([^"]+)"/);
-          if (match && match[1]) {
-            setUserBonusLink(match[1].trim());
-          }
-        });
+
+      ActionSendNumberBitrix(data.data.id).then((res) => {
+        const match = res.match(/<a\s+href="([^"]+)"/);
+        if (match && match[1]) {
+          setUserBonusLink(match[1].trim());
+        }
+      });
     } else {
       addToast({
         title: "Произошла ошибка, пожалуйста, обновите страницу.",
         color: "danger",
       });
+    }
+  }
+
+  const [loading, setLoading] = useState(false);
+
+  function ChangeStatus() {
+    if (data) {
+      setLoading(true);
+
+      ActionUpdateStatus(data?.data.id, "winnings-taken")
+        .then(() => {
+          window.open(userBonusLink, "_blank");
+        })
+        .finally(() => setLoading(false));
     }
   }
 
@@ -275,13 +282,13 @@ function BonusBlock({ data }: IThisProps) {
           <ModalBody>
             {userBonusLink ? (
               <div className="w-full h-[200px] flex-jc-c">
-                <Link
-                  href={userBonusLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Button
+                  className="red-btn"
+                  onPress={ChangeStatus}
+                  isLoading={loading}
                 >
-                  <Button className="red-btn">{$t("get__")}</Button>
-                </Link>
+                  {$t("get__")}
+                </Button>
               </div>
             ) : (
               <div className="w-full h-[150px] flex-jc-c">

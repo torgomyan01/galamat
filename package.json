@@ -52,6 +52,7 @@
   "devDependencies": {
     "@dnd-kit/sortable": "^10.0.0",
     "@eslint/eslintrc": "^3",
+    "@gsap/react": "^2.1.2",
     "@heroui/react": "^2.7.6",
     "@photo-sphere-viewer/markers-plugin": "^5.13.2",
     "@toolpad/core": "^0.12.0",
