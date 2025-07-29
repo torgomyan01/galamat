@@ -186,3 +186,26 @@ export const getRemainingDaysText90Days = (startISOString: string) => {
   const duration = moment.duration(endDate.diff(now));
   return Math.ceil(duration.asDays());
 };
+
+export const downloadImageFromUrl = async (
+  imageUrl: string,
+  filename = "image.jpg",
+) => {
+  try {
+    const response = await fetch(imageUrl, { mode: "cors" }); // CORS թույլատրված պետք է լինի
+    const blob = await response.blob();
+
+    const blobUrl = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = blobUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+
+    document.body.removeChild(a);
+    URL.revokeObjectURL(blobUrl);
+  } catch (error) {
+    console.error(error);
+  }
+};

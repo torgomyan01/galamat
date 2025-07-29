@@ -408,9 +408,13 @@ function GalaBonus() {
         <ModalContent className="bg-blue">
           <ModalBody>
             {userBonusLink ? (
-              <div className="w-full h-[200px] flex-jc-c">
+              <div className="w-full h-[200px] flex-jc-c flex-col">
+                <h3 className="text-[25px] md:text-[30px] font-medium text-center text-white mb-6">
+                  {$t("add_the_coupon")}
+                </h3>
+
                 <Button
-                  className="red-btn"
+                  className="red-btn bg-[#CE2432] rounded-full text-white"
                   onPress={ChangeStatus}
                   isLoading={loadingFindBonus}
                 >

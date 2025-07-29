@@ -1,7 +1,7 @@
 import { Spinner } from "@heroui/spinner";
 import clsx from "clsx";
 import { Tooltip } from "@heroui/react";
-import { formatKzt } from "@/utils/helpers";
+import { downloadImageFromUrl, formatKzt } from "@/utils/helpers";
 import { Modal, ModalBody, ModalContent } from "@heroui/modal";
 import React, { useEffect, useState } from "react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
@@ -172,14 +172,17 @@ function BoxItemChess({ property }: IThisProps) {
                               квартира
                             </span>
                             <span className="status">Свободно</span>
-                            <Link
-                              href={selectedFullPlan.plan.image.big}
-                              target="_blank"
+                            <div
+                              onClick={() =>
+                                downloadImageFromUrl(
+                                  selectedFullPlan.plan.image.big,
+                                  `${selectedFullPlan.property.projectName}-${selectedFullPlan.property.id}`,
+                                )
+                              }
                               className="download"
-                              download={`${selectedFullPlan.property.projectName}-${selectedFullPlan.property.id}.jpeg`}
                             >
                               <img src="/img/download-icon.svg" alt="" />
-                            </Link>
+                            </div>
                             {ourProjectDbInfo?.page_url && (
                               <Link
                                 href={ourProjectDbInfo.page_url}
