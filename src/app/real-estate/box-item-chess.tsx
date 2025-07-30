@@ -150,22 +150,22 @@ function BoxItemChess({ property }: IThisProps) {
           <ModalContent>
             <ModalBody>
               <div className="wrapper bg-[#e8eaef] !p-0">
-                <div className="flex-je-c px-[130px] pt-6">
+                <div className="flex-je-c sm:px-[130px] pt-6">
                   <button
-                    className="text-[#6B6B6B]"
+                    className="text-[#6B6B6B] flex-je-c"
                     onClick={() => setModalViewProperty(false)}
                   >
-                    Закрыть карточку
+                    <span className="hidden sm:block">Закрыть карточку</span>
                     <i className="fa-regular fa-xmark ml-2"></i>
                   </button>
                 </div>
 
                 <div id="card-popup" className=" bg-[#e8eaef] mfp-with-anim">
                   {selectedFullPlan && floor ? (
-                    <div className="popup-body !bg-[#e8eaef]">
+                    <div className="popup-body !bg-[#e8eaef] !pt-0 sm:!pt-5">
                       <div className="info flex-jsb-s lg:gap-10 flex-col lg:flex-row">
-                        <div className="texts lg:min-w-[350px]">
-                          <div className="top-info">
+                        <div className="texts lg:min-w-[350px] !w-full">
+                          <div className="top-info !w-full !mb-0">
                             <h2>ЖК {selectedFullPlan.property.projectName}</h2>
                             <span className="nomer">
                               {selectedFullPlan.property.rooms_amount}-комнатная
@@ -175,20 +175,31 @@ function BoxItemChess({ property }: IThisProps) {
                             <Link
                               href={selectedFullPlan.plan.image.big}
                               target="_blank"
-                              className="download"
+                              className="download !hidden sm:!flex"
                               download={`${selectedFullPlan.property.projectName}-${selectedFullPlan.property.id}.jpeg`}
                             >
                               <img src="/img/download-icon.svg" alt="" />
                             </Link>
-                            {ourProjectDbInfo?.page_url && (
+                            <div className="w-full flex-jsb-e gap-4">
+                              {ourProjectDbInfo?.page_url && (
+                                <Link
+                                  href={ourProjectDbInfo.page_url}
+                                  className="view"
+                                  target="_blank"
+                                >
+                                  Смотреть проект
+                                </Link>
+                              )}
+
                               <Link
-                                href={ourProjectDbInfo.page_url}
-                                className="view"
+                                href={selectedFullPlan.plan.image.big}
                                 target="_blank"
+                                className="download !flex sm:!hidden !mb-0"
+                                download={`${selectedFullPlan.property.projectName}-${selectedFullPlan.property.id}.jpeg`}
                               >
-                                Смотреть проект
+                                <img src="/img/download-icon.svg" alt="" />
                               </Link>
-                            )}
+                            </div>
                           </div>
                         </div>
                         <div className="img-wrap">
