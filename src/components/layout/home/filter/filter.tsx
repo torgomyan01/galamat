@@ -48,6 +48,7 @@ function Filter({ projects }: IThisProps) {
           house={modalSelectedHouse}
           objectInfo={objectInfo}
           onClose={closeModal}
+          projects={projects}
         />
       ) : null}
     </section>
