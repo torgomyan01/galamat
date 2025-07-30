@@ -1,7 +1,7 @@
 import { Spinner } from "@heroui/spinner";
 import clsx from "clsx";
 import { Tooltip } from "@heroui/react";
-import { downloadImageFromUrl, formatKzt } from "@/utils/helpers";
+import { formatKzt } from "@/utils/helpers";
 import { Modal, ModalBody, ModalContent } from "@heroui/modal";
 import React, { useEffect, useState } from "react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
@@ -46,7 +46,7 @@ function BoxItemChess({ property }: IThisProps) {
   }
 
   useEffect(() => {
-    if (selectedFullPlan) {
+    if (selectedFullPlan && selectedFullPlan?.plan?.projectId) {
       ActionGetProjectInfo(selectedFullPlan.plan.projectId).then((res) => {
         serOurProjectDbInfo(res.data as IProjectData);
       });
@@ -172,17 +172,14 @@ function BoxItemChess({ property }: IThisProps) {
                               квартира
                             </span>
                             <span className="status">Свободно</span>
-                            <div
-                              onClick={() =>
-                                downloadImageFromUrl(
-                                  selectedFullPlan.plan.image.big,
-                                  `${selectedFullPlan.property.projectName}-${selectedFullPlan.property.id}`,
-                                )
-                              }
+                            <Link
+                              href={selectedFullPlan.plan.image.big}
+                              target="_blank"
                               className="download"
+                              download={`${selectedFullPlan.property.projectName}-${selectedFullPlan.property.id}.jpeg`}
                             >
                               <img src="/img/download-icon.svg" alt="" />
-                            </div>
+                            </Link>
                             {ourProjectDbInfo?.page_url && (
                               <Link
                                 href={ourProjectDbInfo.page_url}

@@ -1,6 +1,5 @@
 import Image from "next/image";
 import PrintStatus from "@/components/common/product-item/print-status";
-import Link from "next/link";
 import { formatPrice } from "@/utils/consts";
 import { useDispatch, useSelector } from "react-redux";
 import { setChangeParams } from "@/redux/filter";
@@ -25,7 +24,7 @@ function ProductItem({ project }: IThisProps) {
   }
 
   return (
-    <Link
+    <a
       href={project.page_url}
       onClick={() => ChangeParams("projectId", project.project_id)}
       className="w-full bg-white rounded-[16px] p-[15px] cursor-pointer group flex-jsb-c flex-col"
@@ -56,7 +55,7 @@ function ProductItem({ project }: IThisProps) {
           height={500}
         />
       </div>
-    </Link>
+    </a>
   );
 }
 

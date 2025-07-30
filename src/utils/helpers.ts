@@ -187,25 +187,52 @@ export const getRemainingDaysText90Days = (startISOString: string) => {
   return Math.ceil(duration.asDays());
 };
 
-export const downloadImageFromUrl = async (
+export const downloadImageViaCanvas = async (
   imageUrl: string,
-  filename = "image.jpg",
+  filename: string,
 ) => {
   try {
-    const response = await fetch(imageUrl, { mode: "cors" }); // CORS թույլատրված պետք է լինի
-    const blob = await response.blob();
+    // Նկար բեռնում (CORS-ը շրջանցելու համար `crossOrigin="anonymous"`):
+    const img = new Image();
+    img.crossOrigin = "anonymous"; // Կարևոր է, որ canvas-ը չդառնա tainted
+    img.src = imageUrl;
 
-    const blobUrl = URL.createObjectURL(blob);
+    // Սպասում ենք, որ նկարը բեռնվի:
+    await new Promise((resolve, reject) => {
+      img.onload = resolve;
+      img.onerror = reject;
+    });
 
-    const a = document.createElement("a");
-    a.href = blobUrl;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
+    // Ստեղծում ենք canvas նույն չափերով:
+    const canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
 
-    document.body.removeChild(a);
-    URL.revokeObjectURL(blobUrl);
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      throw new Error("Canvas context not available");
+    }
+
+    // Նկարը գծում ենք canvas-ի մեջ:
+    ctx.drawImage(img, 0, 0);
+
+    // Canvas-ից ստեղծում ենք blob և բեռնում:
+    canvas.toBlob((blob) => {
+      if (!blob) {
+        return;
+      }
+      const blobUrl = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      URL.revokeObjectURL(blobUrl);
+    }, "image/jpeg");
   } catch (error) {
-    console.error(error);
+    console.error("Download failed:", error);
   }
 };

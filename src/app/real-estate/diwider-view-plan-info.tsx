@@ -2,6 +2,7 @@ import { Divider, Drawer, DrawerBody, DrawerContent } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { formatKzt, getClosestPlansByPrice, RandomKey } from "@/utils/helpers";
 import Image from "next/image";
+import Link from "next/link";
 
 interface IThisProps {
   status: boolean;
@@ -32,11 +33,13 @@ function DiwiderViewPlanInfo({ status, plan, plans, onClose }: IThisProps) {
       <DrawerContent>
         <DrawerBody>
           <div className="w-full min-h-[500px]">
-            <img
-              src={selectedPlan.image.big}
-              alt={selectedPlan.projectName}
-              className="w-full cursor-pointer mt-8"
-            />
+            <Link href={selectedPlan.image.big} target="_blank">
+              <img
+                src={selectedPlan.image.big}
+                alt={selectedPlan.projectName}
+                className="w-full mt-8"
+              />
+            </Link>
           </div>
 
           <Divider className="my-4" />

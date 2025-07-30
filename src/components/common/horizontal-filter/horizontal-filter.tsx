@@ -33,7 +33,29 @@ function HorizontalFilter({ className, projects, onClose }: IThisProps) {
     (state: IFilterParamsState) => state.filterParams.params,
   );
 
+  const [maxPrice, setMaxPrice] = useState<number>(0);
+  const [maxArea, setMaxArea] = useState<number>(0);
+
   const [houses, setHouses] = useState<IHouse[] | null>(null);
+
+  useEffect(() => {
+    const getIds = projects.map((project) => project.project_id);
+
+    ActionGetProjectsProperty("/property", {
+      projectIds: getIds,
+    }).then(({ data }) => {
+      const maxPriceItem = data.reduce((max: any, current: any) => {
+        return current.price.value > max.price.value ? current : max;
+      }, data[0]);
+
+      const maxAreaItem = data.reduce((max: any, current: any) => {
+        return current.area.area_total > max.area.area_total ? current : max;
+      }, data[0]);
+
+      setMaxArea(maxAreaItem.area.area_total);
+      setMaxPrice(maxPriceItem.price.value);
+    });
+  }, [projects]);
 
   useEffect(() => {
     if (filterParams.projectId) {
@@ -261,36 +283,39 @@ function HorizontalFilter({ className, projects, onClose }: IThisProps) {
                 ))}
               </div>
             </div>
-            <motion.div
-              initial="init"
-              whileInView="animate"
-              transition={{
-                duration: 0.5,
-                delay: 0.9,
-              }}
-              viewport={{ once: true, amount: 0.1 }}
-              variants={motionOptionText}
-              className="filter-block mt-5 md:mt-0"
-            >
-              <SliderInput
-                labelName={$t("price")}
-                min={1000000}
-                max={50000000}
-                step={1000}
-                typeOption="₸"
-                className="w-full md:w-[350px] mb-6"
-                onChangeInput={changeMinMaxPrice}
-              />
+            {maxPrice && maxArea ? (
+              <motion.div
+                initial="init"
+                whileInView="animate"
+                transition={{
+                  duration: 0.5,
+                  delay: 0.9,
+                }}
+                viewport={{ once: true, amount: 0.1 }}
+                variants={motionOptionText}
+                className="filter-block mt-5 md:mt-0"
+              >
+                <SliderInput
+                  labelName={$t("price")}
+                  min={1000000}
+                  max={maxPrice}
+                  step={1000}
+                  typeOption="₸"
+                  className="w-full md:w-[350px] mb-6"
+                  onChangeInput={changeMinMaxPrice}
+                />
 
-              <SliderInput
-                labelName={$t("area_m")}
-                min={10}
-                max={400}
-                step={0.5}
-                className="w-full md:w-[200px]"
-                onChangeInput={changeMinMaxPlace}
-              />
-            </motion.div>
+                <SliderInput
+                  labelName={$t("area_m")}
+                  min={10}
+                  max={maxArea}
+                  step={0.5}
+                  className="w-full md:w-[200px]"
+                  onChangeInput={changeMinMaxPlace}
+                />
+              </motion.div>
+            ) : null}
+
             <div className="w-full flex-jsb-c mt-6 flex md:hidden gap-4">
               <Button
                 className="rounded-[6px] bg-blue text-white"

@@ -113,7 +113,7 @@ function HowPlaying() {
     <section ref={sectionRef} className="relative">
       <div className="wrapper !pt-[20px]">
         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 mt-10">
-          <div className="w-full hidden lg:block">
+          <div className="w-full hidden lg:!block">
             <div className="w-full h-[668px] bg-blue p-6 rounded-[16px] relative overflow-hidden">
               <img
                 src={`/img/gala-bonus/${items[activeItem - 1]?.image || "slide-1.png"}`}

@@ -34,6 +34,7 @@ function debounce<T extends (...args: any[]) => void>(fn: T, delay: number) {
     timeoutId = setTimeout(() => fn(...args), delay);
   };
 }
+// ... [բոլոր import-ները թողնում ենք նույնը]
 
 function CanvasView({ objectInfo, project, onClose }: IThisProps) {
   const dispatch = useDispatch();
@@ -43,12 +44,11 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
   const imageRef = useRef<HTMLImageElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
 
-  // Virtual canvas dimensions
   const virtualWidth = 1300;
   const virtualHeight = 700;
 
   const [polygons, setPolygons] = useState<Polygon[]>([]);
-  const [currentPolygon, setCurrentPolygon] = useState<Polygon | null>(null);
+  // const [currentPolygon, setCurrentPolygon] = useState<Polygon | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [hoveredPolygon, setHoveredPolygon] = useState<Polygon | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
@@ -56,19 +56,16 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
   const [loadingData, setLoadingData] = useState(false);
   const [activeHoverId, setActiveHoverId] = useState<number | null>(null);
 
-  // For canvas scaling
   const [scale, setScale] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
   const imagePath = `${filesLink}${objectInfo.image_path}`;
 
-  // Initialize and handle resize
   useEffect(() => {
     const handleResize = () => {
       if (!containerRef.current || !canvasRef.current) {
         return;
       }
-
       const container = containerRef.current;
       const canvas = canvasRef.current;
 
@@ -91,19 +88,15 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Load data and image
   useEffect(() => {
     ActionGetObject(project.project_id).then((res) => {
       setPolygons(
-        res.data.map(
-          (object) =>
-            ({
-              id: object.project_house_id,
-              realIdForDb: object.id,
-              color: object.color,
-              points: JSON.parse(object.coordinates || "[]"),
-            }) as any,
-        ),
+        res.data.map((object) => ({
+          id: object.project_house_id,
+          realIdForDb: object.id,
+          color: object.color,
+          points: JSON.parse(object.coordinates || "[]"),
+        })) as any,
       );
     });
 
@@ -115,52 +108,34 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
     };
   }, [objectInfo, project]);
 
-  // Fetch tooltip data on hover
-  const fetchTooltipData = async (polygon: Polygon) => {
+  const fetchTooltipData = async (polygon: Polygon): Promise<IHouse | null> => {
     setLoadingData(true);
 
-    // const api_url =
-    //   objectInfo.api_url === "/projects"
-    //     ? "/house"
-    //     : objectInfo.api_url === "/house"
-    //       ? "/floor"
-    //       : "";
-
-    if (objectInfo.api_url === "/projects") {
-      ActionGetProjectsProperty("/house", {
+    try {
+      const result = await ActionGetProjectsProperty("/house", {
         isArchive: false,
         status: ["AVAILABLE"],
         id: polygon.id,
-      }).then((result) => {
-        setLoadingData(false);
-
-        const _dats: IHouse[] = [...result.data];
-
-        const filterResult = _dats.find((house) => house.id === polygon.id);
-
-        if (filterResult) {
-          setTooltipData(filterResult);
-        }
       });
+
+      const house = result.data.find((h: IHouse) => h.id === polygon.id);
+      if (house) {
+        setTooltipData(house);
+        return house;
+      }
+    } catch (e) {
+      console.error("Ошибка при загрузке данных пулыгона:", e);
+    } finally {
+      setLoadingData(false);
     }
 
-    // try {
-    //   const response = await fetch(`/api/polygon-data?id=${polygonId}`);
-    //   const data = await response.json();
-    //   setTooltipData(data);
-    // } catch (error) {
-    //   console.error("Failed to fetch tooltip data:", error);
-    // } finally {
-    //   setLoadingData(false);
-    // }
+    return null;
   };
 
-  // Convert coordinates
   const getVirtualCoords = (clientX: number, clientY: number): Point => {
     if (!canvasRef.current) {
       return { x: 0, y: 0 };
     }
-
     const rect = canvasRef.current.getBoundingClientRect();
     return {
       x: (clientX - rect.left - offset.x) / scale,
@@ -168,14 +143,11 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
     };
   };
 
-  const getPhysicalCoords = (virtualX: number, virtualY: number): Point => {
-    return {
-      x: virtualX * scale + offset.x,
-      y: virtualY * scale + offset.y,
-    };
-  };
+  const getPhysicalCoords = (virtualX: number, virtualY: number): Point => ({
+    x: virtualX * scale + offset.x,
+    y: virtualY * scale + offset.y,
+  });
 
-  // Debounced hover handler
   const handleHover = useCallback(
     debounce((polygon: Polygon | null) => {
       setHoveredPolygon(polygon);
@@ -186,7 +158,6 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
     [],
   );
 
-  // Mouse move handler
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {
       const { x, y } = getVirtualCoords(e.clientX, e.clientY);
@@ -197,15 +168,12 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
       if (hovered) {
         if (activeHoverId !== hovered.id) {
           setActiveHoverId(hovered.id);
-
           const center = getPolygonCenter(hovered.points);
           const physicalPos = getPhysicalCoords(center.x, center.y);
-
           setTooltipPosition({
             x: physicalPos.x + e.currentTarget.getBoundingClientRect().left,
             y: physicalPos.y + e.currentTarget.getBoundingClientRect().top,
           });
-
           handleHover(hovered);
         }
       } else if (activeHoverId !== null) {
@@ -216,61 +184,61 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
     [polygons, activeHoverId, handleHover],
   );
 
-  // Mouse leave handler
   const handleMouseLeave = useCallback(() => {
     setActiveHoverId(null);
     handleHover(null);
   }, [handleHover]);
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const handleMouseDown = async (e: React.MouseEvent<HTMLCanvasElement>) => {
     const { x, y } = getVirtualCoords(e.clientX, e.clientY);
 
-    // Check if clicked on existing polygon
     const clickedPoly = polygons.find((poly) =>
       isPointInPolygon({ x, y }, poly.points),
     );
 
-    if (clickedPoly) {
-      addToast({
-        title: "Подождите пожалуйста",
-        color: "warning",
-      });
-
-      ActionGetObject(clickedPoly.realIdForDb).then((resultObjects) => {
-        dispatch(setHouse(tooltipData));
-        dispatch(setObjectInfo(resultObjects.data as IObjectData[]));
-
-        addToast({
-          title: `Спасибо, можете смотреть ${tooltipData?.title}`,
-          color: "success",
-        });
-        onClose();
-      });
-
+    if (!clickedPoly) {
       return;
     }
 
-    if (currentPolygon) {
-      setCurrentPolygon({
-        ...currentPolygon,
-        points: [...currentPolygon.points, { x, y }],
-      });
+    addToast({
+      title: "Подождите пожалуйста",
+      color: "warning",
+    });
+
+    let currentTooltipData = tooltipData;
+
+    if (!currentTooltipData || currentTooltipData.id !== clickedPoly.id) {
+      const house = await fetchTooltipData(clickedPoly);
+      if (!house) {
+        addToast({ title: "Ошибка загрузки информации", color: "danger" });
+        return;
+      }
+      currentTooltipData = house;
     }
+
+    const resultObjects = await ActionGetObject(clickedPoly.realIdForDb);
+
+    dispatch(setHouse(currentTooltipData));
+    dispatch(setObjectInfo(resultObjects.data as IObjectData[]));
+
+    addToast({
+      title: `Спасибо, можете смотреть ${currentTooltipData.title}`,
+      color: "success",
+    });
+
+    onClose();
   };
 
-  // Polygon helpers
   const isPointInPolygon = (point: Point, polygon: Point[]): boolean => {
     if (polygon.length < 3) {
       return false;
     }
-
     let inside = false;
     for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
       const xi = polygon[i].x,
         yi = polygon[i].y;
       const xj = polygon[j].x,
         yj = polygon[j].y;
-
       const intersect =
         yi > point.y !== yj > point.y &&
         point.x < ((xj - xi) * (point.y - yi)) / (yj - yi) + xi;
@@ -278,7 +246,6 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
         inside = !inside;
       }
     }
-
     return inside;
   };
 
@@ -293,7 +260,6 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
     return center;
   };
 
-  // Main drawing function
   const redraw = () => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
@@ -302,29 +268,25 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     ctx.save();
     ctx.translate(offset.x, offset.y);
     ctx.scale(scale, scale);
 
-    // Draw image
     if (imageRef.current) {
       ctx.drawImage(imageRef.current, 0, 0, virtualWidth, virtualHeight);
     }
 
-    // Draw polygons
     polygons.forEach((poly) => {
       drawPolygon(ctx, poly, poly === hoveredPolygon);
     });
 
-    if (currentPolygon) {
-      drawPolygon(ctx, currentPolygon, false);
-    }
+    // if (currentPolygon) {
+    //   drawPolygon(ctx, currentPolygon, false);
+    // }
 
     ctx.restore();
   };
 
-  // Polygon rendering with hover effect
   const drawPolygon = (
     ctx: CanvasRenderingContext2D,
     poly: Polygon,
@@ -337,32 +299,31 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
     ctx.beginPath();
     ctx.moveTo(poly.points[0].x, poly.points[0].y);
     poly.points.forEach((p, i) => i > 0 && ctx.lineTo(p.x, p.y));
+    if (poly.points.length >= 3) {
+      ctx.closePath();
+    }
 
     ctx.fillStyle = `${poly.color}${isHovered ? "80" : "40"}`;
     ctx.strokeStyle = poly.color;
     ctx.lineWidth = (isHovered ? 2.5 : 1.5) / scale;
-
-    if (poly.points.length >= 3) {
-      ctx.closePath();
-    }
     ctx.fill();
     ctx.stroke();
 
-    if (poly === currentPolygon) {
-      poly.points.forEach((p) => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 4 / scale, 0, Math.PI * 2);
-        ctx.fillStyle = poly.color;
-        ctx.fill();
-        ctx.strokeStyle = "white";
-        ctx.stroke();
-      });
-    }
+    // if (poly === currentPolygon) {
+    //   poly.points.forEach((p) => {
+    //     ctx.beginPath();
+    //     ctx.arc(p.x, p.y, 4 / scale, 0, Math.PI * 2);
+    //     ctx.fillStyle = poly.color;
+    //     ctx.fill();
+    //     ctx.strokeStyle = "white";
+    //     ctx.stroke();
+    //   });
+    // }
   };
 
   useEffect(() => {
     redraw();
-  }, [polygons, currentPolygon, imageLoaded, scale, offset, hoveredPolygon]);
+  }, [polygons, imageLoaded, scale, offset, hoveredPolygon]);
 
   return (
     <div
@@ -402,48 +363,41 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
           <div className="w-full h-[100px] flex-jc-c">
             <Spinner />
           </div>
-        ) : (
-          <>
-            {tooltipData ? (
-              <div className="w-full">
-                <div className="w-full flex-jsb-c">
-                  <h3 className="font-semibold">{tooltipData.title}</h3>
-                  <div>
-                    <Chip>
-                      {tooltipData.salesStart?.month}.
-                      {tooltipData.salesStart?.year}
-                    </Chip>
-                  </div>
+        ) : tooltipData ? (
+          <div className="w-full">
+            <div className="w-full flex-jsb-c">
+              <h3 className="font-semibold">{tooltipData.title}</h3>
+              <div>
+                <Chip>
+                  {tooltipData.salesStart?.month}.{tooltipData.salesStart?.year}
+                </Chip>
+              </div>
+            </div>
+            <Divider className="my-4" />
+            <ul>
+              <li>
+                <div className="flex-js-c">
+                  <span className="text-black/60 mr-2">Адрес:</span>{" "}
+                  {tooltipData.address.full}
                 </div>
                 <Divider className="my-4" />
-                <ul>
-                  <li>
-                    <div className="flex-js-c">
-                      <span className="text-black/60 mr-2">Адрес:</span>{" "}
-                      {tooltipData.address.full}
-                    </div>
-
-                    <Divider className="my-4" />
-
-                    <div className="w-full flex-jsb-s">
-                      <h4 className="text-blue">
-                        <b>{tooltipData.propertyCount}</b> квартир{" "}
-                      </h4>
-                      <div className="text-right">
-                        <h3 className="text-[15px]">
-                          от {formatKzt(tooltipData.minPrice)}
-                        </h3>
-                        <h3 className="text-[15px]">
-                          от {formatKzt(tooltipData.minPriceArea)}/м²
-                        </h3>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            ) : null}
-          </>
-        )}
+                <div className="w-full flex-jsb-s">
+                  <h4 className="text-blue">
+                    <b>{tooltipData.propertyCount}</b> квартир{" "}
+                  </h4>
+                  <div className="text-right">
+                    <h3 className="text-[15px]">
+                      от {formatKzt(tooltipData.minPrice)}
+                    </h3>
+                    <h3 className="text-[15px]">
+                      от {formatKzt(tooltipData.minPriceArea)}/м²
+                    </h3>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        ) : null}
       </div>
 
       <i
