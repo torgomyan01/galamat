@@ -134,6 +134,21 @@ function HorizontalFilter({
     }, 500);
   }
 
+  function ClearFilter() {
+    dispatch(
+      setChangeParams({
+        projectId: 0,
+        houseId: 0,
+        rooms: [],
+        "price[min]": 0,
+        "price[max]": 60000000,
+        minFloor: 0,
+        "area[min]": 0,
+        "area[max]": 400,
+      }),
+    );
+  }
+
   return (
     <div className={clsx("filters mb-8", className)}>
       {filterParams ? (
@@ -256,10 +271,7 @@ function HorizontalFilter({
                   </DropdownMenu>
                 </Dropdown>
               </motion.div>
-              <span
-                className="reset hidden md:block"
-                // onClick={ClearFilter}
-              >
+              <span className="reset hidden md:block" onClick={ClearFilter}>
                 {$t("reset__")}
               </span>
             </div>
