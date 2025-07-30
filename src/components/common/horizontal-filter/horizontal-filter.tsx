@@ -23,9 +23,15 @@ interface IThisProps {
   className?: string;
   projects: IProjectMerged[];
   onClose?: () => void;
+  isCloseSelectProjects?: boolean;
 }
 
-function HorizontalFilter({ className, projects, onClose }: IThisProps) {
+function HorizontalFilter({
+  className,
+  projects,
+  onClose,
+  isCloseSelectProjects = false,
+}: IThisProps) {
   const dispatch = useDispatch();
   const $t = useTranslate();
 
@@ -137,125 +143,128 @@ function HorizontalFilter({ className, projects, onClose }: IThisProps) {
             <i className="fa-solid fa-xmark text-[18px]" onClick={onClose} />
           </div>
 
-          <div className="top-info gap-1">
-            {/*<div className="select-info">*/}
-            {/*  <span>{$t("district")}</span>*/}
+          {!isCloseSelectProjects ? (
+            <div className="top-info gap-1">
+              {/*<div className="select-info">*/}
+              {/*  <span>{$t("district")}</span>*/}
 
-            {/*  <Select*/}
-            {/*    // selectedKeys={[`${regions}`]}*/}
-            {/*    className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white"*/}
-            {/*    variant="bordered"*/}
-            {/*    // onSelectionChange={_selectRegion}*/}
-            {/*  >*/}
-            {/*    /!*{[...findRegions, all]?.map((region) => (*!/*/}
-            {/*    /!*  <SelectItem key={region}>{region}</SelectItem>*!/*/}
-            {/*    /!*))}*!/*/}
-            {/*    <SelectItem key="hello">hello</SelectItem>*/}
-            {/*  </Select>*/}
-            {/*</div>*/}
-            <motion.div
-              initial={"init"}
-              whileInView={"animate"}
-              transition={{
-                duration: 0.5,
-                delay: 0.6,
-              }}
-              viewport={{ once: true, amount: 0.1 }}
-              variants={motionOptionText}
-              className="select-info"
-            >
-              <span>{$t("residential_complex")}</span>
-              <Select
-                placeholder="Выбрайте проект"
-                selectedKeys={[`${filterParams?.projectId || 0}`]}
-                className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none"
-                variant="bordered"
-                onSelectionChange={(e) =>
-                  ChangeParams("projectId", e.currentKey ? +e.currentKey : 0)
-                }
-              >
-                {projects.map((projectName: IProjectMerged) => (
-                  <SelectItem key={`${projectName.project_id}`}>
-                    {projectName.title}
-                  </SelectItem>
-                ))}
-              </Select>
-            </motion.div>
-            {houses ? (
+              {/*  <Select*/}
+              {/*    // selectedKeys={[`${regions}`]}*/}
+              {/*    className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white"*/}
+              {/*    variant="bordered"*/}
+              {/*    // onSelectionChange={_selectRegion}*/}
+              {/*  >*/}
+              {/*    /!*{[...findRegions, all]?.map((region) => (*!/*/}
+              {/*    /!*  <SelectItem key={region}>{region}</SelectItem>*!/*/}
+              {/*    /!*))}*!/*/}
+              {/*    <SelectItem key="hello">hello</SelectItem>*/}
+              {/*  </Select>*/}
+              {/*</div>*/}
               <motion.div
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={"init"}
+                whileInView={"animate"}
+                transition={{
+                  duration: 0.5,
+                  delay: 0.6,
+                }}
+                viewport={{ once: true, amount: 0.1 }}
+                variants={motionOptionText}
                 className="select-info"
               >
-                <span>{$t("objects_")}</span>
+                <span>{$t("residential_complex")}</span>
                 <Select
-                  placeholder="Выбрайте объекты"
-                  selectedKeys={[`${filterParams?.houseId || 0}`]}
+                  placeholder="Выбрайте проект"
+                  selectedKeys={[`${filterParams?.projectId || 0}`]}
                   className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none"
                   variant="bordered"
                   onSelectionChange={(e) =>
-                    ChangeParams("houseId", e.currentKey ? +e.currentKey : 0)
+                    ChangeParams("projectId", e.currentKey ? +e.currentKey : 0)
                   }
                 >
-                  {houses.map((house: IHouse) => (
-                    <SelectItem key={`${house.id}`}>{house.title}</SelectItem>
+                  {projects.map((projectName: IProjectMerged) => (
+                    <SelectItem key={`${projectName.project_id}`}>
+                      {projectName.title}
+                    </SelectItem>
                   ))}
                 </Select>
               </motion.div>
-            ) : null}
-
-            <motion.div
-              initial={"init"}
-              whileInView={"animate"}
-              transition={{
-                duration: 0.5,
-                delay: 0.6,
-              }}
-              viewport={{ once: true, amount: 0.1 }}
-              variants={motionOptionText}
-              className="select-info"
-            >
-              <span>{$t("floor__")}</span>
-
-              <Dropdown>
-                <DropdownTrigger>
-                  <Button
-                    variant="bordered"
-                    className="md:w-[160px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none !flex-jsb-c"
-                  >
-                    {filterParams.minFloor || (
-                      <span className="opacity-60">Выберите этаж</span>
-                    )}
-                    <i className="fa-regular fa-chevron-down text-[12px] opacity-90"></i>
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu
-                  aria-label="Select Floor"
-                  className="max-h-[300px] overflow-y-auto"
+              {houses ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="select-info"
                 >
-                  {floorSelectItems.map((floor) => (
-                    <DropdownItem
-                      key={`floor-${floor}`}
-                      onPress={() => ChangeParams("minFloor", floor)}
+                  <span>{$t("objects_")}</span>
+                  <Select
+                    placeholder="Выбрайте объекты"
+                    selectedKeys={[`${filterParams?.houseId || 0}`]}
+                    className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none"
+                    variant="bordered"
+                    onSelectionChange={(e) =>
+                      ChangeParams("houseId", e.currentKey ? +e.currentKey : 0)
+                    }
+                  >
+                    {houses.map((house: IHouse) => (
+                      <SelectItem key={`${house.id}`}>{house.title}</SelectItem>
+                    ))}
+                  </Select>
+                </motion.div>
+              ) : null}
+
+              <motion.div
+                initial={"init"}
+                whileInView={"animate"}
+                transition={{
+                  duration: 0.5,
+                  delay: 0.6,
+                }}
+                viewport={{ once: true, amount: 0.1 }}
+                variants={motionOptionText}
+                className="select-info"
+              >
+                <span>{$t("floor__")}</span>
+
+                <Dropdown>
+                  <DropdownTrigger>
+                    <Button
+                      variant="bordered"
+                      className="md:w-[160px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none !flex-jsb-c"
                     >
-                      <div className="w-full flex-jsb-c">
-                        {floor}
-                        {floor === filterParams.minFloor ? (
-                          <i className="fa-solid fa-check mr-1 text-blue"></i>
-                        ) : null}
-                      </div>
-                    </DropdownItem>
-                  ))}
-                </DropdownMenu>
-              </Dropdown>
-            </motion.div>
-            <span
-              className="reset hidden md:block"
-              // onClick={ClearFilter}
-            >
-              {$t("reset__")}
-            </span>
-          </div>
+                      {filterParams.minFloor || (
+                        <span className="opacity-60">Выберите этаж</span>
+                      )}
+                      <i className="fa-regular fa-chevron-down text-[12px] opacity-90"></i>
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu
+                    aria-label="Select Floor"
+                    className="max-h-[300px] overflow-y-auto"
+                  >
+                    {floorSelectItems.map((floor) => (
+                      <DropdownItem
+                        key={`floor-${floor}`}
+                        onPress={() => ChangeParams("minFloor", floor)}
+                      >
+                        <div className="w-full flex-jsb-c">
+                          {floor}
+                          {floor === filterParams.minFloor ? (
+                            <i className="fa-solid fa-check mr-1 text-blue"></i>
+                          ) : null}
+                        </div>
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                </Dropdown>
+              </motion.div>
+              <span
+                className="reset hidden md:block"
+                // onClick={ClearFilter}
+              >
+                {$t("reset__")}
+              </span>
+            </div>
+          ) : null}
+
           <div className="bottom-info">
             <div className="room">
               <span>{$t("com__")}</span>

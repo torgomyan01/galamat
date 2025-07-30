@@ -23,6 +23,7 @@ interface IThisProps {
   objectInfo: IObjectData[];
   house: IHouse;
   onClose: () => void;
+  projects: IProjectMerged[];
 }
 
 function debounce<T extends (...args: any[]) => void>(fn: T, delay: number) {
@@ -33,7 +34,7 @@ function debounce<T extends (...args: any[]) => void>(fn: T, delay: number) {
   };
 }
 
-function CanvasViewHouse({ objectInfo, house, onClose }: IThisProps) {
+function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
@@ -371,7 +372,7 @@ function CanvasViewHouse({ objectInfo, house, onClose }: IThisProps) {
             hidden: !chess,
           })}
         >
-          {chess && <ChessView activeHouse={activeHouse} />}
+          {chess && <ChessView projects={projects} activeHouse={activeHouse} />}
         </div>
 
         <div
@@ -414,7 +415,7 @@ function CanvasViewHouse({ objectInfo, house, onClose }: IThisProps) {
           </div>
         </div>
 
-        <div className="absolute top-[70px] md:top-6 left-0 flex-jc-c w-full z-[1000000]">
+        <div className="absolute top-[50px] md:top-6 left-0 flex-jc-c w-full z-[1000000]">
           <div className="w-[300px] h-12 border border-white/50 rounded-[6px] flex-jsb-c backdrop-blur-[10px] bg-black/30">
             <Button
               variant={chess ? "bordered" : "flat"}
@@ -482,7 +483,7 @@ function CanvasViewHouse({ objectInfo, house, onClose }: IThisProps) {
         </div>
 
         <i
-          className="fa-light fa-xmark bg-white w-[40px] h-[40px] rounded-full flex-jc-c absolute top-6 right-6 text-[30px] text-black/60 hover:text-black cursor-pointer z-[1000000000]"
+          className="fa-light fa-xmark sm:bg-white w-[20p] sm:w-[40px] h-[20px] sm:h-[40px] rounded-full flex-jc-c absolute top-6 right-6 text-[20px] sm:text-[30px] text-black/60 hover:text-black cursor-pointer z-[1000000000]"
           onClick={CloseModal}
         />
       </div>

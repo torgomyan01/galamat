@@ -1,16 +1,18 @@
 import "./_checkerboard.scss";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
 import BoxItemChess from "@/app/real-estate/box-item-chess";
 import { ActionGetProperty } from "@/app/actions/start-crone/get-property";
 import { Spinner } from "@heroui/spinner";
+import HorizontalFilter from "@/components/common/horizontal-filter/horizontal-filter";
 
 interface IThisProps {
   activeHouse: IObjectData | null;
+  projects: IProjectMerged[];
 }
 
-function ChessView({ activeHouse }: IThisProps) {
+function ChessView({ activeHouse, projects }: IThisProps) {
   const [boards, setBoards] = useState<IBoard | null>(null);
   const [property, setProperty] = useState<
     { id: number; property_id: number; data: IProperty }[] | null
@@ -50,8 +52,17 @@ function ChessView({ activeHouse }: IThisProps) {
     });
   }
 
+  const [mobileFilter, setMobileFilter] = useState<boolean>(false);
+
   return (
-    <div className="w-full h-[100dvh] bg-white mt-[-25px] pt-[150px] sm:pt-[100px] px-6">
+    <div className="w-full h-[100dvh] bg-[#e8eaef] mt-[-25px] pt-[130px] sm:pt-[100px] px-6">
+      <HorizontalFilter
+        className={mobileFilter ? "open" : ""}
+        projects={projects}
+        isCloseSelectProjects
+        onClose={() => setMobileFilter(false)}
+      />
+
       {property ? (
         <div className="checkerboard-wrap">
           <div className="top-info">
