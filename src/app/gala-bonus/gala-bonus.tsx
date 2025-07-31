@@ -22,6 +22,7 @@ import clsx from "clsx";
 import { Spinner } from "@heroui/spinner";
 import { ActionSendNumberBitrix } from "@/app/actions/lottery/send-number-bitrix";
 import { ActionUpdateStatus } from "@/app/actions/lottery/update-status";
+import BonusBlockCover from "@/app/gala-bonus/bonus-block-cover";
 
 type PlayerStatus = "phone-success" | "wait-day" | "start" | "winnings-taken";
 
@@ -195,9 +196,11 @@ function GalaBonus() {
     }
   }
 
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <MainTemplate>
-      <div className="w-full h-[600px] min-[322px]:h-[620px] min-[400px]:h-[650px] min-[500px]:h-[800px] min-[590px]:h-[860px] md:h-[450px] min-[900px]:h-[560px] min-[1050px]:h-[650px] min-[1200px]:h-[720px]">
+      <div className="w-full h-auto">
         <div
           className={clsx("bonus-wrap hidden", {
             "!block": startPlying === "phone-success",
@@ -222,9 +225,12 @@ function GalaBonus() {
                 </Fade>
               </div>
               <div className="bonus">
-                <Fade direction="right" triggerOnce delay={500}>
-                  <img src="/img/gala-bonus-role.svg" alt="" />
-                </Fade>
+                <BonusBlockCover
+                  idLoaded={(status: boolean) => setIsLoading(status)}
+                />
+                {/*<Fade direction="right" triggerOnce delay={500}>*/}
+                {/*  <img src="/img/gala-bonus-role.svg" alt="" />*/}
+                {/*</Fade>*/}
               </div>
             </div>
           </div>
@@ -281,7 +287,7 @@ function GalaBonus() {
         </div>
       </div>
 
-      <HowPlaying />
+      {isLoading ? <HowPlaying /> : null}
 
       <Modal
         isOpen={modalCheckPhone}
