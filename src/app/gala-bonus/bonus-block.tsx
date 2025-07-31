@@ -10,7 +10,6 @@ import { Modal, ModalBody, ModalContent } from "@heroui/modal";
 import { useTranslate } from "@/hooks/useTranslate";
 import { ActionUpdateStatus } from "@/app/actions/lottery/update-status";
 import { ActionSendNumberBitrix } from "@/app/actions/lottery/send-number-bitrix";
-import { useRouter } from "next/navigation";
 
 interface IWinerItem {
   price: number;
@@ -24,7 +23,6 @@ interface IThisProps {
 
 function BonusBlock({ data }: IThisProps) {
   const $t = useTranslate();
-  const router = useRouter();
   const [prices, setPrices] = useState<IProbabilities[]>([]);
 
   useEffect(() => {
@@ -122,7 +120,7 @@ function BonusBlock({ data }: IThisProps) {
 
       ActionUpdateStatus(data?.data.id, "winnings-taken")
         .then(() => {
-          router.push(userBonusLink);
+          window.location.href = userBonusLink;
         })
         .finally(() => setLoading(false));
     }
