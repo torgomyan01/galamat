@@ -128,7 +128,7 @@ function BonusBlock({ data }: IThisProps) {
 
   return (
     <>
-      <div className="bonus-wrap !py-20 relative">
+      <div className="bonus-wrap py-10 sm:!py-20 relative">
         <div
           className={clsx("wrapper relative z-10 visible", {
             "!invisible": winner,
@@ -156,9 +156,9 @@ function BonusBlock({ data }: IThisProps) {
               {prices.length ? (
                 <div
                   className={clsx(
-                    "min-w-[650px] w-[650px] min-h-[650px] h-[650px] relative transform transition duration-[1s]",
+                    "min-w-[650px] w-[650px] min-h-[650px] h-[650px] relative transform transition duration-[1s] gala-bonus-fortuna",
                     {
-                      "scale-0": winner,
+                      "!scale-0": winner,
                     },
                   )}
                 >
@@ -227,9 +227,9 @@ function BonusBlock({ data }: IThisProps) {
             src="/img/winner-right.svg"
             alt="winner-right.svg"
             className={clsx(
-              "w-auto h-full absolute right-0 top-0 transition duration-[1s] transform translate-x-[100%]",
+              "w-auto h-[500px] sm:h-full absolute right-0 top-0 transition duration-[1s] transform translate-x-[100%]",
               {
-                "!translate-x-[0]": winner,
+                "translate-x-[40%] sm:!translate-x-[0]": winner,
               },
             )}
           />
@@ -237,22 +237,22 @@ function BonusBlock({ data }: IThisProps) {
             src="/img/winner-left.svg"
             alt="winner-left.svg"
             className={clsx(
-              "w-auto h-full absolute left-0 top-0 transition duration-[1s] transform translate-x-[-100%]",
+              "w-auto h-[500px] sm:h-full  absolute left-0 top-0 transition duration-[1s] transform translate-x-[-100%]",
               {
-                "!translate-x-[0]": winner,
+                "translate-x-[-40%] sm:!translate-x-[0]": winner,
               },
             )}
           />
 
           <div
             className={clsx(
-              "flex-jc-c flex-col transform transition duration-[1s] scale-0",
+              "flex-jc-c flex-col transform transition duration-[1s] scale-0 mt-[-200px] sm:mt-0",
               {
-                "scale-100": winner,
+                "scale-50 sm:scale-100": winner,
               },
             )}
           >
-            <h3 className="text-[45px] text-white mb-4">
+            <h3 className="text-[45px] text-white mb-4 text-center sm:text-left">
               Поздравляем! вы получили
             </h3>
             {winner ? (
@@ -263,9 +263,11 @@ function BonusBlock({ data }: IThisProps) {
               </h1>
             ) : null}
 
-            <h3 className="text-[45px] text-white mb-4">Gala Bonus-ов</h3>
+            <h3 className="text-[45px] text-white relative top-[-40px] sm:top-0 sm:mb-4">
+              Gala Bonus-ов
+            </h3>
             <Button
-              className="bg-[#DB1D31] text-white rounded-[30px]"
+              className="bg-[#DB1D31] text-white rounded-[30px] transform scale-[1.8] sm:scale-100"
               onPress={fintWallet}
             >
               {$t("claim_bonuses")}

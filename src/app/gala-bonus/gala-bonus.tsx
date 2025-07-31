@@ -23,11 +23,13 @@ import { Spinner } from "@heroui/spinner";
 import { ActionSendNumberBitrix } from "@/app/actions/lottery/send-number-bitrix";
 import { ActionUpdateStatus } from "@/app/actions/lottery/update-status";
 import BonusBlockCover from "@/app/gala-bonus/bonus-block-cover";
+import { useRouter } from "next/navigation";
 
 type PlayerStatus = "phone-success" | "wait-day" | "start" | "winnings-taken";
 
 function GalaBonus() {
   const $t = useTranslate();
+  const router = useRouter();
 
   const [modalCheckPhone, setModalCheckPhone] = useState(false);
 
@@ -190,7 +192,7 @@ function GalaBonus() {
 
       ActionUpdateStatus(sendData?.data.id, "winnings-taken")
         .then(() => {
-          window.open(userBonusLink, "_blank");
+          router.push(userBonusLink);
         })
         .finally(() => setLoadingFindBonus(false));
     }
