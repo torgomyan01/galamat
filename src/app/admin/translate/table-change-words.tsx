@@ -8,7 +8,7 @@ import {
 } from "@heroui/react";
 import React, { useEffect, useState } from "react";
 import { GetLanguage } from "@/app/actions/admin/language/get-languages";
-import { Spinner } from "@heroui/spinner";
+import { Spinner } from "@heroui/react";
 import ChangeKey from "@/app/admin/translate/change-key";
 
 interface IThisProps {

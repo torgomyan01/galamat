@@ -524,3 +524,7 @@ select {
   bottom: 0;
   background: linear-gradient(180deg, transparent, #E8EAEF);
 }
+
+.disable-selection {
+  user-select: none !important;
+}

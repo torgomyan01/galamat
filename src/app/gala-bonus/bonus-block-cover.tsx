@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ActionGetProbabilities } from "@/app/actions/lottery/get-probabilities";
-import { Spinner } from "@heroui/spinner";
+import { Spinner } from "@heroui/react";
+import { formatKzt } from "@/utils/helpers";
 
 interface IThisProps {
   idLoaded: (status: boolean) => void;
@@ -52,13 +53,13 @@ function BonusBlockCover({ idLoaded }: IThisProps) {
                 {prices.map((price, i) => (
                   <div
                     key={`price-${i}`}
-                    className="absolute left-0 top-[50%] text-white text-[70px] font-bold w-full "
+                    className="absolute left-0 top-[50%] text-white text-[35px] font-bold w-full "
                     style={{
                       transform: `translateY(-50%) rotate(${i * 45 + 111}deg)`,
                     }}
                   >
                     <span className="transform rotate-180 inline-block w-[250px]">
-                      {price.price}k
+                      {formatKzt(price.price).replace(/ /, ".")}
                     </span>
 
                     <span className="w-6 h-6 bg-[#FFAB36] shadow-yellow rounded-full absolute right-[2px] top-[50%] transform translate-y-[-50%]"></span>

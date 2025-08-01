@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ActionCreateSliderFade } from "@/app/actions/admin/pages/home/slider-fade/create-slider-fade";
-import { Spinner } from "@heroui/spinner";
+import { Spinner } from "@heroui/react";
 import { ActionGetSlidersFade } from "@/app/actions/admin/pages/home/slider-fade/get-sliders-fade";
 import { GetLanguage } from "@/app/actions/admin/language/get-languages";
 import ModalUploadImageSlider from "@/components/layout/admin/pages/home/modal-upload-image-slider";

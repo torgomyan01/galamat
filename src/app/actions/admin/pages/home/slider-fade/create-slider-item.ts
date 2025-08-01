@@ -55,5 +55,7 @@ export async function ActionCreateSliderFade(
       data: {},
       error,
     };
+  } finally {
+    await prisma.$disconnect();
   }
 }

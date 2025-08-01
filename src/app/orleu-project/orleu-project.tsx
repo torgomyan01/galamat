@@ -11,7 +11,7 @@ import ContentOrleuProjectHomeMap from "@/components/layout/orleu-project/conten
 import ContentOrleuProjectAllHotelSlider from "@/components/layout/orleu-project/content-orleu-project-all-hotel-slider";
 import ContentOrleuProjectAlPanorama from "@/components/layout/orleu-project/content-orleu-project-panarama";
 import ContentOrleuEndSection from "@/components/layout/orleu-project/content-orleu-project-end-section";
-import { Modal, ModalBody, ModalContent } from "@heroui/modal";
+import { Modal, ModalBody, ModalContent } from "@heroui/react";
 import SendRequest from "@/components/layout/orleu-project/send-request";
 import OreluMobileHeader from "@/components/layout/orleu-project/orelu-mobile-header";
 import ContentOrleuProjectSliderMobile from "@/components/layout/orleu-project/content-orleu-project-slider-mobile";

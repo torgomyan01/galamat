@@ -27,5 +27,7 @@ export async function ActionCreateSliderFade(parent_id: string) {
       data: [],
       error,
     };
+  } finally {
+    await prisma.$disconnect();
   }
 }

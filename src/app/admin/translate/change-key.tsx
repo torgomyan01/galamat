@@ -1,4 +1,4 @@
-import { Input } from "@heroui/input";
+import { Input } from "@heroui/react";
 import React, { useState } from "react";
 import { addToast, Button } from "@heroui/react";
 import { UpdateLanguage } from "@/app/actions/admin/language/change-language";

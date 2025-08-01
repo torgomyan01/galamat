@@ -1,10 +1,10 @@
-import { Modal, ModalBody, ModalContent, ModalHeader } from "@heroui/modal";
+import { Modal, ModalBody, ModalContent, ModalHeader } from "@heroui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { filesLink, filesLinkRemove, filesLinkSave } from "@/utils/consts";
 import { ActionCreateSliderFade } from "@/app/actions/admin/pages/home/slider-fade/create-slider-item";
 import { addToast } from "@heroui/react";
-import { Input } from "@heroui/input";
+import { Input } from "@heroui/react";
 
 interface IThisProps {
   status: ISliderItem | null;

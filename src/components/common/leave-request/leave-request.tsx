@@ -1,5 +1,5 @@
 import "./leave-request.scss";
-import { Input } from "@heroui/input";
+import { Input } from "@heroui/react";
 import { addToast, Button } from "@heroui/react";
 import { SendCallBack } from "@/utils/api";
 import { useState } from "react";
@@ -48,7 +48,9 @@ function LeaveRequest() {
             <div className="info">
               <div className="texts">
                 <h2>{$t("leave_a_request")}</h2>
-                <span>{$t("we_are_building _the_future")}</span>
+                <span className="w-full max-w-[310px] block">
+                  {$t("we_are_building _the_future")}
+                </span>
               </div>
               <div className="img-wrap">
                 <Image
@@ -61,21 +63,22 @@ function LeaveRequest() {
             </div>
           </Fade>
           <Fade direction="right" className="md:w-[45%]" triggerOnce>
-            <div className="leave-request-form">
+            <div className="leave-request-form flex-jc-c">
               {sendStatus ? (
-                <div className="w-full flex-jc-c flex-col gap-4">
+                <div className="w-full h-full flex-jc-c flex-col gap-4">
                   <Image
                     src="img/icons/checked.svg"
                     alt="check icon"
                     width="178"
                     height="103"
+                    className="w-[140px] h-auto"
                   />
                   <h4 className="text-blue text-[28.74px] font-medium tracking-[-0.862px] text-center">
                     {$t("we_have_already_received")}
                   </h4>
                 </div>
               ) : (
-                <form action="" onSubmit={startCallBack}>
+                <form action="" onSubmit={startCallBack} className="w-full">
                   <div className="mb-4">
                     <Input
                       label={$t("your_name")}
@@ -83,6 +86,7 @@ function LeaveRequest() {
                       type="text"
                       variant="bordered"
                       required
+                      className="w-full"
                     />
                   </div>
                   <div className="mb-4">
@@ -92,6 +96,7 @@ function LeaveRequest() {
                       name="phone"
                       variant="bordered"
                       required
+                      className="w-full"
                     />
                   </div>
                   <Button

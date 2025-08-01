@@ -4,9 +4,9 @@ import { addToast, Button } from "@heroui/react";
 import { formatKzt } from "@/utils/helpers";
 import { ActionUpdateWinner } from "@/app/actions/phone/change-winner";
 import { ActionGetProbabilities } from "@/app/actions/lottery/get-probabilities";
-import { Spinner } from "@heroui/spinner";
+import { Spinner } from "@heroui/react";
 import { Fade } from "react-awesome-reveal";
-import { Modal, ModalBody, ModalContent } from "@heroui/modal";
+import { Modal, ModalBody, ModalContent } from "@heroui/react";
 import { useTranslate } from "@/hooks/useTranslate";
 import { ActionUpdateStatus } from "@/app/actions/lottery/update-status";
 import { ActionSendNumberBitrix } from "@/app/actions/lottery/send-number-bitrix";
@@ -191,13 +191,13 @@ function BonusBlock({ data }: IThisProps) {
                       {prices.map((price, i) => (
                         <div
                           key={`price-${i}`}
-                          className="absolute left-0 top-[50%] text-white text-[70px] font-bold w-full "
+                          className="absolute left-0 top-[50%] text-white text-[35px] font-bold w-full "
                           style={{
                             transform: `translateY(-50%) rotate(${i * 45 + 111}deg)`,
                           }}
                         >
                           <span className="transform rotate-180 inline-block w-[250px]">
-                            {price.price}k
+                            {formatKzt(price.price).replace(/ /, ".")}
                           </span>
 
                           <span className="w-6 h-6 bg-[#FFAB36] shadow-yellow rounded-full absolute right-[2px] top-[50%] transform translate-y-[-50%]"></span>
@@ -257,7 +257,7 @@ function BonusBlock({ data }: IThisProps) {
             </h3>
             {winner ? (
               <h1 className="text-[154.75px] text-white font-bold mb-4">
-                {formatKzt(winner?.price * 1000)
+                {formatKzt(winner?.price)
                   .replace(/ тг./g, "")
                   .replace(/ /g, ".")}
               </h1>

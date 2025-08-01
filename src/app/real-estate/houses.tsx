@@ -5,7 +5,7 @@ import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-p
 import Image from "next/image";
 import { formatKzt, getSalesStatus } from "@/utils/helpers";
 import { addToast, Divider } from "@heroui/react";
-import { Spinner } from "@heroui/spinner";
+import { Spinner } from "@heroui/react";
 import { ActionGetObjectInfo } from "@/app/actions/admin/objects/get-object-info";
 import { useDispatch, useSelector } from "react-redux";
 import { setHouse, setObjectInfo } from "@/redux/modals";

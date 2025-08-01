@@ -23,5 +23,7 @@ export async function ActionGetPageSection(key: string) {
       data: [],
       error,
     };
+  } finally {
+    await prisma.$disconnect();
   }
 }

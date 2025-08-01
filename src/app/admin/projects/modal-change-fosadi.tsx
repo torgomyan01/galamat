@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { ActionGetObjectInfo } from "@/app/actions/admin/objects/get-object-info";
 import CanvasEditor from "@/app/admin/projects/canvas-editor";
-import { Spinner } from "@heroui/spinner";
+import { Spinner } from "@heroui/react";
 import axios from "axios";
 import { filesLinkSave } from "@/utils/consts";
 import { addToast } from "@heroui/react";

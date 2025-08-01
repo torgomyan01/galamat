@@ -4,9 +4,9 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { filesLink } from "@/utils/consts";
 import { ActionGetObject } from "@/app/actions/admin/objects/get-objects";
 import clsx from "clsx";
-import { Spinner } from "@heroui/spinner";
+import { Spinner } from "@heroui/react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
-import { Chip } from "@heroui/chip";
+import { Chip } from "@heroui/react";
 import { addToast, Divider } from "@heroui/react";
 import { formatKzt } from "@/utils/helpers";
 import { setHouse, setObjectInfo } from "@/redux/modals";
@@ -34,7 +34,6 @@ function debounce<T extends (...args: any[]) => void>(fn: T, delay: number) {
     timeoutId = setTimeout(() => fn(...args), delay);
   };
 }
-// ... [բոլոր import-ները թողնում ենք նույնը]
 
 function CanvasView({ objectInfo, project, onClose }: IThisProps) {
   const dispatch = useDispatch();

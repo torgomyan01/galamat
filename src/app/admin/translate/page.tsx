@@ -16,14 +16,14 @@ import {
   TableHeader,
   TableRow,
 } from "@heroui/react";
-import { Input } from "@heroui/input";
+import { Input } from "@heroui/react";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { GetLanguage } from "@/app/actions/admin/language/get-languages";
 import { CreateParentLanguage } from "@/app/actions/admin/language/create-parent-language";
 import { DeleteLanguage } from "@/app/actions/admin/language/remove-language";
 import { CreateLanguage } from "@/app/actions/admin/language/create-language";
 import TableChangeWords from "@/app/admin/translate/table-change-words";
-import { Spinner } from "@heroui/spinner";
+import { Spinner } from "@heroui/react";
 
 function Requests() {
   const [modalCreateNewLanguage, setModalCreateNewLanguage] = useState(false);

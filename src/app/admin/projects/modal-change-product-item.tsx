@@ -16,10 +16,10 @@ import {
 } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { ActionGetProjectInfo } from "@/app/actions/admin/projects/get-project-info";
-import { Spinner } from "@heroui/spinner";
+import { Spinner } from "@heroui/react";
 import { ActionUpdateProjectInfo } from "@/app/actions/admin/projects/change-project-info";
 import { ProjectDataPositions } from "@/utils/consts";
-import { Input } from "@heroui/input";
+import { Input } from "@heroui/react";
 import { ActionUpdateProjectInfoAllData } from "@/app/actions/admin/projects/change-project-info-all-data";
 
 interface IThisProps {

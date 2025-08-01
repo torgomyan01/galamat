@@ -11,7 +11,7 @@ import {
   SelectItem,
 } from "@heroui/react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
-import { Spinner } from "@heroui/spinner";
+import { Spinner } from "@heroui/react";
 import { formatRub } from "@/utils/helpers";
 import StatusTable from "@/app/real-estate/status-table";
 import { useSelector } from "react-redux";

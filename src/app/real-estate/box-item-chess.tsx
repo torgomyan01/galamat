@@ -1,8 +1,8 @@
-import { Spinner } from "@heroui/spinner";
+import { Spinner } from "@heroui/react";
 import clsx from "clsx";
 import { Tooltip } from "@heroui/react";
 import { formatKzt } from "@/utils/helpers";
-import { Modal, ModalBody, ModalContent } from "@heroui/modal";
+import { Modal, ModalBody, ModalContent } from "@heroui/react";
 import React, { useEffect, useState } from "react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
 import { ActionGetProjectInfo } from "@/app/actions/admin/projects/get-project-info";
@@ -97,7 +97,7 @@ function BoxItemChess({ property }: IThisProps) {
   }
 
   const baseClasses = clsx(
-    "bg-blue w-8 sm:w-12 h-8 sm:h-12 flex-jc-c mb-1 sm:mb-4 text-white rounded-[6px] cursor-pointer hover:opacity-90 transition",
+    "bg-blue w-10 sm:w-12 h-10 sm:h-12 flex-jc-c mb-1 sm:mb-4 text-white rounded-[6px] cursor-pointer hover:opacity-90 transition",
     {
       "!bg-blue": property.status === "AVAILABLE",
       "!bg-[#f69f13]": property.status === "BOOKED",

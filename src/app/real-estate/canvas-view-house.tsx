@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { ActionGetObject } from "@/app/actions/admin/objects/get-objects";
 import clsx from "clsx";
-import { Spinner } from "@heroui/spinner";
+import { Spinner } from "@heroui/react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
 import { Button } from "@heroui/react";
 import DrawerViewPlansAndItems from "@/app/real-estate/drawer-view-plans-and-items";

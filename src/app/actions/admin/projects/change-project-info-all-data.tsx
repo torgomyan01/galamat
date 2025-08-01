@@ -23,5 +23,7 @@ export async function ActionUpdateProjectInfoAllData(id: number, data: object) {
       data: [],
       error,
     };
+  } finally {
+    await prisma.$disconnect();
   }
 }

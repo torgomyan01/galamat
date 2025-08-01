@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
 import BoxItemChess from "@/app/real-estate/box-item-chess";
 import { ActionGetProperty } from "@/app/actions/start-crone/get-property";
-import { Spinner } from "@heroui/spinner";
+import { Spinner } from "@heroui/react";
 import HorizontalFilter from "@/components/common/horizontal-filter/horizontal-filter";
 
 interface IThisProps {

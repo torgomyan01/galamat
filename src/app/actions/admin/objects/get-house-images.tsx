@@ -22,5 +22,7 @@ export async function ActionGetHouseImages(parent_id: number) {
       data: [],
       error,
     };
+  } finally {
+    await prisma.$disconnect();
   }
 }

@@ -4,7 +4,7 @@
 // import clsx from "clsx";
 // import OurObjects from "@/components/layout/home/objects/our-objects";
 // import ProductItem from "@/components/common/product-item/product-item";
-// import { Spinner } from "@heroui/spinner";
+// import { Spinner } from "@heroui/react";
 // import { Button } from "@heroui/react";
 // import { all } from "@/utils/consts";
 // import { useTranslate } from "@/hooks/useTranslate";

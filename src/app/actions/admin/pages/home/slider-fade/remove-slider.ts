@@ -36,5 +36,7 @@ export async function ActionRemoveSliderFade(id: number) {
       data: [],
       error,
     };
+  } finally {
+    await prisma.$disconnect();
   }
 }

@@ -11,8 +11,8 @@ import {
   DatePicker,
 } from "@heroui/react";
 import Image from "next/image";
-import { Modal, ModalBody, ModalContent, ModalHeader } from "@heroui/modal";
-import { Input } from "@heroui/input";
+import { Modal, ModalBody, ModalContent, ModalHeader } from "@heroui/react";
+import { Input } from "@heroui/react";
 import axios from "axios";
 import { filesLink, filesLinkRemove, filesLinkSave } from "@/utils/consts";
 import { ActionUpdatePageSection } from "@/app/actions/admin/section-components/update-section-components";

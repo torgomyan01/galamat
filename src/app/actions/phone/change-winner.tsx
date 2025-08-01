@@ -26,5 +26,7 @@ export async function ActionUpdateWinner(id: number, winner: number) {
       data: [],
       error: error?.response?.data || error.message,
     };
+  } finally {
+    await prisma.$disconnect();
   }
 }

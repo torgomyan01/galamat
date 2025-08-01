@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Input } from "@heroui/input";
+import { Input } from "@heroui/react";
 import { Button } from "@heroui/react";
 import { UserLogin } from "@/app/actions/admin/users/user-login";
 import { localStorageKeys, SITE_URL } from "@/utils/consts";

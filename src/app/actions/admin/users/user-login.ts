@@ -44,5 +44,7 @@ export async function UserLogin(login: string, password: string) {
       data: {},
       error,
     };
+  } finally {
+    await prisma.$disconnect();
   }
 }

@@ -29,5 +29,7 @@ export async function ActionUpdateProbabilities(
       data: [],
       error,
     };
+  } finally {
+    await prisma.$disconnect();
   }
 }

@@ -17,7 +17,7 @@ function Footer() {
             <Link href={SITE_URL.OUR_COMPANY}>О нас</Link>
           </li>
           <li>
-            <Link href={SITE_URL.REQUESTS}>Оставить заявку</Link>
+            <Link href={`${SITE_URL.HOME}#leave-request`}>Оставить заявку</Link>
           </li>
           <li>
             <Link href={SITE_URL.USER_AGREEMENT}>

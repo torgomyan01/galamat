@@ -1,5 +1,10 @@
 import "./globals.scss";
 import "../icons/icons.css";
+
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/free-mode";
+
 import NextTopLoader from "nextjs-toploader";
 
 import { Providers } from "@/app/providers";

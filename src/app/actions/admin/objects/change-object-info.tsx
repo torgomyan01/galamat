@@ -20,5 +20,7 @@ export async function ActionUpdateObjectInfo(data: any) {
       data: [],
       error,
     };
+  } finally {
+    await prisma.$disconnect();
   }
 }

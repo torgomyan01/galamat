@@ -11,7 +11,7 @@ import { ActionCreateObject } from "@/app/actions/admin/objects/create-object";
 import { ActionRemoveObject } from "@/app/actions/admin/objects/remove-object";
 import axios from "axios";
 import { ActionUpdateFasadeInfo } from "@/app/actions/admin/objects/change-fasade-info";
-import { Spinner } from "@heroui/spinner";
+import { Spinner } from "@heroui/react";
 
 type Point = { x: number; y: number };
 type Polygon = {

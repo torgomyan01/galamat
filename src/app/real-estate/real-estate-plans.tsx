@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
-import { Spinner } from "@heroui/spinner";
+import { Spinner } from "@heroui/react";
 import PlanItem from "@/app/real-estate/plan-item";
 import { useSelector } from "react-redux";
 

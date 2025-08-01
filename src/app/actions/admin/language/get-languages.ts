@@ -23,5 +23,7 @@ export async function GetLanguage(parent_id: string) {
       data: [],
       error,
     };
+  } finally {
+    await prisma.$disconnect();
   }
 }

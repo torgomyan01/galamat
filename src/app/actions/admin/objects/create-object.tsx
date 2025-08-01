@@ -40,5 +40,7 @@ export async function ActionCreateObject(objectId: number, data: any) {
       data: [],
       error,
     };
+  } finally {
+    await prisma.$disconnect();
   }
 }

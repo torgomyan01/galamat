@@ -11,12 +11,12 @@ import {
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
-import { Spinner } from "@heroui/spinner";
-import { formatKzt } from "@/utils/helpers";
+import { Spinner } from "@heroui/react";
 import clsx from "clsx";
 import "./_card-popup.scss";
 import { ActionGetProjectInfo } from "@/app/actions/admin/projects/get-project-info";
 import Link from "next/link";
+import PrintPlanItem from "@/app/real-estate/print-plan-item";
 
 interface IThisProps {
   status: boolean;
@@ -119,44 +119,6 @@ function DrawerViewPlansAndItems({
     });
   }
 
-  function PrintStatus(plan: IPlan) {
-    if (areas) {
-      const findArea = areas?.find((_ar) => _ar?.layoutCode === plan.code);
-
-      if (findArea?.status === "AVAILABLE") {
-        return (
-          <div className="bg-blue text-white px-4 py-1 rounded-[20px] text-[14px]">
-            Свободно
-          </div>
-        );
-      }
-
-      if (findArea?.status === "BOOKED") {
-        return (
-          <div className="bg-[#f69f13] text-white px-4 py-1 rounded-[20px] text-[14px]">
-            Забронировано
-          </div>
-        );
-      }
-
-      if (findArea?.status === "UNAVAILABLE") {
-        return (
-          <div className="bg-[#a7a7a7] text-white px-4 py-1 rounded-[20px] text-[14px]">
-            Недоступно
-          </div>
-        );
-      }
-
-      if (findArea?.status === "SOLD") {
-        return (
-          <div className="bg-[#ce2432] text-white px-4 py-1 rounded-[20px] text-[14px]">
-            Продано
-          </div>
-        );
-      }
-    }
-  }
-
   const [selectedFullPlan, setSelectedFullPlan] = useState<{
     plan: IPlan;
     property: IProperty;
@@ -223,36 +185,12 @@ function DrawerViewPlansAndItems({
 
                 <div className="mt-4">
                   {plans.map((_plan) => (
-                    <div
+                    <PrintPlanItem
                       key={`key__plans-${_plan.id}`}
-                      onClick={() => OpenPlanMaxView(_plan)}
-                      className="w-full p-2 border border-black/10 hover:shadow transition rounded-[8px] flex-js-s flex-col sm:flex-row gap-4 cursor-pointer mb-2"
-                    >
-                      <div className="max-w-[180px] sm:h-[100px] w-full bg-blue/20 rounded-[8px] flex-jc-c overflow-hidden">
-                        <Image
-                          src={_plan.image.preview}
-                          alt="rec image"
-                          width={200}
-                          height={200}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div className="w-full">
-                        <div className="w-full mb-2 flex-jsb-c">
-                          <h3 className="text-[20px] font-medium">
-                            {formatKzt(+_plan.priceRange.min)}
-                          </h3>
-
-                          <div>{PrintStatus(_plan)}</div>
-                        </div>
-                        <h3 className="text-[15px] text-black/50">
-                          {formatKzt(
-                            +_plan.priceRange.min / +_plan.areaRange.min,
-                          )}{" "}
-                          / м²
-                        </h3>
-                      </div>
-                    </div>
+                      _plan={_plan}
+                      OpenPlanMaxView={(plan: IPlan) => OpenPlanMaxView(plan)}
+                      areas={areas}
+                    />
                   ))}
                 </div>
               </div>

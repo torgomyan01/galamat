@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ActionGetObjectInfo } from "@/app/actions/admin/objects/get-object-info";
-import { Spinner } from "@heroui/spinner";
+import { Spinner } from "@heroui/react";
 import axios from "axios";
 import { filesLink, filesLinkRemove, filesLinkSave } from "@/utils/consts";
 import { ActionUpdateObjectInfo } from "@/app/actions/admin/objects/change-object-info";

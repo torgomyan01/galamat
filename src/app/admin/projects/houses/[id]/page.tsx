@@ -4,7 +4,7 @@ import { SITE_URL } from "@/utils/consts";
 import AdminMainTemplate from "@/components/layout/admin/admin-main-template";
 import React, { useEffect, useState } from "react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
-import { Spinner } from "@heroui/spinner";
+import { Spinner } from "@heroui/react";
 import { useParams } from "next/navigation";
 import HouseItem from "@/app/admin/projects/houses/[id]/house-item";
 

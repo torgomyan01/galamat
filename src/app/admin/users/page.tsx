@@ -17,10 +17,10 @@ import {
   Tooltip,
 } from "@heroui/react";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
-import { Input } from "@heroui/input";
+import { Input } from "@heroui/react";
 import { CreateUser } from "@/app/actions/admin/users/create-user";
 import { GetUsers } from "@/app/actions/admin/users/get-users";
-import { Spinner } from "@heroui/spinner";
+import { Spinner } from "@heroui/react";
 import MenuTableUser from "@/app/admin/users/menu-table-user";
 import { RemoveUser } from "@/app/actions/admin/users/remove-users";
 
