@@ -37,12 +37,6 @@ function ProductItemAdmin({ project, housesDataAdmin }: IThisProps) {
           </h3>
         </div>
         <div className="w-full h-[250px] md:h-[383px] bg-[#E0E0E0] rounded-[7px] overflow-hidden flex-jc-c relative">
-          {getInfoOtherProject ? (
-            <PrintStatus
-              position={getInfoOtherProject.position}
-              className="absolute top-4 left-4 z-10 text-white px-4 rounded-[4px]"
-            />
-          ) : null}
           <Image
             src={project.images[0]?.url || "/img/def-proj.svg"}
             className="!rounded-[8px] w-full h-full object-cover object-center transition transform group-hover:scale-[1.05]"
@@ -50,6 +44,12 @@ function ProductItemAdmin({ project, housesDataAdmin }: IThisProps) {
             width={700}
             height={500}
           />
+          {getInfoOtherProject ? (
+            <PrintStatus
+              position={getInfoOtherProject.position}
+              className="absolute top-4 left-4 text-white px-4 rounded-[4px]"
+            />
+          ) : null}
           <Button
             className="absolute right-6 bottom-6"
             onPress={() => setModalChange(true)}
