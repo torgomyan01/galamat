@@ -528,3 +528,16 @@ select {
 .disable-selection {
   user-select: none !important;
 }
+
+
+.filter-checkbox{
+  span:nth-of-type(1){
+    &:after{
+      background: #132C5E;
+    }
+  }
+  svg{
+    stroke: #fff;
+  }
+}
+

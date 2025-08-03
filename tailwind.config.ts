@@ -104,6 +104,15 @@ export default {
     function ({ addComponents }: { addComponents: any }) {
       addComponents(flexClasses);
     },
-    heroui(),
+    heroui({
+      addCommonColors: true,
+      themes: {
+        light: {
+          colors: {
+            primary: "#132C5E",
+          },
+        },
+      },
+    }),
   ],
 } satisfies Config;

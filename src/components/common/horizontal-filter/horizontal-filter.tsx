@@ -18,6 +18,7 @@ import { setChangeParams } from "@/redux/filter";
 import { useEffect, useState } from "react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
 import { motion } from "framer-motion";
+import MobileHorizontalFilter from "@/components/common/horizontal-filter/mobile-horizontal-filter";
 
 interface IThisProps {
   className?: string;
@@ -138,11 +139,13 @@ function HorizontalFilter({
     dispatch(
       setChangeParams({
         projectId: 0,
+        projectIds: [],
         houseId: 0,
         rooms: [],
         "price[min]": 0,
         "price[max]": 60000000,
         minFloor: 0,
+        maxFloor: 0,
         "area[min]": 0,
         "area[max]": 400,
       }),
@@ -150,212 +153,228 @@ function HorizontalFilter({
   }
 
   return (
-    <div className={clsx("filters mb-8", className)}>
-      {filterParams ? (
-        <>
-          <div className="w-[calc(100%+40px)] ml-[-20px] h-12 flex-jsb-c text-blue font-medium border-b mb-4 mt-[-10px] px-5 flex md:hidden">
-            <span>{$t("filter__")}</span>
-            <i className="fa-solid fa-xmark text-[18px]" onClick={onClose} />
-          </div>
+    <>
+      <div className={clsx("filters mb-8", className)}>
+        {filterParams ? (
+          <>
+            <div className="w-[calc(100%+40px)] ml-[-20px] h-12 flex-jsb-c text-blue font-medium border-b mb-4 mt-[-10px] px-5 flex md:hidden">
+              <span>{$t("filter__")}</span>
+              <i className="fa-solid fa-xmark text-[18px]" onClick={onClose} />
+            </div>
 
-          {!isCloseSelectProjects ? (
-            <div className="top-info gap-1">
-              {/*<div className="select-info">*/}
-              {/*  <span>{$t("district")}</span>*/}
+            {!isCloseSelectProjects ? (
+              <div className="top-info gap-1">
+                {/*<div className="select-info">*/}
+                {/*  <span>{$t("district")}</span>*/}
 
-              {/*  <Select*/}
-              {/*    // selectedKeys={[`${regions}`]}*/}
-              {/*    className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white"*/}
-              {/*    variant="bordered"*/}
-              {/*    // onSelectionChange={_selectRegion}*/}
-              {/*  >*/}
-              {/*    /!*{[...findRegions, all]?.map((region) => (*!/*/}
-              {/*    /!*  <SelectItem key={region}>{region}</SelectItem>*!/*/}
-              {/*    /!*))}*!/*/}
-              {/*    <SelectItem key="hello">hello</SelectItem>*/}
-              {/*  </Select>*/}
-              {/*</div>*/}
-              <motion.div
-                initial={"init"}
-                whileInView={"animate"}
-                transition={{
-                  duration: 0.5,
-                  delay: 0.6,
-                }}
-                viewport={{ once: true, amount: 0.1 }}
-                variants={motionOptionText}
-                className="select-info"
-              >
-                <span>{$t("residential_complex")}</span>
-                <Select
-                  placeholder="Выбрайте проект"
-                  selectedKeys={[`${filterParams?.projectId || 0}`]}
-                  className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none"
-                  variant="bordered"
-                  onSelectionChange={(e) =>
-                    ChangeParams("projectId", e.currentKey ? +e.currentKey : 0)
-                  }
-                >
-                  {projects.map((projectName: IProjectMerged) => (
-                    <SelectItem key={`${projectName.project_id}`}>
-                      {projectName.title}
-                    </SelectItem>
-                  ))}
-                </Select>
-              </motion.div>
-              {houses ? (
+                {/*  <Select*/}
+                {/*    // selectedKeys={[`${regions}`]}*/}
+                {/*    className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white"*/}
+                {/*    variant="bordered"*/}
+                {/*    // onSelectionChange={_selectRegion}*/}
+                {/*  >*/}
+                {/*    /!*{[...findRegions, all]?.map((region) => (*!/*/}
+                {/*    /!*  <SelectItem key={region}>{region}</SelectItem>*!/*/}
+                {/*    /!*))}*!/*/}
+                {/*    <SelectItem key="hello">hello</SelectItem>*/}
+                {/*  </Select>*/}
+                {/*</div>*/}
                 <motion.div
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  initial={"init"}
+                  whileInView={"animate"}
+                  transition={{
+                    duration: 0.5,
+                    delay: 0.6,
+                  }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  variants={motionOptionText}
                   className="select-info"
                 >
-                  <span>{$t("objects_")}</span>
+                  <span>{$t("residential_complex")}</span>
                   <Select
-                    placeholder="Выбрайте объекты"
-                    selectedKeys={[`${filterParams?.houseId || 0}`]}
+                    placeholder="Выбрайте проект"
+                    selectedKeys={[`${filterParams?.projectId || 0}`]}
                     className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none"
                     variant="bordered"
                     onSelectionChange={(e) =>
-                      ChangeParams("houseId", e.currentKey ? +e.currentKey : 0)
+                      ChangeParams(
+                        "projectId",
+                        e.currentKey ? +e.currentKey : 0,
+                      )
                     }
                   >
-                    {houses.map((house: IHouse) => (
-                      <SelectItem key={`${house.id}`}>{house.title}</SelectItem>
+                    {projects.map((projectName: IProjectMerged) => (
+                      <SelectItem key={`${projectName.project_id}`}>
+                        {projectName.title}
+                      </SelectItem>
                     ))}
                   </Select>
                 </motion.div>
-              ) : null}
-
-              <motion.div
-                initial={"init"}
-                whileInView={"animate"}
-                transition={{
-                  duration: 0.5,
-                  delay: 0.6,
-                }}
-                viewport={{ once: true, amount: 0.1 }}
-                variants={motionOptionText}
-                className="select-info"
-              >
-                <span>{$t("floor__")}</span>
-
-                <Dropdown>
-                  <DropdownTrigger>
-                    <Button
+                {houses ? (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="select-info"
+                  >
+                    <span>{$t("objects_")}</span>
+                    <Select
+                      placeholder="Выбрайте объекты"
+                      selectedKeys={[`${filterParams?.houseId || 0}`]}
+                      className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none"
                       variant="bordered"
-                      className="md:w-[160px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none !flex-jsb-c"
+                      onSelectionChange={(e) =>
+                        ChangeParams(
+                          "houseId",
+                          e.currentKey ? +e.currentKey : 0,
+                        )
+                      }
                     >
-                      {filterParams.minFloor || (
-                        <span className="opacity-60">Выберите этаж</span>
-                      )}
-                      <i className="fa-regular fa-chevron-down text-[12px] opacity-90"></i>
-                    </Button>
-                  </DropdownTrigger>
-                  <DropdownMenu
-                    aria-label="Select Floor"
-                    className="max-h-[300px] overflow-y-auto"
-                  >
-                    {floorSelectItems.map((floor) => (
-                      <DropdownItem
-                        key={`floor-${floor}`}
-                        onPress={() => ChangeParams("minFloor", floor)}
+                      {houses.map((house: IHouse) => (
+                        <SelectItem key={`${house.id}`}>
+                          {house.title}
+                        </SelectItem>
+                      ))}
+                    </Select>
+                  </motion.div>
+                ) : null}
+
+                <motion.div
+                  initial={"init"}
+                  whileInView={"animate"}
+                  transition={{
+                    duration: 0.5,
+                    delay: 0.6,
+                  }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  variants={motionOptionText}
+                  className="select-info"
+                >
+                  <span>{$t("floor__")}</span>
+
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button
+                        variant="bordered"
+                        className="md:w-[160px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none !flex-jsb-c"
                       >
-                        <div className="w-full flex-jsb-c">
-                          {floor}
-                          {floor === filterParams.minFloor ? (
-                            <i className="fa-solid fa-check mr-1 text-blue"></i>
-                          ) : null}
-                        </div>
-                      </DropdownItem>
-                    ))}
-                  </DropdownMenu>
-                </Dropdown>
-              </motion.div>
-              <span className="reset hidden md:block" onClick={ClearFilter}>
-                {$t("reset__")}
-              </span>
-            </div>
-          ) : null}
-
-          <div className="bottom-info">
-            <div className="room">
-              <span>{$t("com__")}</span>
-              <div className="items">
-                {Array.from({ length: 4 }).map((room, index) => (
-                  <motion.span
-                    initial="init"
-                    whileInView="animate"
-                    transition={{
-                      duration: 0.5,
-                      delay: index * 0.1,
-                    }}
-                    viewport={{ once: true, amount: 0.1 }}
-                    variants={motionOptionText}
-                    key={`rooms-${index}`}
-                    className={clsx({
-                      "!bg-blue !text-white": filterParams?.rooms?.includes(
-                        index + 1,
-                      ),
-                    })}
-                    onClick={() => toggleNumber(index + 1)}
-                  >
-                    {index + 1}
-                  </motion.span>
-                ))}
+                        {filterParams.minFloor || (
+                          <span className="opacity-60">Выберите этаж</span>
+                        )}
+                        <i className="fa-regular fa-chevron-down text-[12px] opacity-90"></i>
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      aria-label="Select Floor"
+                      className="max-h-[300px] overflow-y-auto"
+                    >
+                      {floorSelectItems.map((floor) => (
+                        <DropdownItem
+                          key={`floor-${floor}`}
+                          onPress={() => ChangeParams("minFloor", floor)}
+                        >
+                          <div className="w-full flex-jsb-c">
+                            {floor}
+                            {floor === filterParams.minFloor ? (
+                              <i className="fa-solid fa-check mr-1 text-blue"></i>
+                            ) : null}
+                          </div>
+                        </DropdownItem>
+                      ))}
+                    </DropdownMenu>
+                  </Dropdown>
+                </motion.div>
+                <span className="reset hidden md:block" onClick={ClearFilter}>
+                  {$t("reset__")}
+                </span>
               </div>
-            </div>
-            {maxPrice && maxArea ? (
-              <motion.div
-                initial="init"
-                whileInView="animate"
-                transition={{
-                  duration: 0.5,
-                  delay: 0.9,
-                }}
-                viewport={{ once: true, amount: 0.1 }}
-                variants={motionOptionText}
-                className="filter-block mt-5 md:mt-0"
-              >
-                <SliderInput
-                  labelName={$t("price")}
-                  min={1000000}
-                  max={maxPrice}
-                  step={1000}
-                  typeOption="₸"
-                  className="w-full md:w-[350px] mb-6"
-                  onChangeInput={changeMinMaxPrice}
-                />
-
-                <SliderInput
-                  labelName={$t("area_m")}
-                  min={10}
-                  max={maxArea}
-                  step={0.5}
-                  className="w-full md:w-[200px]"
-                  onChangeInput={changeMinMaxPlace}
-                />
-              </motion.div>
             ) : null}
 
-            <div className="w-full flex-jsb-c mt-6 flex md:hidden gap-4">
-              <Button
-                className="rounded-[6px] bg-blue text-white"
-                variant="flat"
-                onPress={onClose}
-              >
-                {$t("projects___view")}
-              </Button>
-              <span
-                className="reset"
-                // onClick={ClearFilter}
-              >
-                {$t("reset__")}
-              </span>
+            <div className="bottom-info">
+              <div className="room">
+                <span>{$t("com__")}</span>
+                <div className="items">
+                  {Array.from({ length: 4 }).map((room, index) => (
+                    <motion.span
+                      initial="init"
+                      whileInView="animate"
+                      transition={{
+                        duration: 0.5,
+                        delay: index * 0.1,
+                      }}
+                      viewport={{ once: true, amount: 0.1 }}
+                      variants={motionOptionText}
+                      key={`rooms-${index}`}
+                      className={clsx({
+                        "!bg-blue !text-white": filterParams?.rooms?.includes(
+                          index + 1,
+                        ),
+                      })}
+                      onClick={() => toggleNumber(index + 1)}
+                    >
+                      {index + 1}
+                    </motion.span>
+                  ))}
+                </div>
+              </div>
+              {maxPrice && maxArea ? (
+                <motion.div
+                  initial="init"
+                  whileInView="animate"
+                  transition={{
+                    duration: 0.5,
+                    delay: 0.9,
+                  }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  variants={motionOptionText}
+                  className="filter-block mt-5 md:mt-0"
+                >
+                  <SliderInput
+                    labelName={$t("price")}
+                    min={1000000}
+                    max={maxPrice}
+                    step={1000}
+                    typeOption="₸"
+                    className="w-full md:w-[350px] mb-6"
+                    onChangeInput={changeMinMaxPrice}
+                  />
+
+                  <SliderInput
+                    labelName={$t("area_m")}
+                    min={10}
+                    max={maxArea}
+                    step={0.5}
+                    className="w-full md:w-[200px]"
+                    onChangeInput={changeMinMaxPlace}
+                  />
+                </motion.div>
+              ) : null}
+
+              <div className="w-full flex-jsb-c mt-6 flex md:hidden gap-4">
+                <Button
+                  className="rounded-[6px] bg-blue text-white"
+                  variant="flat"
+                  onPress={onClose}
+                >
+                  {$t("projects___view")}
+                </Button>
+                <span
+                  className="reset"
+                  // onClick={ClearFilter}
+                >
+                  {$t("reset__")}
+                </span>
+              </div>
             </div>
-          </div>
-        </>
-      ) : null}
-    </div>
+          </>
+        ) : null}
+      </div>
+
+      <MobileHorizontalFilter
+        maxPrice={maxPrice}
+        maxArea={maxArea}
+        projects={projects}
+      />
+    </>
   );
 }
 

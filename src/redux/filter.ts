@@ -4,21 +4,21 @@ interface IInterface {
   params: IParams;
 }
 
-// Սկզբնական state
 const initialState: IInterface = {
   params: {
     projectId: 0,
+    projectIds: [],
     houseId: 0,
     rooms: [],
     "price[min]": 0,
     "price[max]": 50000000,
     minFloor: 0,
+    maxFloor: 0,
     "area[min]": 0,
     "area[max]": 400,
   },
 };
 
-// Ստեղծել slice
 export const filterParams = createSlice({
   name: "filter-params",
   initialState,

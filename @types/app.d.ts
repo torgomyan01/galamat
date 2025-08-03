@@ -16,11 +16,13 @@ declare interface IModalState {
 
 declare interface IParams {
   projectId: number;
+  projectIds?: number[];
   houseId: number;
   rooms: number[];
   "price[min]": number;
   "price[max]": number;
   minFloor: number;
+  maxFloor: number;
   "area[min]": number;
   "area[max]": number;
 }

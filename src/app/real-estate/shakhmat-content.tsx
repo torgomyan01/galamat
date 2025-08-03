@@ -90,10 +90,9 @@ function ShakhmatContent() {
         <div className="w-full">
           {property ? (
             <div className="checkerboard-wrap">
-              {/* Վերևի լեգենդ */}
-              <div className="top-info mb-4 flex gap-6 flex-wrap">
+              <div className="top-info !mb-6 flex gap-2 sm:gap-6 flex-wrap">
                 <div className="top-info-item flex items-center gap-2">
-                  <span className="circle w-3 h-3 rounded-full bg-blue-500"></span>
+                  <span className="circle w-3 h-3 rounded-full bg-blue"></span>
                   <span className="text-sm">Свободно</span>
                 </div>
                 <div className="top-info-item flex items-center gap-2">

@@ -107,10 +107,10 @@ function RealEstateContent({ projects }: IThisProps) {
                   </button>
                 ))}
               </div>
-              <i
-                className="fa-light fa-filter-list text-[25px] absolute right-0 top-0 bg-[#e8eaef] pl-2 text-black/80 md:hidden "
-                onClick={() => setMobileFilter(true)}
-              />
+              {/*<i*/}
+              {/*  className="fa-light fa-filter-list text-[25px] absolute right-0 top-0 bg-[#e8eaef] pl-2 text-black/80 md:hidden "*/}
+              {/*  onClick={() => setMobileFilter(true)}*/}
+              {/*/>*/}
             </div>
           </div>
 
