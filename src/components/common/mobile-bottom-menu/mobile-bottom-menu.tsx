@@ -11,7 +11,7 @@ function MobileBottomMenu() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed left-0 bottom-0 w-full h-[73px] rounded-[11px_11px_0_0] bg-white z-10 grid grid-cols-5 px-5 pb-4">
+    <div className="fixed left-0 bottom-0 w-full h-[73px] rounded-[11px_11px_0_0] bg-white z-10 grid sm:hidden grid-cols-5 px-5 pb-4 ">
       <Link href={SITE_URL.REAL_ESTATE} className="flex-je-c gap-2 flex-col">
         <IconProjects
           className={
