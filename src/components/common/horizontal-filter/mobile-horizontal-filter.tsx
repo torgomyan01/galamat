@@ -22,6 +22,9 @@ import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-p
 import ModalSelectProject from "@/components/common/horizontal-filter/modal-select-project";
 import ModalSelectObject from "@/components/common/horizontal-filter/modal-select-object";
 import ModalSelectAreas from "@/components/common/horizontal-filter/modal-select-areas";
+import ModalSelectFloor from "@/components/common/horizontal-filter/modal-select-floor";
+import ModalSelectPrice from "@/components/common/horizontal-filter/modal-select-price";
+import ModalSelectPlace from "@/components/common/horizontal-filter/modal-select-place";
 
 interface IThisProps {
   maxPrice: number;
@@ -40,6 +43,9 @@ function MobileHorizontalFilter({ maxPrice, maxArea, projects }: IThisProps) {
   const [modalSelectProjects, setModalSelectProjects] = useState(false);
   const [modalSelectHouses, setModalSelectHouse] = useState(false);
   const [modalSelectAreas, setModalSelectAreas] = useState(false);
+  const [modalSelectFloor, setModalSelectFloor] = useState(false);
+  const [modalSelectPrice, setModalSelectPrice] = useState(false);
+  const [modalSelectPlace, setModalSelectPlace] = useState(false);
 
   const [houses, setHouses] = useState<IHouse[] | null>(null);
 
@@ -133,7 +139,10 @@ function MobileHorizontalFilter({ maxPrice, maxArea, projects }: IThisProps) {
               Объекты
               <i className="fa-regular fa-chevron-down"></i>
             </Button>
-            <Button className="rounded-[4px] bg-white text-[12px]">
+            <Button
+              className="rounded-[4px] bg-white text-[12px]"
+              onPress={() => setModalSelectFloor(true)}
+            >
               Этаж
               <i className="fa-regular fa-chevron-down"></i>
             </Button>
@@ -144,11 +153,17 @@ function MobileHorizontalFilter({ maxPrice, maxArea, projects }: IThisProps) {
               Комнатность
               <i className="fa-regular fa-chevron-down"></i>
             </Button>
-            <Button className="rounded-[4px] bg-white text-[12px]">
+            <Button
+              className="rounded-[4px] bg-white text-[12px]"
+              onPress={() => setModalSelectPrice(true)}
+            >
               Стоимость
               <i className="fa-regular fa-chevron-down"></i>
             </Button>
-            <Button className="rounded-[4px] bg-white text-[12px]">
+            <Button
+              className="rounded-[4px] bg-white text-[12px]"
+              onPress={() => setModalSelectPlace(true)}
+            >
               Площадь М²
               <i className="fa-regular fa-chevron-down"></i>
             </Button>
@@ -177,6 +192,30 @@ function MobileHorizontalFilter({ maxPrice, maxArea, projects }: IThisProps) {
         onClose={() => setModalSelectAreas(false)}
         onClearFilter={ClearFilter}
         toggleNumber={toggleNumber}
+      />
+
+      <ModalSelectFloor
+        status={modalSelectFloor}
+        onClose={() => setModalSelectFloor(false)}
+        onClearFilter={ClearFilter}
+        onChangeMin={(value: number) => ChangeParams("minFloor", value)}
+        onChangeMax={(value: number) => ChangeParams("MaxFloor", value)}
+      />
+
+      <ModalSelectPrice
+        status={modalSelectPrice}
+        onClose={() => setModalSelectPrice(false)}
+        onClearFilter={ClearFilter}
+        onChangeMin={(value: number) => ChangeParams("price[min]", value)}
+        onChangeMax={(value: number) => ChangeParams("price[max]", value)}
+      />
+
+      <ModalSelectPlace
+        status={modalSelectPlace}
+        onClose={() => setModalSelectPlace(false)}
+        onClearFilter={ClearFilter}
+        onChangeMin={(value: number) => ChangeParams("area[min]", value)}
+        onChangeMax={(value: number) => ChangeParams("area[max]", value)}
       />
 
       <Modal

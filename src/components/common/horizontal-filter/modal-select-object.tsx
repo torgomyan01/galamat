@@ -29,7 +29,7 @@ function ModalSelectObject({
       <ModalContent className="rounded-[12px_12px_0_0] w-full m-0">
         <ModalBody className="pt-6 overflow-y-auto">
           <div className="w-full flex-js-s gap-2 flex-col">
-            <h3 className="text-[12px] font-medium">Объекты</h3>
+            <h3 className="text-[12px] font-medium mb-1">Объекты</h3>
 
             <RadioGroup onValueChange={onSelectHouses}>
               {houses?.map((house) => (
