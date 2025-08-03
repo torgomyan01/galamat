@@ -64,7 +64,7 @@ function OurCompany() {
                 modules={[Autoplay]}
                 spaceBetween={16}
                 slidesPerView={4}
-                loop={true}
+                loop={false}
                 autoplay={{
                   delay: 8000,
                   disableOnInteraction: false,

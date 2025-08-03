@@ -10,6 +10,7 @@ declare interface IModalState {
   modals: {
     modalSelectedHouse: IHouse | null;
     objectInfo: IObjectData[] | null;
+    modalSendRequest: boolean;
   };
 }
 

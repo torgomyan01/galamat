@@ -4,14 +4,15 @@ import "./header.scss";
 import Link from "next/link";
 import { localStorageKeys, SITE_URL } from "@/utils/consts";
 import clsx from "clsx";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Select, SelectItem, SharedSelection } from "@heroui/react";
+import { Button, Select, SelectItem, SharedSelection } from "@heroui/react";
 import Image from "next/image";
 import { GetLanguage } from "@/app/actions/admin/language/get-languages";
 import { useDispatch, useSelector } from "react-redux";
 import { setLang } from "@/redux/translate";
 import { useTranslate } from "@/hooks/useTranslate";
+import { setModalSendRequest } from "@/redux/modals";
 
 interface IThisProps {
   info: boolean;
@@ -82,9 +83,51 @@ function Header({ info = true }: IThisProps) {
     }
   }
 
+  function openModalSendRequest() {
+    dispatch(setModalSendRequest(true));
+  }
+
+  const lastScrollY = useRef(0);
+  const getBottomLine = useRef<HTMLDivElement>(null);
+  const [menuBottomLineFix, setMenuBottomLineFix] = useState<number>(0);
+
+  const [isStickyVisible, setIsStickyVisible] = useState<boolean>(true);
+
+  useLayoutEffect(() => {
+    if (getBottomLine && getBottomLine.current) {
+      const getParams = getBottomLine.current.getBoundingClientRect();
+
+      window.addEventListener("scroll", function () {
+        const scrollTop = window.scrollY;
+
+        if (scrollTop > getParams.top) {
+          setMenuBottomLineFix(getParams.height);
+        } else {
+          setMenuBottomLineFix(0);
+        }
+
+        if (scrollTop > 500 && scrollTop > lastScrollY.current) {
+          setIsStickyVisible(false);
+        } else if (scrollTop < lastScrollY.current) {
+          setIsStickyVisible(true);
+        }
+
+        lastScrollY.current = scrollTop;
+      });
+    }
+  }, [getBottomLine]);
+
   return (
     <header className="header">
-      <div className="wrapper">
+      <div className="w-full h-[50px] block md:hidden"></div>
+      <div
+        className={clsx(
+          "wrapper max-[767px]:fixed top-0 bg-white transition-all duration-[0.5s]",
+          {
+            "top-[-100px]": !isStickyVisible,
+          },
+        )}
+      >
         {info ? (
           <div className="top-line">
             <Link href={SITE_URL.HOME} className="logo">
@@ -124,12 +167,12 @@ function Header({ info = true }: IThisProps) {
                 />
               </Link>
             </div>
-            <Link
-              href="tel: +7 700 108 5757"
-              className="border-btn order-call !h-[40px] flex-jc-c"
+            <Button
+              onPress={openModalSendRequest}
+              className="border-btn bg-white order-call !h-[40px] flex-jc-c"
             >
               {$t("request_call")}
-            </Link>
+            </Button>
             <Select
               selectedKeys={[`${activeLang}`]}
               className="w-[80px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] hidden md:!block"
@@ -168,7 +211,13 @@ function Header({ info = true }: IThisProps) {
                   </li>
                 ))}
               </ul>
-              <div className="btns !flex-js-c gap-4">
+              <div className="btns !flex-jsb-c gap-4">
+                <button
+                  onClick={openModalSendRequest}
+                  className="border-btn btn-white border-none order-call !m-0"
+                >
+                  {$t("request_call")}
+                </button>
                 <Select
                   selectedKeys={[`${activeLang}`]}
                   className="w-[80px] rounded-[4px] outline-[#b2b2b2]"
@@ -179,44 +228,53 @@ function Header({ info = true }: IThisProps) {
                     <SelectItem key={lang.key}>{lang.name}</SelectItem>
                   ))}
                 </Select>
-                <Link
-                  href="tel: +7 700 108 5757"
-                  className="border-btn order-call"
-                >
-                  {$t("request_call")}
-                </Link>
               </div>
             </div>
           </div>
         ) : null}
-
-        <div className="bottom-line">
-          <Link href={SITE_URL.HOME} className="logo">
-            <Image
-              src="/img/logo.svg"
-              alt="logo navbar"
-              width={162}
-              height={20}
-            />
-          </Link>
-          <ul className="main-menu">
-            {menuItems.map((menuItem, i) => (
-              <li
-                key={`desktop-menu-${i}`}
-                className={clsx({
-                  active: menuItem.url === pathname,
-                })}
-              >
-                <Link href={menuItem.url}>{menuItem.name}</Link>
-              </li>
-            ))}
-          </ul>
-          {/*<a href="#" className="login">*/}
-          {/*  <img src="img/login-icon.svg" alt="" />*/}
-          {/*  Войти*/}
-          {/*</a>*/}
+      </div>
+      <div
+        ref={getBottomLine}
+        className={clsx(
+          "w-full flex-jsc-c bg-white transition-all duration-[0.5s]",
+          {
+            "fixed top-0 shadow": !!menuBottomLineFix,
+            "top-[-100px]": !isStickyVisible,
+          },
+        )}
+      >
+        <div className="wrapper">
+          <div className="bottom-line">
+            <Link href={SITE_URL.HOME} className="logo">
+              <Image
+                src="/img/logo.svg"
+                alt="logo navbar"
+                width={162}
+                height={20}
+              />
+            </Link>
+            <ul className="main-menu">
+              {menuItems.map((menuItem, i) => (
+                <li
+                  key={`desktop-menu-${i}`}
+                  className={clsx({
+                    active: menuItem.url === pathname,
+                  })}
+                >
+                  <Link href={menuItem.url}>{menuItem.name}</Link>
+                </li>
+              ))}
+            </ul>
+            {/*<a href="#" className="login">*/}
+            {/*  <img src="img/login-icon.svg" alt="" />*/}
+            {/*  Войти*/}
+            {/*</a>*/}
+          </div>
         </div>
       </div>
+      {menuBottomLineFix ? (
+        <div className="w-full" style={{ height: menuBottomLineFix }} />
+      ) : null}
     </header>
   );
 }

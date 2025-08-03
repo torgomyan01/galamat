@@ -3,6 +3,8 @@ import Image from "next/image";
 import { ActionGetObjectInfo } from "@/app/actions/admin/objects/get-object-info";
 import CanvasView from "@/app/real-estate/canvas-view";
 import { addToast } from "@heroui/react";
+import { formatPrice } from "@/utils/consts";
+import PrintStatus from "@/components/common/product-item/print-status";
 
 interface IThisProps {
   projects: IProjectMerged[];
@@ -42,23 +44,35 @@ function Facade({ projects, fakeItem = 0 }: IThisProps) {
       <div className="w-full h-auto grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-4">
         {projects.map((project: IProjectMerged) => (
           <div
-            key={`project-${project.id}`}
-            className="w-full bg-white p-4 rounded-[12px] cursor-pointer group"
+            key={`project-itm-${project.id}`}
             onClick={() => StartViewObject(project)}
+            className="w-full bg-white rounded-[16px] p-[15px] cursor-pointer group flex-jsb-c flex-col"
           >
-            <div className="w-full h-[300px] relative rounded-[10px] overflow-hidden">
-              {project.images[0] ? (
-                <Image
-                  src={project.images[0]?.url}
-                  alt="house image"
-                  width={500}
-                  height={500}
-                  className="w-full h-full object-cover transition group-hover:scale-[1.02]"
+            <div className="w-full p-[15px]">
+              <h2 className="text-[22px] md:text-[28px] lg:text-[35px] font-medium">
+                {project.title}
+              </h2>
+              <h3 className="text-[18px] md:text-[23px] text-[#353535]">
+                {project?.address}
+              </h3>
+              <h3 className="text-[18px] md:text-[23px] text-[#353535] opacity-40">
+                от {formatPrice(project?.min_price || 0)}
+              </h3>
+            </div>
+            <div className="w-full h-[250px] md:h-[383px] bg-[#E0E0E0] rounded-[7px] overflow-hidden flex-jc-c relative">
+              {project.position ? (
+                <PrintStatus
+                  position={project.position}
+                  className="absolute top-4 left-4 z-10 text-white px-4 rounded-[4px]"
                 />
               ) : null}
-            </div>
-            <div className="px-2 py-4 pb-0">
-              <h2 className="font-medium text-[24px]">{project.title}</h2>
+              <Image
+                src={project.images[0]?.url || "/img/def-proj.svg"}
+                className="!rounded-[8px] w-full h-full object-cover object-center transition transform group-hover:scale-[1.05]"
+                alt={project.title}
+                width={700}
+                height={500}
+              />
             </div>
           </div>
         ))}
@@ -68,13 +82,11 @@ function Facade({ projects, fakeItem = 0 }: IThisProps) {
             key={`project-fake-${i}`}
             className="w-full bg-white p-4 rounded-[12px] cursor-pointer group hidden sm:!block"
           >
-            <div className="w-full h-[350px] relative rounded-[10px] overflow-hidden">
-              <img
-                src="/img/soon.png"
-                alt="house image"
-                className="w-full h-full object-cover transition group-hover:scale-[1.02]"
-              />
-            </div>
+            <img
+              src="/img/new-project.svg"
+              alt="house image"
+              className="w-full h-full object-cover transition group-hover:scale-[1.02]"
+            />
           </div>
         ))}
       </div>

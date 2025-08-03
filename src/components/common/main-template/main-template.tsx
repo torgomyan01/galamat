@@ -11,6 +11,8 @@ import Whatsapp from "@/components/common/whatsapp/whatsapp";
 import Preloader from "@/components/common/preloader/preloader";
 import { getTranslations } from "@/lib/translationCache";
 import CookieComponent from "@/components/common/main-template/cookie";
+import ModalSendRequest from "@/components/common/main-template/modal-send-request";
+import MobileBottomMenu from "@/components/common/mobile-bottom-menu/mobile-bottom-menu";
 
 interface IThisProps {
   children?: React.ReactNode;
@@ -90,7 +92,10 @@ function MainTemplate({
       )}
       <Whatsapp />
 
+      <ModalSendRequest />
       <CookieComponent />
+
+      <MobileBottomMenu />
     </HeroUIProvider>
   );
 }

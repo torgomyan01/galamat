@@ -63,7 +63,7 @@ function LeaveRequest() {
             </div>
           </Fade>
           <Fade direction="right" className="md:w-[45%]" triggerOnce>
-            <div className="leave-request-form flex-jc-c">
+            <div className="leave-request-form flex-jc-c h-full">
               {sendStatus ? (
                 <div className="w-full h-full flex-jc-c flex-col gap-4">
                   <Image
