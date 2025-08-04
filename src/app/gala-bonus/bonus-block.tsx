@@ -141,6 +141,7 @@ function BonusBlock({ data }: IThisProps) {
         .finally(() => setLoading(false));
     }
   }
+
   return (
     <>
       <div className="bonus-wrap py-10 sm:!py-20 relative">
