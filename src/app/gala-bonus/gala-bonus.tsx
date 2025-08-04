@@ -188,7 +188,6 @@ function GalaBonus() {
   }
 
   const [loadingFindBonus, setLoadingFindBonus] = useState(false);
-
   function ChangeStatus() {
     if (sendData) {
       setLoadingFindBonus(true);
