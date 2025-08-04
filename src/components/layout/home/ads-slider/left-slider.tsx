@@ -40,7 +40,7 @@ function LeftSlider() {
             delay: 4000,
             disableOnInteraction: false, // Keep autoplay on user interaction
           }}
-          className="w-full md:!w-[32.5%] lg:h-[510px] mb-4 md:mb-0 rounded-[20px] overflow-hidden"
+          className="w-full md:!w-[32.5%] lg:h-[510px] mb-4 md:mb-0 rounded-[20px] overflow-hidden !hidden sm:!block"
         >
           {items?.map((item: ISliderItem) => (
             <>
@@ -61,7 +61,7 @@ function LeftSlider() {
           ))}
         </Swiper>
       ) : (
-        <Skeleton className="w-full md:!w-[32.5%] md:h-[510px] mb-4 md:mb-0 rounded-[20px] overflow-hidden" />
+        <Skeleton className="w-full md:!w-[32.5%] md:h-[510px] mb-4 md:mb-0 rounded-[20px] overflow-hidden !hidden sm:!block" />
       )}
     </>
   );

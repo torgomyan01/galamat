@@ -125,7 +125,18 @@ function BonusBlock({ data }: IThisProps) {
 
       ActionUpdateStatus(data?.data.id, "winnings-taken")
         .then(() => {
-          window.location.href = userBonusLink;
+          const ua = navigator.userAgent || navigator.vendor || window.opera;
+
+          if (/android/i.test(ua)) {
+            const gpayUrl = `intent://wallet/#Intent;scheme=https;package=com.google.android.gms;S.browser_fallback_url=${encodeURIComponent(
+              userBonusLink,
+            )};end`;
+            window.location.href = gpayUrl;
+          } else if (/iphone|ipad|ipod/i.test(ua)) {
+            window.location.href = userBonusLink.concat(".pkpass");
+          } else {
+            window.location.href = userBonusLink;
+          }
         })
         .finally(() => setLoading(false));
     }
