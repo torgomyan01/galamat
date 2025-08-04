@@ -236,3 +236,30 @@ export const downloadImageViaCanvas = async (
     console.error("Download failed:", error);
   }
 };
+
+export const getDevicePlatform = ():
+  | "android"
+  | "ios"
+  | "windows"
+  | "mac"
+  | "unknown" => {
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+
+  if (/android/i.test(ua)) {
+    return "android";
+  }
+
+  if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) {
+    return "ios";
+  }
+
+  if (/Win(dows )?NT/i.test(ua)) {
+    return "windows";
+  }
+
+  if (/Macintosh|Mac OS X/i.test(ua)) {
+    return "mac";
+  }
+
+  return "unknown";
+};

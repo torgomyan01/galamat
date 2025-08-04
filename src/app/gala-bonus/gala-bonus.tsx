@@ -9,6 +9,7 @@ import BonusBlock from "@/app/gala-bonus/bonus-block";
 import { InputMask } from "@react-input/mask";
 import { ActionSendMessage } from "@/app/actions/phone/send-message";
 import {
+  getDevicePlatform,
   getRemainingDaysText90Days,
   normalizeKazakhstanPhoneNumber,
 } from "@/utils/helpers";
@@ -176,7 +177,19 @@ function GalaBonus() {
         });
 
         ActionSendNumberGoogle(sendData.data.id).then((res) => {
-          setUserBonusLink(res.card_gpay_url);
+          const platform = getDevicePlatform();
+
+          if (platform === "android") {
+            setUserBonusLink(res.card_gpay_url);
+          } else if (platform === "ios") {
+            setUserBonusLink(res.card_url);
+          } else if (platform === "windows") {
+            setUserBonusLink(res.card_gpay_url);
+          } else if (platform === "mac") {
+            setUserBonusLink(res.card_url);
+          } else {
+            setUserBonusLink(res.card_gpay_url);
+          }
         });
       });
     } else {

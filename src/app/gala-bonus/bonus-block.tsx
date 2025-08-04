@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { addToast, Button } from "@heroui/react";
-import { formatKzt } from "@/utils/helpers";
+import { formatKzt, getDevicePlatform } from "@/utils/helpers";
 import { ActionUpdateWinner } from "@/app/actions/phone/change-winner";
 import { ActionGetProbabilities } from "@/app/actions/lottery/get-probabilities";
 import { Spinner } from "@heroui/react";
@@ -106,7 +106,19 @@ function BonusBlock({ data }: IThisProps) {
         });
 
         ActionSendNumberGoogle(data.data.id).then((res) => {
-          setUserBonusLink(res.card_gpay_url);
+          const platform = getDevicePlatform();
+
+          if (platform === "android") {
+            setUserBonusLink(res.card_gpay_url);
+          } else if (platform === "ios") {
+            setUserBonusLink(res.card_url);
+          } else if (platform === "windows") {
+            setUserBonusLink(res.card_gpay_url);
+          } else if (platform === "mac") {
+            setUserBonusLink(res.card_url);
+          } else {
+            setUserBonusLink(res.card_gpay_url);
+          }
         });
       });
     } else {
