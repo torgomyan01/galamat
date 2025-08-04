@@ -23,6 +23,8 @@ import { Spinner } from "@heroui/react";
 import { ActionSendNumberBitrix } from "@/app/actions/lottery/send-number-bitrix";
 import { ActionUpdateStatus } from "@/app/actions/lottery/update-status";
 import BonusBlockCover from "@/app/gala-bonus/bonus-block-cover";
+import { ActionUpdatePromocode } from "@/app/actions/lottery/update-promocode";
+import { ActionSendNumberGoogle } from "@/app/actions/lottery/send-price-google";
 
 type PlayerStatus = "phone-success" | "wait-day" | "start" | "winnings-taken";
 
@@ -169,10 +171,13 @@ function GalaBonus() {
       setModalFindLink(true);
 
       ActionSendNumberBitrix(sendData.data.id).then((res) => {
-        const match = res.match(/<a\s+href="([^"]+)"/);
-        if (match && match[1]) {
-          setUserBonusLink(match[1].trim());
-        }
+        ActionUpdatePromocode(sendData.data.id, res.promocode).then(() => {
+          console.log("promocode updates");
+        });
+
+        ActionSendNumberGoogle(sendData.data.id).then((res) => {
+          setUserBonusLink(res.card_gpay_url);
+        });
       });
     } else {
       addToast({

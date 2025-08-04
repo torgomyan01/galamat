@@ -61,6 +61,7 @@ model lottery {
   verification_code Int
   timeout           String @db.VarChar(250)
   winner            Int
+  promocode         String @db.VarChar(250)
 }
 
 model probabilities {

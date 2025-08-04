@@ -55,6 +55,7 @@ export async function ActionSendMessage(number: string, name: string) {
             verification_code: code,
             winner: 0,
             timeout: moment().format(),
+            promocode: "",
           },
         });
 

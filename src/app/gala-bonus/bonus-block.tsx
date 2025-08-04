@@ -10,6 +10,8 @@ import { Modal, ModalBody, ModalContent } from "@heroui/react";
 import { useTranslate } from "@/hooks/useTranslate";
 import { ActionUpdateStatus } from "@/app/actions/lottery/update-status";
 import { ActionSendNumberBitrix } from "@/app/actions/lottery/send-number-bitrix";
+import { ActionSendNumberGoogle } from "@/app/actions/lottery/send-price-google";
+import { ActionUpdatePromocode } from "@/app/actions/lottery/update-promocode";
 
 interface IWinerItem {
   price: number;
@@ -99,10 +101,13 @@ function BonusBlock({ data }: IThisProps) {
       setModalFindLink(true);
 
       ActionSendNumberBitrix(data.data.id).then((res) => {
-        const match = res.match(/<a\s+href="([^"]+)"/);
-        if (match && match[1]) {
-          setUserBonusLink(match[1].trim());
-        }
+        ActionUpdatePromocode(data.data.id, res.promocode).then(() => {
+          console.log("promocode updates");
+        });
+
+        ActionSendNumberGoogle(data.data.id).then((res) => {
+          setUserBonusLink(res.card_gpay_url);
+        });
       });
     } else {
       addToast({

@@ -1,0 +1,31 @@
+"use server";
+
+import axios from "axios";
+
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+
+export async function ActionSendNumberGoogle(id: number) {
+  try {
+    const updateProbabilities = await prisma.lottery.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    const getAxios = await axios.post(
+      "https://core.passquare.com/api/v2/crm/user_create_or_update",
+      {
+        app_key: "ec3b90db-ed23-426e-bf06-1fc34c6d9f7b",
+        phone: updateProbabilities?.phone,
+        bonus: updateProbabilities?.winner,
+      },
+    );
+
+    return getAxios.data;
+  } catch (error: any) {
+    return error;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
