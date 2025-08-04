@@ -12,7 +12,7 @@ import {
 } from "@heroui/react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
 import { Spinner } from "@heroui/react";
-import { formatRub } from "@/utils/helpers";
+import { formatKzt } from "@/utils/helpers";
 import StatusTable from "@/app/real-estate/status-table";
 import { useSelector } from "react-redux";
 
@@ -139,7 +139,7 @@ function TableEstate({ projectsIds }: IThisProps) {
             <TableCell>{plan.number}</TableCell>
             <TableCell>{plan.area.area_total} м²</TableCell>
             <TableCell>{plan.sectionName}</TableCell>
-            <TableCell>{formatRub(plan.price.value)}</TableCell>
+            <TableCell>{formatKzt(plan.price.value)}</TableCell>
             <TableCell>{plan.floor}</TableCell>
           </TableRow>
         ))}
