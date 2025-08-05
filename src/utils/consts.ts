@@ -12,7 +12,6 @@ export const SITE_URL = {
   SALES_OFFICE: "/sales-office",
   USER_AGREEMENT: "/user-agreement",
   SEND_CALLBACK: "/send-callback",
-  FAQ: "/faq",
   COOKIE: "/cookie",
   CONTACT: "/contact",
   PROJECTS: "/projects",

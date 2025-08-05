@@ -147,7 +147,7 @@ function BonusBlock({ data }: IThisProps) {
     <>
       <div className="bonus-wrap py-10 sm:!py-20 relative">
         <div
-          className={clsx("wrapper relative z-10 visible", {
+          className={clsx("wrapper relative z-[1] visible", {
             "!invisible": winner,
           })}
         >
@@ -173,7 +173,7 @@ function BonusBlock({ data }: IThisProps) {
               {prices.length ? (
                 <div
                   className={clsx(
-                    "min-w-[650px] w-[650px] min-h-[650px] h-[650px] relative transform transition duration-[1s] gala-bonus-fortuna",
+                    "min-w-[650px] w-[650px] min-h-[650px] h-[650px] relative transform transition duration-[1s] gala-bonus-fortuna z-[-10] pointer-events-none",
                     {
                       "!scale-0": winner,
                     },

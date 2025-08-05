@@ -122,7 +122,7 @@ function ObjectsOffice() {
     <div
       ref={mapRef}
       style={{ width: "100%" }}
-      className="rounded-[8px] overflow-hidden h-[400px] sm:h-[531px]"
+      className="rounded-[8px] overflow-hidden h-[400px] sm:h-[631px]"
     />
   );
 }

@@ -16,10 +16,14 @@ import { Input } from "@heroui/react";
 import axios from "axios";
 import { filesLink, filesLinkRemove, filesLinkSave } from "@/utils/consts";
 import { ActionUpdatePageSection } from "@/app/actions/admin/section-components/update-section-components";
+import moment from "moment";
+import { parseDate } from "@internationalized/date";
 
 function CompanyOldProjects() {
   const [_data, setData] = useState<IDataOldProjects[] | null>(null);
   const [modalCreateProj, setModalCreateProj] = useState(false);
+  const [modalChangeProj, setModalChangeProj] =
+    useState<IDataOldProjects | null>(null);
 
   function updateData(data: IDataOldProjects[]) {
     ActionUpdatePageSection(1, data);
@@ -100,6 +104,96 @@ function CompanyOldProjects() {
     });
   }
 
+  function ChangeOldProject(e: any) {
+    e.preventDefault();
+
+    if (!modalChangeProj) {
+      return;
+    }
+
+    const name = e.target.name.value;
+    const address = e.target.address.value;
+    const date = e.target.date.value;
+    const file = e.target.image_url.files[0];
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    const maxSizeInBytes = 300 * 1024;
+
+    if (file) {
+      axios
+        .post(filesLinkRemove, { url: modalChangeProj.image_url })
+        .then((res) => {
+          console.log(res);
+        });
+
+      if (file.size > maxSizeInBytes) {
+        addToast({
+          title: "Размер изображения не должен превышать 300 КБ.",
+          color: "danger",
+        });
+        return;
+      }
+
+      setLoading(true);
+
+      axios.post(filesLinkSave, formData).then(({ data }: any) => {
+        if (data.status === "success") {
+          const getOldData = _data?.filter(
+            (old) => old.image_url !== modalChangeProj.image_url,
+          );
+
+          const newData = [
+            ...(getOldData || []),
+            {
+              name,
+              address,
+              date,
+              image_url: data.url,
+            },
+          ];
+
+          setData(newData);
+
+          updateData(newData);
+          setLoading(false);
+          setModalCreateProj(false);
+
+          addToast({
+            title: "Успешно обновляется",
+            color: "success",
+          });
+        }
+      });
+    } else {
+      const getOldData = _data?.filter(
+        (old) => old.image_url !== modalChangeProj.image_url,
+      );
+
+      const newData = [
+        ...(getOldData || []),
+        {
+          name,
+          address,
+          date,
+          image_url: modalChangeProj.image_url,
+        },
+      ];
+
+      setData(newData);
+
+      updateData(newData);
+      setLoading(false);
+      setModalCreateProj(false);
+
+      addToast({
+        title: "Успешно обновляется",
+        color: "success",
+      });
+    }
+  }
+
   return (
     <div className="w-full">
       <div className="w-full flex-je-c mt-[-40px] mb-4">
@@ -108,7 +202,7 @@ function CompanyOldProjects() {
           size="sm"
           onPress={() => setModalCreateProj(true)}
         >
-          <i className="fa-solid fa-plus"></i>
+          <i className="fa-solid fa-plus text-white"></i>
         </Button>
       </div>
 
@@ -121,7 +215,9 @@ function CompanyOldProjects() {
                   <p className="text-tiny uppercase font-bold">
                     {item.address}
                   </p>
-                  <small className="text-default-500">Сдан {item.date}</small>
+                  <small className="text-default-500">
+                    Сдан {moment(item.date).format("YYYY")}
+                  </small>
                   <h4 className="font-bold text-large">ЖК {item.name}</h4>
                 </CardHeader>
                 <CardBody className="overflow-visible py-2">
@@ -133,12 +229,21 @@ function CompanyOldProjects() {
                     height={270}
                   />
 
-                  <Button
-                    className="mt-2"
-                    onPress={() => RemoveOldProject(item.image_url)}
-                  >
-                    Удалить
-                  </Button>
+                  <div className="flex-jsb-c gap-4">
+                    <Button
+                      className="mt-2 w-full"
+                      onPress={() => RemoveOldProject(item.image_url)}
+                    >
+                      Удалить
+                    </Button>
+                    <Button
+                      color="danger"
+                      className="mt-2 w-full"
+                      onPress={() => setModalChangeProj(item)}
+                    >
+                      Изменить
+                    </Button>
+                  </div>
                 </CardBody>
               </Card>
             ))
@@ -188,12 +293,76 @@ function CompanyOldProjects() {
                 label="Дата сдачи "
               />
               <div className="w-full flex-je-c mt-4 mb-4">
-                <Button type="submit" color="primary" isLoading={loading}>
+                <Button
+                  type="submit"
+                  color="primary"
+                  isLoading={loading}
+                  className="text-white"
+                >
                   Добавить
                 </Button>
               </div>
             </form>
           </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      <Modal
+        isOpen={!!modalChangeProj}
+        onClose={() => setModalChangeProj(null)}
+      >
+        <ModalContent>
+          {modalChangeProj ? (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Изменить проект {modalChangeProj?.name}
+              </ModalHeader>
+              <ModalBody>
+                <form action="#" onSubmit={ChangeOldProject}>
+                  <Input
+                    label="Выбрать картинку  "
+                    type="file"
+                    className="w-full mb-3"
+                    accept="image/*"
+                    name="image_url"
+                  />
+                  <Input
+                    label="Название"
+                    name="name"
+                    type="text"
+                    defaultValue={modalChangeProj.name}
+                    className="w-full mb-3"
+                    isRequired
+                  />
+                  <Input
+                    label="Адрес"
+                    name="address"
+                    type="text"
+                    defaultValue={modalChangeProj.address}
+                    className="w-full mb-3"
+                    isRequired
+                  />
+                  <DatePicker
+                    className="w-full mb-3"
+                    isRequired
+                    name="date"
+                    defaultValue={parseDate(modalChangeProj.date)}
+                    label="Дата сдачи "
+                  />
+                  <div className="w-full flex-je-c mt-4 mb-4">
+                    <Button
+                      type="submit"
+                      color="primary"
+                      className="text-white"
+                      isLoading={loading}
+                    >
+                      Сохранит
+                    </Button>
+                  </div>
+                </form>
+              </ModalBody>
+            </>
+          ) : null}
         </ModalContent>
       </Modal>
     </div>

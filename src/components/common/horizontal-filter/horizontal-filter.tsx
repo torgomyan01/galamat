@@ -257,7 +257,9 @@ function HorizontalFilter({
                         className="md:w-[160px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none !flex-jsb-c"
                       >
                         {filterParams.minFloor || (
-                          <span className="opacity-60">Выберите этаж</span>
+                          <span className="opacity-60">
+                            {$t("select_floor")}
+                          </span>
                         )}
                         <i className="fa-regular fa-chevron-down text-[12px] opacity-90"></i>
                       </Button>

@@ -36,10 +36,30 @@ function PlanItem({ plan, plans }: IThisProps) {
         }}
         viewport={{ once: true, amount: 0.1 }}
         variants={motionOptionText}
-        className="card"
+        className="card relative"
       >
-        <span className="name">ЖК {plan.projectName}</span>
+        <span className="name pr-[100px]">ЖК {plan.projectName}</span>
         <span className="date">{plan.address.full}</span>
+
+        <span className="absolute right-6 top-[16px] bg-blue px-2 text-white rounded-[4px] text-[14px] w-[110px]">
+          {plan.roomsAmount} ком. кв
+        </span>
+
+        {property ? (
+          <motion.span
+            initial={{ scale: 1 }}
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 1.5 }}
+            className="absolute right-6 top-[40px] bg-[#DB1D31] px-2 text-white rounded-[4px] text-[14px] w-[90px]"
+          >
+            этаж {property.floor}
+          </motion.span>
+        ) : null}
+
+        <span className="absolute right-6 top-[64px] bg-green-500 px-2 text-white rounded-[4px] text-[14px]">
+          {plan.areaRange.min} м²
+        </span>
+
         <div
           onClick={() => setDrawer(true)}
           className="img-wrap cursor-pointer"
@@ -62,7 +82,7 @@ function PlanItem({ plan, plans }: IThisProps) {
           </motion.span>
           {/*<span className="old-price">{formatPrice(getPrice.previous)}</span>*/}
         </div>
-        <div className="ipoteka">
+        <div className="ipoteka !mb-0">
           <span className="grey">Цена за м²</span>
           <motion.span
             initial={{ opacity: 0, y: 15 }}
@@ -74,9 +94,9 @@ function PlanItem({ plan, plans }: IThisProps) {
           </motion.span>
         </div>
         <div className="infos !mb-0">
-          <b>{plan.roomsAmount} ком. кв</b>
-          <b>{plan.areaRange.min} м</b>
-          {property ? <b>этаж {property.floor}</b> : null}
+          {/*<b>{plan.roomsAmount} ком. кв</b>*/}
+          {/*<b>{plan.areaRange.min} м</b>*/}
+          {/*{property ? <b>этаж {property.floor}</b> : null}*/}
         </div>
         {/*<div className="style-btns">*/}
         {/*  <div className="red-btn">Скидка до {getPrice.percent.toFixed()}%</div>*/}

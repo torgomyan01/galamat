@@ -21,7 +21,7 @@ function Objects() {
           allow="xr-spatial-tracking; gyroscope; accelerometer"
           allowFullScreen
           scrolling="no"
-          className="rounded-[8px] h-[400px] sm:h-[531px]"
+          className="rounded-[8px] h-[400px] sm:h-[631px]"
           src="https://kuula.co/share/collection/7D5Ns?logo=1&info=0&logosize=110&fs=0&vr=0&autop=10&thumbs=-1&inst=ru"
         />
       ),
@@ -29,7 +29,7 @@ function Objects() {
     },
     {
       name: $t("office_"),
-      content: <OurObjects height={500} className="h-[400px] sm:h-[531px]" />,
+      content: <OurObjects height={500} className="h-[400px] sm:h-[631px]" />,
     },
     {
       name: $t("objects_"),

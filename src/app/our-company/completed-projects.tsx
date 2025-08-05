@@ -5,6 +5,7 @@ import { filesLink, SITE_URL } from "@/utils/consts";
 import React, { useEffect, useState } from "react";
 import { useTranslate } from "@/hooks/useTranslate";
 import { ActionGetPageSection } from "@/app/actions/admin/section-components/get-section-components";
+import moment from "moment";
 
 interface IThisProps {
   onSuccess: (status: boolean) => void;
@@ -57,17 +58,19 @@ function CompletedProjects({ onSuccess }: IThisProps) {
             <SwiperSlide key={`home-ads-${i}`}>
               <Link
                 href={SITE_URL.REAL_ESTATE}
-                className="completed-projects-item cursor-pointer"
+                className="completed-projects-item cursor-pointer bg-white p-4 rounded-[16px]"
               >
                 <span
-                  className="img-wrap"
+                  className="img-wrap !rounded-[12px]"
                   style={{
                     backgroundImage: `url(${filesLink}${item.image_url})`,
                   }}
                 />
                 <b className="name">ЖК {item.name}</b>
                 <span className="address">{item.address}</span>
-                <span className="date">Сдан {item.date}</span>
+                <span className="date">
+                  Сдан {moment(item.date).format("YYYY")}
+                </span>
               </Link>
             </SwiperSlide>
           ))}

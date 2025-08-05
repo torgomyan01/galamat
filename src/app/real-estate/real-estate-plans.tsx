@@ -1,6 +1,9 @@
+"use client";
+
 import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
-import { Spinner } from "@heroui/react";
+import { Spinner, Pagination } from "@heroui/react";
 import PlanItem from "@/app/real-estate/plan-item";
 import { useSelector } from "react-redux";
 
@@ -8,15 +11,24 @@ interface IThisProps {
   projectsIds: number[];
 }
 
+const ITEMS_PER_PAGE = 6;
+
 function RealEstatePlans({ projectsIds }: IThisProps) {
   const filterParams = useSelector(
     (state: IFilterParamsState) => state.filterParams.params,
   );
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [plans, setPlans] = useState<IPlan[] | null>(null);
-  const [visibleCount, setVisibleCount] = useState(6);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
+  // ⏎ Ստանում ենք էջի արժեքը URL-ից կամ դնում ենք default `1`
+  const initialPageFromUrl = parseInt(searchParams.get("page") || "1", 10);
+  const [currentPage, setCurrentPage] = useState<number>(
+    isNaN(initialPageFromUrl) ? 1 : initialPageFromUrl,
+  );
+
+  // ⏎ Երբ filterParams-ը փոխվում է՝ բեռնենք նոր տվյալներ
   useEffect(() => {
     const _filterParams: any = { ...filterParams };
 
@@ -38,59 +50,48 @@ function RealEstatePlans({ projectsIds }: IThisProps) {
     }).then((result) => {
       const data: IPlan[] = result.data;
       setPlans(data);
-      setVisibleCount(6); // reset when filter changes
+      setCurrentPage(isNaN(initialPageFromUrl) ? 1 : initialPageFromUrl);
     });
   }, [filterParams]);
 
-  let successLoadingNew = true;
   useEffect(() => {
-    function handleScroll() {
-      if (!plans) {
-        return;
-      }
-      if (visibleCount >= plans.length) {
-        return;
-      }
-
-      const scrollTop = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const fullHeight = document.documentElement.offsetHeight;
-
-      if (scrollTop + windowHeight >= fullHeight - 100 && successLoadingNew) {
-        setIsLoadingMore(true);
-        successLoadingNew = false;
-        setTimeout(() => {
-          setVisibleCount((prev) => Math.min(prev + 6, plans.length));
-          setIsLoadingMore(false);
-          successLoadingNew = true;
-        }, 600);
-      }
+    const params = new URLSearchParams(searchParams.toString());
+    if (currentPage > 1) {
+      params.set("page", currentPage.toString());
+    } else {
+      params.delete("page");
     }
+    router.replace(`?${params.toString()}`, { scroll: false });
+  }, [currentPage]);
 
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [plans, visibleCount]);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentPlans = plans?.slice(startIndex, endIndex) || [];
 
   return (
     <div className="cards-wrap">
       {plans ? (
         <>
           <div className="cards">
-            {plans.slice(0, visibleCount).map((plan: IPlan) => (
+            {currentPlans.map((plan: IPlan) => (
               <PlanItem key={`key-plan-${plan.id}`} plan={plan} plans={plans} />
             ))}
           </div>
 
-          <div className="bottom-info">
+          <div className="flex-je-c gap-4 mt-6">
             <span>
-              Показано {Math.min(visibleCount, plans.length)} из {plans.length}
+              Показано {startIndex + currentPlans.length} из {plans.length}
             </span>
-            {isLoadingMore && (
-              <div className="w-full h-12 flex-jc-c">
-                <Spinner />
-              </div>
+
+            {plans.length > ITEMS_PER_PAGE && (
+              <Pagination
+                initialPage={currentPage}
+                total={Math.ceil(plans.length / ITEMS_PER_PAGE)}
+                onChange={(page) => setCurrentPage(page)}
+                classNames={{
+                  cursor: "text-white",
+                }}
+              />
             )}
           </div>
         </>

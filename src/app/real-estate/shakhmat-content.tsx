@@ -49,40 +49,19 @@ function ShakhmatContent() {
     });
   }
 
-  // ================================
-  // Mouse drag scroll logic
-  // ================================
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const scrollLeft = useRef(0);
+  const findScrollBlock = useRef<HTMLDivElement>(null);
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (!scrollRef.current) {
-      return;
+  function nextScroll() {
+    if (findScrollBlock && findScrollBlock.current) {
+      findScrollBlock.current.scrollLeft += 400;
     }
-    isDragging.current = true;
-    scrollRef.current.style.cursor = "grabbing";
-    startX.current = e.pageX - scrollRef.current.offsetLeft;
-    scrollLeft.current = scrollRef.current.scrollLeft;
-  };
+  }
 
-  const handleMouseUp = () => {
-    isDragging.current = false;
-    if (scrollRef.current) {
-      scrollRef.current.style.cursor = "grab";
+  function prevScroll() {
+    if (findScrollBlock && findScrollBlock.current) {
+      findScrollBlock.current.scrollLeft -= 400;
     }
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging.current || !scrollRef.current) {
-      return;
-    }
-    e.preventDefault();
-    const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk = (x - startX.current) * 1.5;
-    scrollRef.current.scrollLeft = scrollLeft.current - walk;
-  };
+  }
 
   return (
     <div>
@@ -109,55 +88,67 @@ function ShakhmatContent() {
                 </div>
               </div>
 
-              {/* Քաշվող scrollable wrapper */}
               {boards ? (
-                <div
-                  ref={scrollRef}
-                  onMouseDown={handleMouseDown}
-                  onMouseMove={handleMouseMove}
-                  onMouseUp={handleMouseUp}
-                  onMouseLeave={handleMouseUp}
-                  className="flex overflow-x-auto gap-4 cursor-grab select-none pb-4 bottom-scroll-hidden"
-                >
-                  {Object.entries(groupedBySection).map(
-                    ([sectionName, sectionFloors], idx) => (
-                      <div key={`section-${idx}`}>
-                        <div className="sect-table w-full">
-                          <div className="w-full">
-                            {sectionFloors
-                              .sort((a, b) => b.floor - a.floor)
-                              .map((floorItem, i) => (
-                                <div
-                                  key={`floor-${i}`}
-                                  className="flex items-center gap-4 mb-1"
-                                >
-                                  <div className="w-[30px] text-sm font-semibold text-gray-600 text-right">
-                                    {floorItem.floor}.
+                <div className="relative">
+                  <div
+                    ref={findScrollBlock}
+                    className="flex overflow-x-auto gap-4 select-none pb-4 bottom-scroll-hidden"
+                  >
+                    {Object.entries(groupedBySection).map(
+                      ([sectionName, sectionFloors], idx) => (
+                        <div key={`section-${idx}`}>
+                          <div className="sect-table w-full">
+                            <div className="w-full">
+                              {sectionFloors
+                                .sort((a, b) => b.floor - a.floor)
+                                .map((floorItem, i) => (
+                                  <div
+                                    key={`floor-${i}`}
+                                    className="flex items-center gap-4 mb-1"
+                                  >
+                                    <div className="w-[30px] text-sm font-semibold text-gray-600 text-right">
+                                      {floorItem.floor}.
+                                    </div>
+                                    <div className="flex gap-1 sm:gap-3">
+                                      {floorItem.cells.map((cell, ci) => (
+                                        <BoxItemChess
+                                          key={`cell-${ci}`}
+                                          property={
+                                            property?.find(
+                                              (_pr) =>
+                                                _pr.property_id ===
+                                                cell.propertyId,
+                                            )?.data || null
+                                          }
+                                        />
+                                      ))}
+                                    </div>
                                   </div>
-                                  <div className="flex gap-1 sm:gap-3">
-                                    {floorItem.cells.map((cell, ci) => (
-                                      <BoxItemChess
-                                        key={`cell-${ci}`}
-                                        property={
-                                          property?.find(
-                                            (_pr) =>
-                                              _pr.property_id ===
-                                              cell.propertyId,
-                                          )?.data || null
-                                        }
-                                      />
-                                    ))}
-                                  </div>
-                                </div>
-                              ))}
+                                ))}
+                            </div>
                           </div>
+                          <span className="mt-2 block text-sm opacity-70 pl-[45px]">
+                            Секция {sectionName}
+                          </span>
                         </div>
-                        <span className="mt-2 block text-sm opacity-70 pl-[45px]">
-                          Секция {sectionName}
-                        </span>
-                      </div>
-                    ),
-                  )}
+                      ),
+                    )}
+                  </div>
+
+                  <div className="absolute hidden sm:block left-0 top-[40%] w-[calc(100%+30px)] min-[1352px]:w-[calc(100%+70px)] ml-[-15px] min-[1352px]:ml-[-35px] flex-jsb-c z-10">
+                    <div
+                      onClick={prevScroll}
+                      className="swiper-button-prev-header-slider w-8 md:w-[50px] h-8 md:h-[50px] bg-[#ce2432] rounded-full flex-jc-c cursor-pointer opacity-60 hover:opacity-100"
+                    >
+                      <i className="fa-solid fa-chevron-right text-white transform rotate-180"></i>
+                    </div>
+                    <div
+                      onClick={nextScroll}
+                      className="swiper-button-next-header-slider w-8 md:w-[50px] h-8 md:h-[50px] bg-[#ce2432] rounded-full flex-jc-c cursor-pointer opacity-60 hover:opacity-100"
+                    >
+                      <i className="fa-solid fa-chevron-right text-white"></i>
+                    </div>
+                  </div>
                 </div>
               ) : null}
             </div>
@@ -169,7 +160,7 @@ function ShakhmatContent() {
         </div>
       ) : (
         <div className="w-full h-[400px] flex items-center justify-center">
-          <h3 className="text-center text-blue-500/60 md:text-[25px]">
+          <h3 className="text-center text-black/60 md:text-[25px]">
             Пожалуйста выбирайте объекты, чтобы посмотреть шахматку.
           </h3>
         </div>

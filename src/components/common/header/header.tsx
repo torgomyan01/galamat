@@ -236,7 +236,7 @@ function Header({ info = true }: IThisProps) {
       <div
         ref={getBottomLine}
         className={clsx(
-          "w-full flex-jsc-c bg-white transition-all duration-[0.5s]",
+          "w-full flex-jsc-c bg-white transition-all duration-[0.5s] z-10",
           {
             "fixed top-0 shadow": !!menuBottomLineFix,
             "top-[-100px]": !isStickyVisible,
