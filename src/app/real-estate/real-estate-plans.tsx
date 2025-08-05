@@ -78,7 +78,7 @@ function RealEstatePlans({ projectsIds }: IThisProps) {
             ))}
           </div>
 
-          <div className="flex-je-c gap-4 mt-6">
+          <div className="flex-jc-c sm:flex-je-c gap-4 mt-6 flex-col sm:flex-row">
             <span>
               Показано {startIndex + currentPlans.length} из {plans.length}
             </span>
