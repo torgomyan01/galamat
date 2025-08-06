@@ -35,10 +35,10 @@
   .footer-info{
     @include flex;
     @include align-center;
-    padding: 50px 0 110px;
+    justify-content: space-between;
+    padding: 50px 0 30px;
     @media(max-width: 767px){
       @include dir-col;
-      padding: 30px 0 110px;
     }
     .footer-logo{
       margin-right: 50px;

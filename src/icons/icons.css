@@ -117,6 +117,22 @@
     content: "\f095"
 }
 
+.fa-youtube:before {
+    content: "\f167"
+}
+
+.fa-instagram:before {
+    content: "\f16d"
+}
+
+.fa-tiktok:before {
+    content: "\e07b"
+}
+
+.fa-whatsapp:before {
+    content: "\f232"
+}
+
 
 
 /*---------------------------------*/
