@@ -31,7 +31,6 @@ export async function ActionGetProjectInfo(projectId: number) {
         data: resultCreated,
       };
     }
-
     return {
       status: 1,
       data: result,
