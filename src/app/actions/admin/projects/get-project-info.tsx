@@ -22,6 +22,7 @@ export async function ActionGetProjectInfo(projectId: number) {
           address: "",
           min_price: 0,
           file_url: "",
+          completion_date: "",
         },
       });
 

@@ -4,7 +4,7 @@ import "../home/filter-wrapper/filter-wrapper.scss";
 import "./real-estate.scss";
 import MainTemplate from "@/components/common/main-template/main-template";
 import HorizontalFilter from "@/components/common/horizontal-filter/horizontal-filter";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import IconFosad from "@/components/common/icons/icon-fosad";
 import IconPlans from "@/components/common/icons/icon-plans";
 import clsx from "clsx";
@@ -21,6 +21,8 @@ import ShakhmatContent from "@/app/real-estate/shakhmat-content";
 import { BreadcrumbItem, Breadcrumbs } from "@heroui/react";
 import { useTranslate } from "@/hooks/useTranslate";
 import { SITE_URL } from "@/utils/consts";
+import { useSearchParams, useRouter } from "next/navigation";
+import { setProjects } from "@/redux/projects";
 
 interface IThisProps {
   projects: IProjectMerged[];
@@ -29,39 +31,65 @@ interface IThisProps {
 function RealEstateContent({ projects }: IThisProps) {
   const dispatch = useDispatch();
   const $t = useTranslate();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const [activeTab, setActiveTab] = useState(0);
+  useEffect(() => {
+    dispatch(setProjects(projects));
+  }, [projects]);
+
+  const getValidTab = (tabParam: string | null, tabsCount: number): number => {
+    if (!tabParam) {
+      return 0;
+    }
+    const tabIndex = parseInt(tabParam);
+    return isNaN(tabIndex) || tabIndex < 0 || tabIndex >= tabsCount
+      ? 0
+      : tabIndex;
+  };
 
   const projectIds = projects.map((project) => project.project_id);
 
   const tabItems = [
     {
-      name: "Фасады",
+      name: $t("facades"),
       icon: <i className="fa-regular fa-map mr-2 text-[23px]" />,
       content: <Facade projects={projects} />,
     },
     {
-      name: "Объекты",
+      name: $t("objects_"),
       icon: <IconFosad />,
       content: <Houses projectsIds={projectIds} />,
     },
-
     {
-      name: "Планировка",
+      name: $t("layout"),
       icon: <IconPlans />,
       content: <RealEstatePlans projectsIds={projectIds} />,
     },
     {
-      name: "Помещения",
+      name: $t("premises"),
       icon: <i className="fa-regular fa-list mr-2 text-[23px]" />,
       content: <TableEstate projectsIds={projectIds} />,
     },
     {
-      name: "Шахматка",
+      name: $t("checkerboard"),
       icon: <IconShakhmat />,
       content: <ShakhmatContent />,
     },
   ];
+
+  const [activeTab, setActiveTab] = useState(
+    getValidTab(searchParams.get("tab"), tabItems.length),
+  );
+
+  const handleTabChange = (index: number) => {
+    setActiveTab(index);
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("tab", index.toString());
+
+    router.replace(`?${params.toString()}`, { scroll: false });
+  };
 
   const objectInfo = useSelector(
     (state: IModalState) => state.modals.objectInfo,
@@ -97,20 +125,16 @@ function RealEstateContent({ projects }: IThisProps) {
                 {tabItems.map((item, i) => (
                   <button
                     key={item.name}
-                    className={clsx("tab-button", {
+                    className={clsx("tab-button border-none", {
                       active: activeTab === i,
                     })}
-                    onClick={() => setActiveTab(i)}
+                    onClick={() => handleTabChange(i)}
                   >
                     {item.icon}
                     {item.name}
                   </button>
                 ))}
               </div>
-              {/*<i*/}
-              {/*  className="fa-light fa-filter-list text-[25px] absolute right-0 top-0 bg-[#e8eaef] pl-2 text-black/80 md:hidden "*/}
-              {/*  onClick={() => setMobileFilter(true)}*/}
-              {/*/>*/}
             </div>
           </div>
 

@@ -14,6 +14,12 @@ declare interface IModalState {
   };
 }
 
+declare interface IProjectsState {
+  projectsState: {
+    projects: IProjectMerged[];
+  };
+}
+
 declare interface IParams {
   projectId: number;
   projectIds?: number[];
@@ -69,6 +75,7 @@ declare interface IProjectStage {
   images: IProjectImage[];
   location: Location;
   youtubeVideos: string[];
+  completion_date: string;
 }
 
 interface IProjectImage {

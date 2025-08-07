@@ -26,17 +26,10 @@
         }
     }
     .info{
-        padding-top: 60px;
         max-width: 1040px;
         width: 100%;
         margin: 0 auto;
         overflow-y: auto;
-        @media (max-width: 1024px) {
-           padding-top: 5px;
-        }
-        @media (max-width: 767px) {
-           height: 100%;
-        }
         .texts{
             @include flex;
             @include dir-col;

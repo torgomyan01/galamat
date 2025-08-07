@@ -8,25 +8,30 @@ import {
 import {
   addToast,
   Button,
+  DatePicker,
+  DateValue,
   NumberInput,
   Select,
   SelectItem,
   SharedSelection,
   Switch,
 } from "@heroui/react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ActionGetProjectInfo } from "@/app/actions/admin/projects/get-project-info";
 import { Spinner } from "@heroui/react";
 import { ActionUpdateProjectInfo } from "@/app/actions/admin/projects/change-project-info";
 import { ProjectDataPositions } from "@/utils/consts";
 import { Input } from "@heroui/react";
 import { ActionUpdateProjectInfoAllData } from "@/app/actions/admin/projects/change-project-info-all-data";
+import moment from "moment";
 
 interface IThisProps {
   status: boolean;
   onClose: () => void;
   project: IProjectStage;
 }
+
+type date = DateValue | null | undefined;
 
 function ModalChangeProductItem({ status, onClose, project }: IThisProps) {
   const [projectData, setProjectData] = useState<IProjectData | null>(null);
@@ -38,6 +43,7 @@ function ModalChangeProductItem({ status, onClose, project }: IThisProps) {
   const [address, setAddress] = useState<string>("");
   const [fileUrl, setFileUrl] = useState<string>("");
   const [minPrice, setMinPrice] = useState<number>(1000000);
+  const [minCompletionDate, setCompletionDate] = useState<date>();
 
   useEffect(() => {
     ActionGetProjectInfo(project.id).then(({ data, status }) => {
@@ -82,6 +88,7 @@ function ModalChangeProductItem({ status, onClose, project }: IThisProps) {
         address,
         min_price: minPrice,
         file_url: fileUrl,
+        completion_date: moment(minCompletionDate),
       })
         .then((res) => {
           if (res.status) {
@@ -145,6 +152,15 @@ function ModalChangeProductItem({ status, onClose, project }: IThisProps) {
                 />
               </div>
               <div className="mb-4">
+                <DatePicker
+                  className="w-full"
+                  value={minCompletionDate}
+                  onChange={(value) => setCompletionDate(value)}
+                  name="completion_date"
+                  label="Срок сдачи"
+                />
+              </div>
+              <div className="mb-4">
                 <Input
                   label="Ссылка документа"
                   onChange={(e) => setFileUrl(e.target.value)}
@@ -173,7 +189,12 @@ function ModalChangeProductItem({ status, onClose, project }: IThisProps) {
           )}
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onPress={saveInfo} isLoading={loading}>
+          <Button
+            color="primary"
+            className="text-white"
+            onPress={saveInfo}
+            isLoading={loading}
+          >
             Сохранить
           </Button>
         </ModalFooter>

@@ -194,7 +194,9 @@ function HorizontalFilter({
                     placeholder="Выбрайте проект"
                     selectedKeys={[`${filterParams?.projectId || 0}`]}
                     className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none"
-                    variant="bordered"
+                    classNames={{
+                      trigger: "bg-white",
+                    }}
                     onSelectionChange={(e) =>
                       ChangeParams(
                         "projectId",
@@ -220,7 +222,9 @@ function HorizontalFilter({
                       placeholder="Выбрайте объекты"
                       selectedKeys={[`${filterParams?.houseId || 0}`]}
                       className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none"
-                      variant="bordered"
+                      classNames={{
+                        trigger: "bg-white",
+                      }}
                       onSelectionChange={(e) =>
                         ChangeParams(
                           "houseId",
@@ -252,10 +256,7 @@ function HorizontalFilter({
 
                   <Dropdown>
                     <DropdownTrigger>
-                      <Button
-                        variant="bordered"
-                        className="md:w-[160px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none !flex-jsb-c"
-                      >
+                      <Button className="md:w-[160px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none !flex-jsb-c bg-white">
                         {filterParams.minFloor || (
                           <span className="opacity-60">
                             {$t("select_floor")}

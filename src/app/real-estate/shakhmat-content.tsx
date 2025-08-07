@@ -135,7 +135,7 @@ function ShakhmatContent() {
                     )}
                   </div>
 
-                  <div className="absolute hidden sm:block left-0 top-[40%] w-[calc(100%+30px)] min-[1352px]:w-[calc(100%+70px)] ml-[-15px] min-[1352px]:ml-[-35px] flex-jsb-c z-10">
+                  <div className="absolute hidden sm:flex left-0 top-[40%] w-[calc(100%+30px)] min-[1352px]:w-[calc(100%+70px)] ml-[-15px] min-[1352px]:ml-[-35px] flex-jsb-c z-10">
                     <div
                       onClick={prevScroll}
                       className="swiper-button-prev-header-slider w-8 md:w-[50px] h-8 md:h-[50px] bg-[#ce2432] rounded-full flex-jc-c cursor-pointer opacity-60 hover:opacity-100"

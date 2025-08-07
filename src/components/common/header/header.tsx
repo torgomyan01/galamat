@@ -176,7 +176,9 @@ function Header({ info = true }: IThisProps) {
             <Select
               selectedKeys={[`${activeLang}`]}
               className="w-[80px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] hidden md:!block"
-              variant="bordered"
+              classNames={{
+                trigger: "bg-white rounded-[8px]",
+              }}
               onSelectionChange={selectLanguage}
             >
               {languages.map((lang) => (

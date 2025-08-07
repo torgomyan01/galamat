@@ -11,7 +11,7 @@ interface IThisProps {
   projectsIds: number[];
 }
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 12;
 
 function RealEstatePlans({ projectsIds }: IThisProps) {
   const filterParams = useSelector(
@@ -22,7 +22,6 @@ function RealEstatePlans({ projectsIds }: IThisProps) {
   const searchParams = useSearchParams();
   const [plans, setPlans] = useState<IPlan[] | null>(null);
 
-  // ⏎ Ստանում ենք էջի արժեքը URL-ից կամ դնում ենք default `1`
   const initialPageFromUrl = parseInt(searchParams.get("page") || "1", 10);
   const [currentPage, setCurrentPage] = useState<number>(
     isNaN(initialPageFromUrl) ? 1 : initialPageFromUrl,
