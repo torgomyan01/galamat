@@ -10,7 +10,7 @@ import NextTopLoader from "nextjs-toploader";
 import { Providers } from "@/app/providers";
 
 import YandexMetrika from "@/components/common/YandexMetrika/YandexMetrika";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 export async function generateMetadata() {
   return {
@@ -51,7 +51,7 @@ export default async function RootLayout({
         <NextTopLoader />
         <Providers>{children}</Providers>
 
-        <GoogleAnalytics gaId="GTM-KTS8G3K9" />
+        <GoogleTagManager gtmId="GTM-KTS8G3K9" />
 
         <YandexMetrika />
       </body>
