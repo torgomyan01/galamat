@@ -10,6 +10,7 @@ import NextTopLoader from "nextjs-toploader";
 import { Providers } from "@/app/providers";
 
 import YandexMetrika from "@/components/common/YandexMetrika/YandexMetrika";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 export async function generateMetadata() {
   return {
@@ -46,33 +47,13 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="ru" suppressHydrationWarning={true}>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','GTM-KTS8G3K9');`,
-          }}
-        />
-      </head>
       <body>
         <NextTopLoader />
         <Providers>{children}</Providers>
 
-        {/*<GoogleAnalytics gaId="AW-10990855116" />*/}
+        <GoogleAnalytics gaId="GTM-KTS8G3K9" />
 
         <YandexMetrika />
-
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-KTS8G3K9"
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          ></iframe>
-        </noscript>
       </body>
     </html>
   );
