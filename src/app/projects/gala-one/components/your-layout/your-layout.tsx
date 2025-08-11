@@ -692,45 +692,45 @@ function YourLayout() {
   }, []);
 
   // // Պոլիգոնի նկարումը
-  // const drawPolygon = (
-  //   ctx: CanvasRenderingContext2D,
-  //   poly: Polygon,
-  //   isHovered: boolean,
-  // ) => {
-  //   if (poly.points.length < 2) {
-  //     return;
-  //   }
-  //
-  //   ctx.beginPath();
-  //   ctx.moveTo(poly.points[0].x, poly.points[0].y);
-  //   for (let i = 1; i < poly.points.length; i++) {
-  //     const p = poly.points[i];
-  //     ctx.lineTo(p.x, p.y);
-  //   }
-  //
-  //   // Թափանցիկության ապահով տարբերակ՝ rgba
-  //   const rgba = isHovered ? "rgba(127,2,18,0.5)" : "rgba(127,2,18,0.25)";
-  //   ctx.fillStyle = rgba;
-  //   ctx.strokeStyle = poly.color;
-  //   ctx.lineWidth = (isHovered ? 2.5 : 1.5) / scale;
-  //
-  //   if (poly.points.length >= 3) {
-  //     ctx.closePath();
-  //   }
-  //   ctx.fill();
-  //   ctx.stroke();
-  //
-  //   // if (poly === currentPolygon) {
-  //   //   for (const p of poly.points) {
-  //   //     ctx.beginPath();
-  //   //     ctx.arc(p.x, p.y, 4 / scale, 0, Math.PI * 2);
-  //   //     ctx.fillStyle = poly.color;
-  //   //     ctx.fill();
-  //   //     ctx.strokeStyle = "white";
-  //   //     ctx.stroke();
-  //   //   }
-  //   // }
-  // };
+  const drawPolygon = (
+    ctx: CanvasRenderingContext2D,
+    poly: Polygon,
+    isHovered: boolean,
+  ) => {
+    if (poly.points.length < 2) {
+      return;
+    }
+
+    ctx.beginPath();
+    ctx.moveTo(poly.points[0].x, poly.points[0].y);
+    for (let i = 1; i < poly.points.length; i++) {
+      const p = poly.points[i];
+      ctx.lineTo(p.x, p.y);
+    }
+
+    // Թափանցիկության ապահով տարբերակ՝ rgba
+    const rgba = isHovered ? "rgba(127,2,18,0.5)" : "rgba(127,2,18,0.25)";
+    ctx.fillStyle = rgba;
+    ctx.strokeStyle = poly.color;
+    ctx.lineWidth = (isHovered ? 2.5 : 1.5) / scale;
+
+    if (poly.points.length >= 3) {
+      ctx.closePath();
+    }
+    ctx.fill();
+    ctx.stroke();
+
+    // if (poly === currentPolygon) {
+    //   for (const p of poly.points) {
+    //     ctx.beginPath();
+    //     ctx.arc(p.x, p.y, 4 / scale, 0, Math.PI * 2);
+    //     ctx.fillStyle = poly.color;
+    //     ctx.fill();
+    //     ctx.strokeStyle = "white";
+    //     ctx.stroke();
+    //   }
+    // }
+  };
 
   // Գլխավոր redraw
   const redraw = () => {
@@ -752,9 +752,9 @@ function YourLayout() {
     }
 
     // Պոլիգոններ
-    // for (const poly of polygons) {
-    //   drawPolygon(ctx, poly, poly === hoveredPolygon);
-    // }
+    for (const poly of polygons) {
+      drawPolygon(ctx, poly, false);
+    }
     // if (currentPolygon) {
     //   drawPolygon(ctx, currentPolygon, false);
     // }
