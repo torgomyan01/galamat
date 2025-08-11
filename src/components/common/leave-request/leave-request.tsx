@@ -7,8 +7,14 @@ import { isValidInternationalPhoneNumber } from "@/utils/consts";
 import { Fade } from "react-awesome-reveal";
 import Image from "next/image";
 import { useTranslate } from "@/hooks/useTranslate";
+import clsx from "clsx";
 
-function LeaveRequest() {
+interface IThisProps {
+  background?: string;
+  bgColorBtn?: "red" | "blue";
+}
+
+function LeaveRequest({ background, bgColorBtn }: IThisProps) {
   const $t = useTranslate();
   const [loading, setLoading] = useState(false);
   const [sendStatus, setSendStatus] = useState(false);
@@ -45,21 +51,28 @@ function LeaveRequest() {
       <div className="wrapper">
         <div className="leave-request-info">
           <Fade direction="left" className="md:w-[55%] " triggerOnce>
-            <div className="info">
+            <div
+              className="info !bg-no-repeat !bg-cover"
+              style={{
+                ...(background && { backgroundImage: `url(${background})` }),
+              }}
+            >
               <div className="texts">
                 <h2>{$t("leave_a_request")}</h2>
                 <span className="w-full max-w-[310px] block">
                   {$t("we_are_building _the_future")}
                 </span>
               </div>
-              <div className="img-wrap">
-                <Image
-                  src="/img/leav-request.png"
-                  alt="def image"
-                  width={130}
-                  height={130}
-                />
-              </div>
+              {!background && (
+                <div className="img-wrap">
+                  <Image
+                    src="/img/leav-request.png"
+                    alt="def image"
+                    width={130}
+                    height={130}
+                  />
+                </div>
+              )}
             </div>
           </Fade>
           <Fade direction="right" className="md:w-[45%]" triggerOnce>
@@ -100,7 +113,12 @@ function LeaveRequest() {
                     />
                   </div>
                   <Button
-                    className="blue-btn send-btn h-12 w-full"
+                    className={clsx(
+                      `blue-btn send-btn h-12 w-full !text-white`,
+                      {
+                        "!bg-[#7F0217]": bgColorBtn === "red",
+                      },
+                    )}
                     type="submit"
                     isLoading={loading}
                   >

@@ -6,21 +6,20 @@ export default async function sitemap() {
   const host = await headersList.get("host");
   const proto = await headersList.get("x-forwarded-proto");
 
-  const res: any = Object.values(SITE_URL).map((post: any) => {
-    return {
-      url: `${proto}://${host}${post}`,
-      changeFrequency: "weekly",
-      priority: 1,
-    };
-  });
+  const res: any = Object.values(SITE_URL)
+    .filter(
+      (url) =>
+        !url.includes("admin") &&
+        !url.includes("home") &&
+        !url.includes("company"),
+    )
+    .map((post: any) => {
+      return {
+        url: `${proto}://${host}${post}`,
+        changeFrequency: "weekly",
+        priority: 1,
+      };
+    });
 
-  return [
-    {
-      url: `${proto}://${host}`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 1,
-    },
-    ...res,
-  ];
+  return res;
 }

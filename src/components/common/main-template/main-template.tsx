@@ -70,7 +70,7 @@ function MainTemplate({
       <Header info={headerInfo} />
       {pageOff ? (
         <div className="w-full h-[calc(100dvh-165px)] bg-[#132C5E] flex-jc-c flex-col gap-4">
-          <img src="img/no-page.svg" alt="preloader" />
+          <img src="/img/no-page.svg" alt="preloader" />
           <h1 className="text-center w-full max-w-[560px] text-[44px] text-white font-bold tracking-[-1.346px] leading-[46.119px]">
             Здесь скоро появится что-то классное
           </h1>

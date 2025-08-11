@@ -15,6 +15,7 @@ export const SITE_URL = {
   COOKIE: "/cookie",
   CONTACT: "/contact",
   PROJECTS: "/projects",
+  PROJECTS_GALA_ONE: "/projects/gala-one",
   REAL_ESTATE: "/real-estate",
   PROJECT: "/project",
   CALCULATOR: "/calculator",

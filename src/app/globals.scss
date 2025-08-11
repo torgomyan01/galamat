@@ -251,6 +251,11 @@ select {
   display: flex;
   justify-content: flex-end;
   margin-right: 20px;
+
+  @media (max-width: 767px){
+    margin-right: 0;
+    gap: 10px !important;
+  }
 }
 
 .tab-btn {
@@ -540,3 +545,6 @@ select {
   }
 }
 
+button.bg-primary{
+  color: #fff;
+}
