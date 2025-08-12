@@ -351,13 +351,13 @@ function GalaBonus() {
                         length={4}
                         size="lg"
                         variant="bordered"
-                        color="primary"
+                        color="danger"
                         onValueChange={(e) => setCodeInput(e)}
                         classNames={{
                           wrapper: "flex-jc-c",
                           errorMessage: "text-center",
                           segment:
-                            "w-16 h-16 border-[1px] text-white text-[30px]",
+                            "w-16 h-16 border-[1px] text-white border-white text-[30px]",
                         }}
                       />
                     </div>

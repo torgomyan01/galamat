@@ -2,6 +2,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { useEffect, useRef, useState } from "react";
+import { PhotoProvider, PhotoView } from "react-photo-view";
 
 const images = [
   "/img/gala-one/gala-one-project-1.jpg",
@@ -35,80 +36,90 @@ function SliderFacade() {
 
   return (
     <>
-      <Swiper
-        modules={[Pagination, Autoplay, Navigation]}
-        spaceBetween={15}
-        slidesPerView={5}
-        loop={true}
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-        }}
-        navigation={{
-          nextEl: next.current,
-          prevEl: prev.current,
-        }}
-        pagination={{ clickable: true }}
-        breakpoints={{
-          320: {
-            slidesPerView: 2,
-            spaceBetween: 10,
-          },
-          480: {
-            slidesPerView: 3,
-            spaceBetween: 10,
-          },
-          1024: {
-            slidesPerView: 4,
-            spaceBetween: 10,
-          },
-          1200: {
-            slidesPerView: 5,
-          },
-        }}
-        onSwiper={(swiper) => {
-          slider.current = swiper;
-        }}
-        onSlideChange={(swiper) => {
-          setActiveSlider(swiper.activeIndex);
-        }}
-        className="banner2Swiper"
-      >
-        {images.map((sliderItem, index) => {
-          return (
-            <SwiperSlide
-              key={`home-slider-gala-one-${index}`}
-              onClick={() => {
-                setActiveSlider(index);
-              }}
+      <PhotoProvider loop={false}>
+        <Swiper
+          modules={[Pagination, Autoplay, Navigation]}
+          spaceBetween={15}
+          slidesPerView={5}
+          loop={true}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
+          navigation={{
+            nextEl: next.current,
+            prevEl: prev.current,
+          }}
+          pagination={{ clickable: true }}
+          breakpoints={{
+            320: {
+              slidesPerView: 2,
+              spaceBetween: 10,
+            },
+            480: {
+              slidesPerView: 3,
+              spaceBetween: 10,
+            },
+            1024: {
+              slidesPerView: 4,
+              spaceBetween: 10,
+            },
+            1200: {
+              slidesPerView: 5,
+            },
+          }}
+          onSwiper={(swiper) => {
+            slider.current = swiper;
+          }}
+          onSlideChange={(swiper) => {
+            setActiveSlider(swiper.activeIndex);
+          }}
+          className="banner2Swiper"
+        >
+          {images.map((sliderItem, index) => {
+            return (
+              <SwiperSlide
+                key={`home-slider-gala-one-${index}`}
+                onClick={() => {
+                  setActiveSlider(index);
+                }}
+              >
+                <PhotoView src={sliderItem}>
+                  <Image
+                    src={sliderItem}
+                    alt="Слайд"
+                    width={300}
+                    height={200}
+                    className="!h-[181px] object-cover"
+                  />
+                </PhotoView>
+              </SwiperSlide>
+            );
+          })}
+          <div ref={prev} className="arrows-wrap">
+            <div className="swiper-button-prev cursor-pointer relative z-[10000]">
+              <img src="/img/gala-slider-arr.svg" alt="" />
+            </div>
+            <div className="w-full z-[-1]" />
+            <div
+              ref={next}
+              className="swiper-button-next cursor-pointer relative z-[10000]"
             >
-              <Image
-                src={sliderItem}
-                alt="Слайд"
-                width={300}
-                height={200}
-                className="!h-[181px] object-cover"
-              />
-            </SwiperSlide>
-          );
-        })}
-        <div ref={prev} className="arrows-wrap">
-          <div className="swiper-button-prev cursor-pointer relative z-[10000]">
-            <img src="/img/gala-slider-arr.svg" alt="" />
+              <img src="/img/gala-slider-arr.svg" alt="" />
+            </div>
           </div>
-          <div className="w-full z-[-1]" />
-          <div
-            ref={next}
-            className="swiper-button-next cursor-pointer relative z-[10000]"
-          >
-            <img src="/img/gala-slider-arr.svg" alt="" />
-          </div>
-        </div>
-      </Swiper>
+        </Swiper>
 
-      <div className="slider-big-image">
-        <img src={images[activeSlider]} alt="" />
-      </div>
+        <div className="slider-big-image">
+          <PhotoView src={images[activeSlider]}>
+            <img
+              src={images[activeSlider]}
+              alt="Slider image item"
+              className="cursor-pointer"
+            />
+          </PhotoView>
+        </div>
+      </PhotoProvider>
     </>
   );
 }
