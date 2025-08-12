@@ -349,7 +349,7 @@ function YourLayout() {
               <div className="scroll">
                 {plans?.map((plan, i) => (
                   <div
-                    className="img p-4 md:p-6 bg-[#E8EAEF] hover:bg-[#E8EAEF]/80 mr-2 rounded-[10px] cursor-pointer !w-full"
+                    className="img p-4 md:p-6 bg-[#E8EAEF] hover:bg-[#E8EAEF]/80 mr-2 rounded-[10px] cursor-pointer !w-[95%]"
                     onClick={() => OpenModalViewInfo(plan)}
                     key={i}
                   >
