@@ -47,14 +47,14 @@ function Header({ info = true }: IThisProps) {
       name: $t("stock"),
       url: SITE_URL.SALES,
     },
-    {
-      name: $t("methods_purchase"),
-      url: SITE_URL.METHODS_PURCHASE,
-    },
-    {
-      name: $t("calculator"),
-      url: SITE_URL.CALCULATOR,
-    },
+    // {
+    //   name: $t("methods_purchase"),
+    //   url: SITE_URL.METHODS_PURCHASE,
+    // },
+    // {
+    //   name: $t("calculator"),
+    //   url: SITE_URL.CALCULATOR,
+    // },
   ];
 
   const pathname = usePathname();

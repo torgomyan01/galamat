@@ -622,6 +622,8 @@ const polygonsData = [
   },
 ];
 
+// const PROJECT_ID_GALA_ONE = 54255;
+
 type Point = { x: number; y: number };
 type Polygon = {
   id: number;

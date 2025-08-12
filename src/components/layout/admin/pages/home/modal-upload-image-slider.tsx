@@ -1,10 +1,17 @@
-import { Modal, ModalBody, ModalContent, ModalHeader } from "@heroui/react";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+} from "@heroui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { filesLink, filesLinkRemove, filesLinkSave } from "@/utils/consts";
 import { ActionCreateSliderFade } from "@/app/actions/admin/pages/home/slider-fade/create-slider-item";
 import { addToast } from "@heroui/react";
 import { Input } from "@heroui/react";
+import { ActionCUpdateSliderFade } from "@/app/actions/admin/pages/home/slider-fade/update-url-slider-item";
 
 interface IThisProps {
   status: ISliderItem | null;
@@ -20,9 +27,11 @@ function ModalUploadImageSlider({
   onUpdate,
 }: IThisProps) {
   const [child, setChild] = useState<ISliderItem | null>(null);
+  const [urlSlider, setUrlSlider] = useState<string>("");
 
   useEffect(() => {
     setChild(status);
+    setUrlSlider(status?.url || "");
   }, [status]);
 
   function updateChild(newChild: ISliderItem) {
@@ -46,7 +55,21 @@ function ModalUploadImageSlider({
     }
   }
 
-  const [urlSlider, setUrlSlider] = useState<string>("");
+  const [loadingUrl, setLoadingUrl] = useState<boolean>(false);
+
+  function SaveUrlSlider() {
+    if (urlSlider && child) {
+      setLoadingUrl(true);
+      ActionCUpdateSliderFade(child.id, urlSlider)
+        .then(() => {
+          addToast({
+            title: "Успешно обновлено",
+            color: "success",
+          });
+        })
+        .finally(() => setLoadingUrl(false));
+    }
+  }
 
   function uploadImage(e: any, langKey: string) {
     const file = e.target.files[0];
@@ -85,7 +108,14 @@ function ModalUploadImageSlider({
   }
 
   return (
-    <Modal size="xl" isOpen={!!status} onOpenChange={onClose}>
+    <Modal
+      size="xl"
+      isOpen={!!status}
+      onOpenChange={() => {
+        onClose();
+        setUrlSlider("");
+      }}
+    >
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1">
           Добавить картинку слайдера
@@ -95,14 +125,23 @@ function ModalUploadImageSlider({
             Здесь жаждого ячейка для каждого языка, на верху написано языка
           </p>
 
-          <Input
-            label="URL"
-            placeholder="/page-url"
-            type="text"
-            className="w-full"
-            value={urlSlider}
-            onChange={(e) => setUrlSlider(e.target.value)}
-          />
+          <div className="relative">
+            <Input
+              label="URL"
+              placeholder="/page-url"
+              type="text"
+              className="w-full"
+              value={urlSlider}
+              onChange={(e) => setUrlSlider(e.target.value)}
+            />
+            <Button
+              className="absolute right-1 top-2"
+              onPress={SaveUrlSlider}
+              isLoading={loadingUrl}
+            >
+              Сохранить{" "}
+            </Button>
+          </div>
 
           <div className="w-full mb-4 mt-6 grid grid-cols-3 gap-4">
             {languages
