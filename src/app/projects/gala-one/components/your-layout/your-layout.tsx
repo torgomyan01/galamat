@@ -647,11 +647,9 @@ function YourLayout() {
   const [polygons, setPolygons] = useState<Polygon[]>([]);
   // const [currentPolygon, setCurrentPolygon] = useState<Polygon | null>(null);
   // const [hoveredPolygon, setHoveredPolygon] = useState<Polygon | null>(null);
-
   // Պահում ենք նկարը state–ում, որպեսզի onload-ից հետո trigger լինի redraw
   const [imageEl, setImageEl] = useState<HTMLImageElement | null>(null);
 
-  // --- Size / scale հաշվարկը, ԱՆՊԱՅՄԱՆ կապիր containerRef-ը DOM-ին ---
   useEffect(() => {
     const handleResize = () => {
       if (!containerRef.current || !canvasRef.current) {
