@@ -6,9 +6,10 @@ import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-p
 import { polygonsData } from "@/utils/consts";
 import { formatKzt } from "@/utils/helpers";
 import moment from "moment";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Modal, ModalBody, ModalContent, Spinner } from "@heroui/react";
 import Link from "next/link";
+import { setModalSendRequestGalaOne } from "@/redux/modals";
 
 const PROJECT_ID_GALA_ONE = 54255;
 const HOUSE_ID_GALA_ONE = 141959;
@@ -23,6 +24,7 @@ type Polygon = {
 };
 
 function YourLayout() {
+  const dispatch = useDispatch();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -476,6 +478,9 @@ function YourLayout() {
                               color="primary"
                               className="border border-blue rounded-full"
                               variant="bordered"
+                              onPress={() =>
+                                dispatch(setModalSendRequestGalaOne(true))
+                              }
                             >
                               Оставить заявку
                             </Button>

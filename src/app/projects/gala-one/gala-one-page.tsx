@@ -19,6 +19,7 @@ import Tour3d from "@/app/projects/gala-one/components/tour-3d/tour-3d";
 import YourLayout from "@/app/projects/gala-one/components/your-layout/your-layout";
 import { setProjects } from "@/redux/projects";
 import { useDispatch } from "react-redux";
+import ModalSendRequest from "@/app/projects/gala-one/components/modal-send-request";
 
 interface IThisProps {
   projects: IProjectMerged[];
@@ -75,6 +76,8 @@ function GalaOne({ projects }: IThisProps) {
           background={"/img/gala-request-bg.png"}
           bgColorBtn="red"
         />
+
+        <ModalSendRequest />
       </div>
     </MainTemplate>
   );
