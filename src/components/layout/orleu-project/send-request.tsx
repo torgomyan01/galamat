@@ -44,11 +44,11 @@ function SendRequest({ className }: IThisProps) {
 
   return (
     <div className={clsx("leave-request-wrap", className)}>
-      <img src="img/title-style.svg" alt="" />
+      <img src="/img/title-style.svg" alt="" />
       {sendStatus ? (
         <div className="w-full flex-jc-c flex-col gap-4">
           <Image
-            src="img/icons/checked.svg"
+            src="/img/icons/checked.svg"
             alt="check icon"
             width="178"
             height="103"

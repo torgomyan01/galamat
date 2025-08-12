@@ -86,7 +86,7 @@ function ModalSendRequest() {
                     {sendStatus ? (
                       <div className="w-full h-full flex-jc-c flex-col gap-4">
                         <Image
-                          src="img/icons/checked.svg"
+                          src="/img/icons/checked.svg"
                           alt="check icon"
                           width="178"
                           height="103"

@@ -1,628 +1,17 @@
 import "./_your-leaut.scss";
-import React, { useEffect, useRef, useState } from "react";
+import "@/app/real-estate/_card-popup.scss";
 
-const polygonsData = [
-  {
-    id: 129,
-    realIdForDb: 194809,
-    color: "#7f0212",
-    points: [
-      {
-        x: 237.58100993376812,
-        y: 114.89192553098587,
-      },
-      {
-        x: 237.7810099337681,
-        y: 168.69192553098588,
-      },
-      {
-        x: 305.5810099337681,
-        y: 168.29192553098588,
-      },
-      {
-        x: 304.9810099337681,
-        y: 172.49192553098587,
-      },
-      {
-        x: 348.5810099337681,
-        y: 172.29192553098588,
-      },
-      {
-        x: 348.1810099337681,
-        y: 168.69192553098588,
-      },
-      {
-        x: 385.5810099337681,
-        y: 168.69192553098588,
-      },
-      {
-        x: 384.78100993376813,
-        y: 119.49192553098587,
-      },
-      {
-        x: 368.3810099337681,
-        y: 119.29192553098588,
-      },
-      {
-        x: 368.5810099337681,
-        y: 115.69192553098587,
-      },
-    ],
-  },
-  {
-    id: 130,
-    realIdForDb: 194819,
-    color: "#7f0212",
-    points: [
-      {
-        x: 385.78100993376813,
-        y: 143.29192553098588,
-      },
-      {
-        x: 385.9810099337681,
-        y: 192.49192553098587,
-      },
-      {
-        x: 404.3810099337681,
-        y: 192.09192553098586,
-      },
-      {
-        x: 404.3810099337681,
-        y: 195.89192553098587,
-      },
-      {
-        x: 514.5810099337681,
-        y: 195.89192553098587,
-      },
-      {
-        x: 514.5810099337681,
-        y: 192.09192553098586,
-      },
-      {
-        x: 533.7810099337681,
-        y: 192.09192553098586,
-      },
-      {
-        x: 533.5810099337681,
-        y: 142.89192553098587,
-      },
-      {
-        x: 517.7810099337681,
-        y: 142.89192553098587,
-      },
-      {
-        x: 517.5810099337681,
-        y: 138.09192553098586,
-      },
-      {
-        x: 403.78100993376813,
-        y: 138.09192553098586,
-      },
-      {
-        x: 403.3810099337681,
-        y: 143.09192553098586,
-      },
-    ],
-  },
-  {
-    id: 131,
-    realIdForDb: 194812,
-    color: "#7f0212",
-    points: [
-      {
-        x: 536.81754027849,
-        y: 166.7025366174302,
-      },
-      {
-        x: 535.87436120209,
-        y: 265.73633963943024,
-      },
-      {
-        x: 616.01504546689,
-        y: 265.39316056303034,
-      },
-      {
-        x: 614.62981408149,
-        y: 167.1741261556302,
-      },
-    ],
-  },
-  {
-    id: 132,
-    realIdForDb: 194814,
-    color: "#7f0212",
-    points: [
-      {
-        x: 203.6256069202007,
-        y: 170.1798745067273,
-      },
-      {
-        x: 203.5013009202007,
-        y: 269.0988825067273,
-      },
-      {
-        x: 276.9013009202007,
-        y: 268.4988825067273,
-      },
-      {
-        x: 276.74276092020074,
-        y: 255.85900650672733,
-      },
-      {
-        x: 282.5013009202007,
-        y: 255.8988825067273,
-      },
-      {
-        x: 282.54059692020076,
-        y: 183.7081585067273,
-      },
-      {
-        x: 276.74276092020074,
-        y: 183.7081585067273,
-      },
-      {
-        x: 276.5013009202007,
-        y: 170.2988825067273,
-      },
-    ],
-  },
-  {
-    id: 133,
-    realIdForDb: 194816,
-    color: "#7f0212",
-    points: [
-      {
-        x: 203.70135388020063,
-        y: 268.9757704467273,
-      },
-      {
-        x: 203.70135388020063,
-        y: 280.3757704467273,
-      },
-      {
-        x: 197.9885381202006,
-        y: 280.4885862067273,
-      },
-      {
-        x: 197.5987947002006,
-        y: 355.31932284672735,
-      },
-      {
-        x: 204.2244328402006,
-        y: 354.92957942672734,
-      },
-      {
-        x: 204.10135388020063,
-        y: 367.1757704467273,
-      },
-      {
-        x: 276.90135388020065,
-        y: 367.1757704467273,
-      },
-      {
-        x: 276.71670896020066,
-        y: 355.31932284672735,
-      },
-      {
-        x: 282.17311684020063,
-        y: 355.31932284672735,
-      },
-      {
-        x: 282.17311684020063,
-        y: 280.4885862067273,
-      },
-      {
-        x: 277.3013538802006,
-        y: 280.3757704467273,
-      },
-      {
-        x: 276.71670896020066,
-        y: 268.7962836067273,
-      },
-    ],
-  },
-  {
-    id: 134,
-    realIdForDb: 194822,
-    color: "#7f0212",
-    points: [
-      {
-        x: 228.90135388020062,
-        y: 368.3757704467273,
-      },
-      {
-        x: 229.30135388020062,
-        y: 379.3757704467273,
-      },
-      {
-        x: 222.30135388020062,
-        y: 378.9757704467273,
-      },
-      {
-        x: 222.30135388020062,
-        y: 454.97577044672727,
-      },
-      {
-        x: 229.30135388020062,
-        y: 454.7757704467273,
-      },
-      {
-        x: 229.5013538802006,
-        y: 466.37577044672724,
-      },
-      {
-        x: 301.7013538802006,
-        y: 466.97577044672727,
-      },
-      {
-        x: 302.10135388020063,
-        y: 455.7757704467273,
-      },
-      {
-        x: 308.5013538802006,
-        y: 455.97577044672727,
-      },
-      {
-        x: 308.5013538802006,
-        y: 378.7757704467273,
-      },
-      {
-        x: 302.10135388020063,
-        y: 378.7757704467273,
-      },
-      {
-        x: 301.7013538802006,
-        y: 367.3757704467273,
-      },
-    ],
-  },
-  {
-    id: 135,
-    realIdForDb: 194811,
-    color: "#7f0212",
-    points: [
-      {
-        x: 228.30135388020062,
-        y: 466.97577044672727,
-      },
-      {
-        x: 228.30135388020062,
-        y: 564.9757704467272,
-      },
-      {
-        x: 301.7013538802006,
-        y: 564.5757704467272,
-      },
-      {
-        x: 301.90135388020065,
-        y: 552.7757704467273,
-      },
-      {
-        x: 307.90135388020065,
-        y: 552.5757704467272,
-      },
-      {
-        x: 307.5013538802006,
-        y: 480.37577044672724,
-      },
-      {
-        x: 301.5013538802006,
-        y: 479.97577044672727,
-      },
-      {
-        x: 301.5013538802006,
-        y: 466.97577044672727,
-      },
-    ],
-  },
-  {
-    id: 136,
-    realIdForDb: 194813,
-    color: "#7f0212",
-    points: [
-      {
-        x: 268.34737259435485,
-        y: 565.8059114504167,
-      },
-      {
-        x: 267.9934165943548,
-        y: 615.8120134504167,
-      },
-      {
-        x: 293.54737259435484,
-        y: 616.0059114504168,
-      },
-      {
-        x: 293.6013725943548,
-        y: 619.8459114504166,
-      },
-      {
-        x: 398.3873725943549,
-        y: 619.3619114504166,
-      },
-      {
-        x: 398.62937259435483,
-        y: 615.0059114504165,
-      },
-      {
-        x: 415.56937259435483,
-        y: 615.0059114504165,
-      },
-      {
-        x: 415.81137259435485,
-        y: 562.2499114504166,
-      },
-      {
-        x: 321.6733725943548,
-        y: 562.2499114504166,
-      },
-      {
-        x: 321.54737259435484,
-        y: 566.0059114504168,
-      },
-    ],
-  },
-  {
-    id: 137,
-    realIdForDb: 194815,
-    color: "#7f0212",
-    points: [
-      {
-        x: 415.94737259435476,
-        y: 563.0059114504168,
-      },
-      {
-        x: 415.94737259435476,
-        y: 615.8059114504167,
-      },
-      {
-        x: 432.3473725943548,
-        y: 615.4059114504167,
-      },
-      {
-        x: 432.94737259435476,
-        y: 620.2059114504167,
-      },
-      {
-        x: 537.1473725943548,
-        y: 619.4059114504167,
-      },
-      {
-        x: 537.1473725943548,
-        y: 615.2059114504167,
-      },
-      {
-        x: 562.7473725943548,
-        y: 615.0059114504168,
-      },
-      {
-        x: 562.1473725943548,
-        y: 566.4059114504167,
-      },
-      {
-        x: 510.1473725943548,
-        y: 566.2059114504167,
-      },
-      {
-        x: 509.94737259435476,
-        y: 562.4059114504167,
-      },
-    ],
-  },
-  {
-    id: 138,
-    realIdForDb: 194817,
-    color: "#7f0212",
-    points: [
-      {
-        x: 531.3473725943547,
-        y: 467.2059114504167,
-      },
-      {
-        x: 531.7473725943548,
-        y: 565.4059114504167,
-      },
-      {
-        x: 603.5473725943548,
-        y: 565.0059114504168,
-      },
-      {
-        x: 603.9473725943548,
-        y: 552.8059114504167,
-      },
-      {
-        x: 610.7473725943548,
-        y: 552.6059114504167,
-      },
-      {
-        x: 610.1473725943548,
-        y: 479.40591145041674,
-      },
-      {
-        x: 603.1473725943548,
-        y: 479.40591145041674,
-      },
-      {
-        x: 603.3473725943547,
-        y: 466.8059114504167,
-      },
-    ],
-  },
-  {
-    id: 139,
-    realIdForDb: 194820,
-    color: "#7f0212",
-    points: [
-      {
-        x: 531.1473725943548,
-        y: 366.6059114504167,
-      },
-      {
-        x: 610.5473725943548,
-        y: 365.6059114504167,
-      },
-      {
-        x: 610.5473725943548,
-        y: 456.0059114504167,
-      },
-      {
-        x: 603.9473725943548,
-        y: 455.2059114504167,
-      },
-      {
-        x: 603.9473725943548,
-        y: 465.6059114504167,
-      },
-      {
-        x: 530.7473725943548,
-        y: 465.2059114504167,
-      },
-      {
-        x: 531.1473725943548,
-        y: 453.0059114504167,
-      },
-      {
-        x: 525.5473725943548,
-        y: 452.6059114504167,
-      },
-      {
-        x: 525.9473725943548,
-        y: 379.40591145041674,
-      },
-      {
-        x: 530.9473725943548,
-        y: 378.8059114504167,
-      },
-    ],
-  },
-  {
-    id: 140,
-    realIdForDb: 194823,
-    color: "#7f0212",
-    points: [
-      {
-        x: 761.8550774317392,
-        y: 170.64575488547797,
-      },
-      {
-        x: 761.4550774317393,
-        y: 224.04575488547798,
-      },
-      {
-        x: 829.2550774317391,
-        y: 224.44575488547798,
-      },
-      {
-        x: 829.2550774317391,
-        y: 227.845754885478,
-      },
-      {
-        x: 871.8550774317391,
-        y: 227.845754885478,
-      },
-      {
-        x: 872.0550774317392,
-        y: 224.04575488547798,
-      },
-      {
-        x: 909.0550774317392,
-        y: 224.245754885478,
-      },
-      {
-        x: 909.0550774317392,
-        y: 175.44575488547798,
-      },
-      {
-        x: 893.0550774317392,
-        y: 175.44575488547798,
-      },
-      {
-        x: 893.0550774317392,
-        y: 171.245754885478,
-      },
-    ],
-  },
-  {
-    id: 141,
-    realIdForDb: 194824,
-    color: "#7f0212",
-    points: [
-      {
-        x: 909.4550774317391,
-        y: 202.845754885478,
-      },
-      {
-        x: 909.0550774317392,
-        y: 250.845754885478,
-      },
-      {
-        x: 927.0550774317392,
-        y: 251.04575488547798,
-      },
-      {
-        x: 927.0550774317392,
-        y: 255.04575488547798,
-      },
-      {
-        x: 1038.0550774317392,
-        y: 254.845754885478,
-      },
-      {
-        x: 1037.655077431739,
-        y: 250.845754885478,
-      },
-      {
-        x: 1056.0550774317392,
-        y: 251.04575488547798,
-      },
-      {
-        x: 1055.8550774317391,
-        y: 202.64575488547797,
-      },
-      {
-        x: 1040.455077431739,
-        y: 202.44575488547798,
-      },
-      {
-        x: 1040.0550774317392,
-        y: 198.04575488547798,
-      },
-      {
-        x: 927.0550774317392,
-        y: 198.245754885478,
-      },
-      {
-        x: 926.4550774317391,
-        y: 202.845754885478,
-      },
-    ],
-  },
-  {
-    id: 142,
-    realIdForDb: 194825,
-    color: "#7f0212",
-    points: [
-      {
-        x: 1060.2550774317392,
-        y: 226.245754885478,
-      },
-      {
-        x: 1059.8550774317391,
-        y: 325.84575488547796,
-      },
-      {
-        x: 1138.8550774317391,
-        y: 326.045754885478,
-      },
-      {
-        x: 1138.655077431739,
-        y: 226.04575488547798,
-      },
-    ],
-  },
-];
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
+import { polygonsData } from "@/utils/consts";
+import { formatKzt } from "@/utils/helpers";
+import moment from "moment";
+import { useSelector } from "react-redux";
+import { Button, Modal, ModalBody, ModalContent, Spinner } from "@heroui/react";
+import Link from "next/link";
 
-// const PROJECT_ID_GALA_ONE = 54255;
+const PROJECT_ID_GALA_ONE = 54255;
+const HOUSE_ID_GALA_ONE = 141959;
 
 type Point = { x: number; y: number };
 type Polygon = {
@@ -637,17 +26,55 @@ function YourLayout() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const allPlans = useRef<IPlan[]>([]);
+
+  useEffect(() => {
+    ActionGetProjectsProperty("/plan", {
+      isArchive: false,
+      status: ["AVAILABLE"],
+      projectIds: [PROJECT_ID_GALA_ONE],
+    }).then((result) => {
+      const data: IPlan[] = result.data;
+      allPlans.current = data;
+    });
+  }, []);
+
+  const [plans, setPlans] = useState<IPlan[] | null>(null);
+
+  function FindAllProperty(ids: number[]) {
+    console.log(
+      allPlans.current,
+      "allPlans.currentallPlans.currentallPlans.current",
+    );
+
+    const findAllPlans = ids.flatMap((_id: number) =>
+      allPlans.current
+        .filter((plan) => plan.properties.includes(String(_id)))
+        .map((plan) => ({ ...plan, propertyId: _id })),
+    );
+
+    setPlans(findAllPlans);
+  }
+
+  const boards = useRef<IBoard | null>(null);
+
+  useEffect(() => {
+    ActionGetProjectsProperty("/board", {
+      houseId: HOUSE_ID_GALA_ONE,
+    }).then((result) => {
+      boards.current = result;
+      fetchTooltipData(polygonsData[0]);
+    });
+  }, [HOUSE_ID_GALA_ONE]);
+
   // Virtual canvas dimensions
-  const virtualWidth = 1300;
-  const virtualHeight = 700;
+  const virtualWidth = 1500;
+  const virtualHeight = 1050;
 
   const [scale, setScale] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
-  const [polygons, setPolygons] = useState<Polygon[]>([]);
-  // const [currentPolygon, setCurrentPolygon] = useState<Polygon | null>(null);
-  // const [hoveredPolygon, setHoveredPolygon] = useState<Polygon | null>(null);
-  // Պահում ենք նկարը state–ում, որպեսզի onload-ից հետո trigger լինի redraw
+  const [polygons, setPolygons] = useState<Polygon[] | any>([]);
   const [imageEl, setImageEl] = useState<HTMLImageElement | null>(null);
 
   useEffect(() => {
@@ -659,7 +86,6 @@ function YourLayout() {
       const container = containerRef.current;
       const canvas = canvasRef.current;
 
-      // Կանվասի pixel buffer-ը պետք է հավասար լինի CSS չափերին՝ որ անհստակ չլինի
       const width = container.clientWidth;
       const height = container.clientHeight;
 
@@ -682,16 +108,15 @@ function YourLayout() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Տվյալների և նկարի բեռնում
   useEffect(() => {
     setPolygons(polygonsData);
 
     const img = new Image();
     img.src = "/img/gala-one/top-view-x-clear-bg.png";
-    img.onload = () => setImageEl(img); // state -> redraw կգա dependency-ների միջոցով
+    img.onload = () => setImageEl(img);
   }, []);
 
-  // // Պոլիգոնի նկարումը
+  // Պոլիգոնի նկարումը
   const drawPolygon = (
     ctx: CanvasRenderingContext2D,
     poly: Polygon,
@@ -708,10 +133,19 @@ function YourLayout() {
       ctx.lineTo(p.x, p.y);
     }
 
-    // Թափանցիկության ապահով տարբերակ՝ rgba
-    const rgba = isHovered ? "rgba(127,2,18,0.5)" : "rgba(127,2,18,0.25)";
+    // Հիմնական գույնը
+    const baseColor = poly.color;
+    // Hover-ի դեպքում ավելի պայծառ գույն
+    const hoverColor = isHovered
+      ? adjustColorBrightness(baseColor, 30) // ավելացնում ենք պայծառությունը 30 միավորով
+      : baseColor;
+
+    const rgba = isHovered
+      ? hexToRgba(hoverColor, 0.5)
+      : hexToRgba(hoverColor, 0.25);
+
     ctx.fillStyle = rgba;
-    ctx.strokeStyle = poly.color;
+    ctx.strokeStyle = hoverColor;
     ctx.lineWidth = (isHovered ? 2.5 : 1.5) / scale;
 
     if (poly.points.length >= 3) {
@@ -719,20 +153,29 @@ function YourLayout() {
     }
     ctx.fill();
     ctx.stroke();
-
-    // if (poly === currentPolygon) {
-    //   for (const p of poly.points) {
-    //     ctx.beginPath();
-    //     ctx.arc(p.x, p.y, 4 / scale, 0, Math.PI * 2);
-    //     ctx.fillStyle = poly.color;
-    //     ctx.fill();
-    //     ctx.strokeStyle = "white";
-    //     ctx.stroke();
-    //   }
-    // }
   };
 
-  // Գլխավոր redraw
+  // HEX to RGBA փոխակերպում
+  const hexToRgba = (hex: string, alpha: number) => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  };
+
+  const adjustColorBrightness = (hex: string, amount: number) => {
+    let r = parseInt(hex.slice(1, 3), 16);
+    let g = parseInt(hex.slice(3, 5), 16);
+    let b = parseInt(hex.slice(5, 7), 16);
+
+    r = Math.max(0, Math.min(255, r + amount));
+    g = Math.max(0, Math.min(255, g + amount));
+    b = Math.max(0, Math.min(255, b + amount));
+
+    return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+  };
+
+  // redraw
   const redraw = () => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
@@ -746,53 +189,321 @@ function YourLayout() {
     ctx.translate(offset.x, offset.y);
     ctx.scale(scale, scale);
 
-    // Նկար
     if (imageEl) {
       ctx.drawImage(imageEl, 0, 0, virtualWidth, virtualHeight);
     }
 
-    // Պոլիգոններ
     for (const poly of polygons) {
-      drawPolygon(ctx, poly, false);
+      drawPolygon(ctx, poly, activeHoverId === poly.id);
     }
-    // if (currentPolygon) {
-    //   drawPolygon(ctx, currentPolygon, false);
-    // }
-
     ctx.restore();
+  };
+
+  const [activeHoverId, setActiveHoverId] = useState<number | null>(null);
+
+  const fetchTooltipData = (polygon: Polygon) => {
+    if (boards && boards.current) {
+      const propertyIds: number[] = boards.current.floors
+        .map((floor) => floor.sections.find((sec) => sec.number === polygon.id))
+        .filter((sec): sec is ISection => Boolean(sec))
+        .flatMap((sec) => sec.cells)
+        .map((c) => c.propertyId)
+        .filter((id): id is number => id !== null);
+
+      console.log(polygon);
+      FindAllProperty(propertyIds);
+    }
+  };
+
+  // screen -> virtual coords
+  const getVirtualCoords = (clientX: number, clientY: number): Point => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return { x: 0, y: 0 };
+    }
+
+    const rect = canvas.getBoundingClientRect();
+    const cssScaleX = rect.width / canvas.width;
+    const cssScaleY = rect.height / canvas.height;
+
+    const x = ((clientX - rect.left) / cssScaleX - offset.x) / scale;
+    const y = ((clientY - rect.top) / cssScaleY - offset.y) / scale;
+
+    return { x, y };
+  };
+
+  // Point in polygon
+  const isPointInPolygon = (point: Point, polygon: Point[]): boolean => {
+    if (polygon.length < 3) {
+      return false;
+    }
+
+    let inside = false;
+    for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+      const xi = polygon[i].x,
+        yi = polygon[i].y;
+      const xj = polygon[j].x,
+        yj = polygon[j].y;
+
+      const intersect =
+        yi > point.y !== yj > point.y &&
+        point.x < ((xj - xi) * (point.y - yi)) / (yj - yi) + xi;
+      if (intersect) {
+        inside = !inside;
+      }
+    }
+    return inside;
+  };
+
+  // Mouse move
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement>) => {
+      const { x, y } = getVirtualCoords(e.clientX, e.clientY);
+      const hovered = polygons.find((poly: Polygon) =>
+        isPointInPolygon({ x, y }, poly.points),
+      );
+
+      if (hovered) {
+        if (activeHoverId !== hovered.id) {
+          setActiveHoverId(hovered.id);
+          redraw(); // Անհրաժեշտ է վերանկարել hover էֆեկտի համար
+        }
+      } else if (activeHoverId !== null) {
+        setActiveHoverId(null);
+        redraw();
+      }
+    },
+    [polygons, activeHoverId],
+  );
+
+  // CLICK
+  const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const { x, y } = getVirtualCoords(e.clientX, e.clientY);
+
+    const clickedPoly = polygons.find((poly: Polygon) =>
+      isPointInPolygon({ x, y }, poly.points),
+    );
+
+    if (clickedPoly) {
+      fetchTooltipData(clickedPoly);
+    }
   };
 
   useEffect(() => {
     redraw();
-  }, [polygons, scale, offset, imageEl]);
+  }, [polygons, scale, offset, imageEl, activeHoverId]); // Ավելացված է activeHoverId-ի կախվածությունը
+
+  const [selectedProject, setSelectedProject] = useState<IProjectMerged | null>(
+    null,
+  );
+
+  const [modalViewProperty, setModalViewProperty] = useState(false);
+  const [selectedFullPlan, setSelectedFullPlan] = useState<{
+    plan: IPlan;
+    property: IProperty;
+  } | null>(null);
+
+  const projects = useSelector(
+    (state: IProjectsState) => state.projectsState.projects,
+  );
+
+  function OpenModalViewInfo(plan: any) {
+    setModalViewProperty(true);
+
+    ActionGetProjectsProperty("/property", {
+      status: ["AVAILABLE"],
+      id: plan.propertyId,
+    }).then((result) => {
+      setSelectedFullPlan({ plan, property: result.data[0] });
+    });
+
+    // ActionGetProjectsProperty("/floor", {
+    //   isArchive: false,
+    //   status: ["AVAILABLE"],
+    //   houseId: plan.houseId,
+    // }).then((result) => {
+    //   console.log(result);
+    //
+    //   const fontFloor = result.find((floor: any) =>
+    //     floor.areas.some((_a: any) => plan.properties.includes(_a.propertyId)),
+    //   );
+    //   if (fontFloor) {
+    //     setFloor(fontFloor);
+    //   }
+    // });
+
+    const findProject = projects.find(
+      (proj) => proj.project_id === PROJECT_ID_GALA_ONE,
+    );
+
+    setSelectedProject(findProject || null);
+  }
 
   return (
-    <div className="your-layout !mt-10">
-      <div className="wrapper">
-        <h2>Выберите свою планировку</h2>
-        <div className="info">
-          <div className="images md:pb-10">
-            <div className="scroll">
-              {[...Array(5)].map((_, i) => (
-                <div className="img" key={i}>
-                  <img src="/img/your-layout-img.png" alt="" />
-                </div>
-              ))}
+    <>
+      <div className="your-layout !mt-10">
+        <div className="wrapper">
+          <h2>Выберите свою планировку</h2>
+          <div className="info">
+            <div className="images md:pb-10 ">
+              <div className="scroll">
+                {plans?.map((plan, i) => (
+                  <div
+                    className="img p-4 md:p-6 bg-[#E8EAEF] hover:bg-[#E8EAEF]/80 mr-2 rounded-[10px] cursor-pointer !w-full"
+                    onClick={() => OpenModalViewInfo(plan)}
+                    key={i}
+                  >
+                    <img
+                      src={plan.image.preview}
+                      alt="plan image"
+                      className="rounded-[10px] !h-auto !w-full"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div
-            ref={containerRef}
-            className="planing-info !h-[300px] md:!h-[850px] bg-white w-full relative"
-          >
-            <canvas
-              ref={canvasRef}
-              className="absolute inset-0 cursor-pointer w-full h-full transform scale-125"
-            />
+            <div
+              ref={containerRef}
+              className="planing-info !h-[300px] md:!h-[850px] bg-white w-full relative"
+            >
+              <canvas
+                ref={canvasRef}
+                className="absolute inset-0 cursor-pointer w-full h-full transform max-[420px]:scale-125 md:scale-125"
+                onMouseMove={handleMouseMove}
+                onMouseDown={handleMouseDown}
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      <Modal size="5xl" isOpen={modalViewProperty} hideCloseButton>
+        <ModalContent className="rounded-[18px] sm:rounded-[35px] max-w-[1226px]">
+          <ModalBody className="max-w-[1226px] p-4 sm:p-10">
+            <div className="wrapper !p-0">
+              <div className="flex-je-c mb-4">
+                <Button
+                  className="text-white min-w-[24px] sm:min-w-[30px] min-h-[24px] sm:min-h-[30px] text-[20px] rounded-[7px] bg-[#7F0217]"
+                  color="primary"
+                  onPress={() => {
+                    setModalViewProperty(false);
+                    setSelectedFullPlan(null);
+                  }}
+                >
+                  <i className="fa-regular fa-xmark"></i>
+                </Button>
+              </div>
+              <div id="card-popup" className="">
+                {selectedFullPlan ? (
+                  <div className="popup-body !p-0">
+                    <div className="info flex-jsb-s lg:gap-10 flex-col lg:flex-row !px-0 !max-w-full">
+                      <div className="texts lg:min-w-[350px] !w-full">
+                        <div className="top-info !w-full !mb-0">
+                          <div className="flex-js-c gap-4">
+                            <h2>ЖК {selectedFullPlan.property.projectName}</h2>
+                            <span className="status !mb-2">Свободно</span>
+                          </div>
+                          <span className="nomer mb-0 sm:!mb:3 max-[576px]:!max-w-full">
+                            {selectedFullPlan.property.rooms_amount}-комнатная
+                            квартира №{selectedFullPlan.property.number}
+                          </span>
+
+                          <div className="w-full grid grid-cols-2 sm:grid-cols-3 mb-8 mt-2 sm:mt-6 gap-2 sm:gap-4">
+                            <div>
+                              <h4 className="text-[13px] text-blue">
+                                Площадь:
+                              </h4>
+                              <h3 className="text-[18px] sm:text-[26px] text-blue font-medium">
+                                {selectedFullPlan.property.area.area_total}м²
+                              </h3>
+                            </div>
+                            <div>
+                              <h4 className="text-[13px] text-blue">Этаж:</h4>
+                              <h3 className="text-[18px] sm:text-[26px] text-blue font-medium">
+                                {selectedFullPlan.property.floor}
+                              </h3>
+                            </div>
+                            <div>
+                              <h4 className="text-[13px] text-blue">
+                                Срок сдачи:
+                              </h4>
+                              <h3 className="text-[18px] sm:text-[26px] text-blue font-medium">
+                                {moment(
+                                  selectedProject?.completion_date || "",
+                                ).format("DD.MM.YYYY")}
+                              </h3>
+                            </div>
+                            <div className="sm:col-span-2 sm:mt-4">
+                              <h4 className="text-[13px] text-blue">
+                                Стоимость:
+                              </h4>
+                              <h3 className="text-[18px] sm:text-[26px] text-blue font-medium">
+                                {formatKzt(
+                                  selectedFullPlan.property.price.value,
+                                )}
+                              </h3>
+                            </div>
+                            <div className="sm:mt-4">
+                              <h4 className="text-[13px] text-blue">
+                                Стоимость за м²:
+                              </h4>
+                              <h3 className="text-[18px] sm:text-[26px] text-blue font-medium">
+                                {selectedFullPlan.property.price.value ? (
+                                  formatKzt(
+                                    selectedFullPlan.property.price.value /
+                                      selectedFullPlan.property.area.area_total,
+                                  )
+                                ) : (
+                                  <span className="text-[15px] underline opacity-70 cursor-default">
+                                    Скоро будет видно{" "}
+                                  </span>
+                                )}
+                              </h3>
+                            </div>
+                          </div>
+
+                          <div className="flex-js-c gap-4 mb-4">
+                            <Link
+                              href={selectedFullPlan.plan.image.big}
+                              target="_blank"
+                              className="download !rounded-full !mb-0 border w-10 h-10 flex-jc-c border-blue"
+                              download={`${selectedFullPlan.property.projectName}-${selectedFullPlan.property.id}.jpeg`}
+                            >
+                              <img src="/img/download-icon.svg" alt="" />
+                            </Link>
+                            <Button
+                              color="primary"
+                              className="border border-blue rounded-full"
+                              variant="bordered"
+                            >
+                              Оставить заявку
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="img-wrap">
+                        <img
+                          src={selectedFullPlan.plan.image.big}
+                          alt=""
+                          className="w-full h-auto"
+                          height={500}
+                          width={400}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="w-full h-[400px] flex-jc-c">
+                    <Spinner />
+                  </div>
+                )}
+              </div>
+            </div>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
   );
 }
 
