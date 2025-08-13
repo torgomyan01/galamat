@@ -220,7 +220,7 @@ function BoxItemChess({ property }: IThisProps) {
                                 <h3 className="text-[18px] sm:text-[26px] text-blue font-medium">
                                   {moment(
                                     selectedProject?.completion_date || "",
-                                  ).format("DD.MM.YYYY")}
+                                  ).format("MMMM YYYY")}
                                 </h3>
                               </div>
                               <div className="sm:col-span-2 sm:mt-4">

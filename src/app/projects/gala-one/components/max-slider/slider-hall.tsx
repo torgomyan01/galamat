@@ -34,7 +34,7 @@ function SliderHalls() {
           modules={[Pagination, Autoplay, Navigation]}
           spaceBetween={15}
           slidesPerView={5}
-          loop={true}
+          loop={false}
           autoplay={{
             delay: 3000,
             disableOnInteraction: false,
@@ -77,20 +77,21 @@ function SliderHalls() {
                   setActiveSlider(index);
                 }}
               >
-                <PhotoView src={sliderItem}>
-                  <Image
-                    src={sliderItem}
-                    alt="Слайд"
-                    width={300}
-                    height={200}
-                    className="!h-[181px] object-cover cursor-pointer"
-                  />
-                </PhotoView>
+                <Image
+                  src={sliderItem}
+                  alt="Слайд"
+                  width={300}
+                  height={200}
+                  className="!h-[181px] object-cover cursor-pointer"
+                />
               </SwiperSlide>
             );
           })}
-          <div ref={prev} className="arrows-wrap">
-            <div className="swiper-button-prev cursor-pointer relative z-[10000]">
+          <div className="arrows-wrap">
+            <div
+              ref={prev}
+              className="swiper-button-prev cursor-pointer relative z-[10000]"
+            >
               <img src="/img/gala-slider-arr.svg" alt="" />
             </div>
             <div className="w-full z-[-1]" />

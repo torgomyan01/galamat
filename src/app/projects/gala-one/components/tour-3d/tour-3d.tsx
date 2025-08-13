@@ -14,7 +14,7 @@ const tabsTour = [
         allow="xr-spatial-tracking; gyroscope; accelerometer"
         allowFullScreen
         scrolling="no"
-        className="h-[400px] md:h-[650px]"
+        className="h-[400px] md:h-[750px]"
         src="https://kuula.co/share/collection/7DmKS?logo=0&info=1&fs=1&vr=1&sd=1&thumbs=1"
       />
     ),
@@ -30,15 +30,15 @@ const tabsTour = [
         allow="xr-spatial-tracking; gyroscope; accelerometer"
         allowFullScreen
         scrolling="no"
-        className="h-[400px] md:h-[650px]"
+        className="h-[400px] md:h-[750px]"
         src="https://kuula.co/share/collection/7DlvX?logo=1&info=0&logosize=110&fs=1&vr=0&thumbs=1&inst=0"
       />
     ),
   },
-  {
-    name: "Холлы",
-    component: "Холлы",
-  },
+  // {
+  //   name: "Холлы",
+  //   component: "Холлы",
+  // },
 ];
 
 function Tour3d() {

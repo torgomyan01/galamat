@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, Modal, ModalBody, ModalContent, Spinner } from "@heroui/react";
 import Link from "next/link";
 import { setModalSendRequestGalaOne } from "@/redux/modals";
+moment.locale("ru");
 
 const PROJECT_ID_GALA_ONE = 54255;
 const HOUSE_ID_GALA_ONE = 141959;
@@ -430,10 +431,10 @@ function YourLayout() {
                               <h4 className="text-[13px] text-blue">
                                 Срок сдачи:
                               </h4>
-                              <h3 className="text-[18px] sm:text-[26px] text-blue font-medium">
+                              <h3 className="text-[18px] sm:text-[26px] text-blue font-medium capitalize">
                                 {moment(
                                   selectedProject?.completion_date || "",
-                                ).format("DD.MM.YYYY")}
+                                ).format("MMMM YYYY")}
                               </h3>
                             </div>
                             <div className="sm:col-span-2 sm:mt-4">

@@ -8,12 +8,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
 import { SITE_URL } from "@/utils/consts";
-import Link from "next/link";
 import HistorySection from "@/components/common/history-section/history-section";
 import { useTranslate } from "@/hooks/useTranslate";
 import Image from "next/image";
 import CompletedProjects from "@/app/our-company/completed-projects";
-import { BreadcrumbItem, Breadcrumbs } from "@heroui/react";
+import { BreadcrumbItem, Breadcrumbs, Button } from "@heroui/react";
+import { useDispatch } from "react-redux";
+import { setModalSendRequest } from "@/redux/modals";
 
 const sliderHero = [
   {
@@ -35,6 +36,7 @@ const sliderHero = [
 ];
 
 function OurCompany() {
+  const dispatch = useDispatch();
   const $t = useTranslate();
 
   const [siccessHistory, setSongHistory] = useState<boolean>(false);
@@ -51,9 +53,12 @@ function OurCompany() {
           <div className="why-us-info">
             <h2>{$t("why_us_")}</h2>
             <p>{$t("galamat_has_20_years_of")}</p>
-            <Link href={SITE_URL.PROJECTS} className="red-btn">
+            <Button
+              onPress={() => dispatch(setModalSendRequest(true))}
+              className="red-btn"
+            >
               {$t("buy_an_apartment")}
-            </Link>
+            </Button>
 
             <div className="w-[calc(100%-20px)] lg:w-full">
               <Swiper

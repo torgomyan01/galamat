@@ -156,7 +156,7 @@ const SlideItemComponent = ({
   activeItem: number;
   setProgressRef: (el: HTMLDivElement | null, index: number) => void;
 }) => (
-  <div className="w-full flex-js-s h-[300px] items-stretch gap-4 lg:gap-10 mb-10">
+  <div className="w-full flex-js-s min-h-[300px] items-stretch gap-4 lg:gap-10 mb-10">
     <div className="w-[100px] lg:w-[179px] lg:min-w-[179px] flex-grow flex-jc-c flex-col">
       <div
         className={clsx(
@@ -183,6 +183,18 @@ const SlideItemComponent = ({
         {item.title}
       </h4>
       <p className="text-[16px] md:text-[20px] text-[#626262]">{item.text}</p>
+
+      <div className="relative block sm:hidden w-full mt-3">
+        <h2 className="text-[20px] text-white font-medium absolute left-6 top-4">
+          {item.title}
+        </h2>
+        <img
+          src={`/img/gala-bonus/slide-${index + 1}-mobile.png`}
+          alt="Slide content"
+          className="w-[95%]"
+          loading="lazy"
+        />
+      </div>
     </div>
   </div>
 );

@@ -52,13 +52,13 @@ function LeaveRequest({ background, bgColorBtn }: IThisProps) {
         <div className="leave-request-info">
           <Fade direction="left" className="md:w-[55%] " triggerOnce>
             <div
-              className="info !bg-no-repeat !bg-cover"
+              className="info !bg-no-repeat !bg-cover max-[540px]:h-[180px]"
               style={{
                 ...(background && { backgroundImage: `url(${background})` }),
               }}
             >
               <div className="texts">
-                <h2>{$t("leave_a_request")}</h2>
+                <h2 className="max-[465px]:!mb-1">{$t("leave_a_request")}</h2>
                 <span className="w-full max-w-[310px] block">
                   {$t("we_are_building _the_future")}
                 </span>

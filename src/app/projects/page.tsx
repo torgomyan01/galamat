@@ -1,5 +1,3 @@
-// app/admin/projects/page.tsx
-
 import React from "react";
 import Projects from "@/components/layout/projects/projects";
 import { ActionGetProjectsInfo } from "@/app/actions/projects/get-projects";
