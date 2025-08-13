@@ -193,10 +193,12 @@ function HorizontalFilter({
                   <Select
                     placeholder="Выбрайте проект"
                     selectedKeys={[`${filterParams?.projectId || 0}`]}
-                    className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none"
+                    className="md:w-[150px] rounded-[8px] "
                     classNames={{
                       trigger: "bg-white",
                     }}
+                    variant="flat"
+                    radius="sm"
                     onSelectionChange={(e) =>
                       ChangeParams(
                         "projectId",
@@ -221,10 +223,12 @@ function HorizontalFilter({
                     <Select
                       placeholder="Выбрайте объекты"
                       selectedKeys={[`${filterParams?.houseId || 0}`]}
-                      className="md:w-[150px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none"
+                      className="md:w-[150px] rounded-[8px]"
                       classNames={{
                         trigger: "bg-white",
                       }}
+                      variant="flat"
+                      radius="sm"
                       onSelectionChange={(e) =>
                         ChangeParams(
                           "houseId",
@@ -250,13 +254,13 @@ function HorizontalFilter({
                   }}
                   viewport={{ once: true, amount: 0.1 }}
                   variants={motionOptionText}
-                  className="select-info"
+                  className="select-info z-[0]"
                 >
                   <span>{$t("floor__")}</span>
 
                   <Dropdown>
                     <DropdownTrigger>
-                      <Button className="md:w-[160px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2] bg-white !outline-none !flex-jsb-c bg-white">
+                      <Button className="md:w-[160px] rounded-[8px] outline outline-[1px] outline-[#b2b2b2]  !outline-none !flex-jsb-c bg-white">
                         {filterParams.minFloor || (
                           <span className="opacity-60">
                             {$t("select_floor")}
