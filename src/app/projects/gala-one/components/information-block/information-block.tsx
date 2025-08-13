@@ -32,7 +32,7 @@ function InformationBlock() {
               <span>Комфортный двор</span>
             </div>
             <ul
-              className={clsx("transition", {
+              className={clsx("transition max-[767px]:!opacity-100", {
                 "opacity-0": !openOneItem,
               })}
             >
@@ -72,7 +72,7 @@ function InformationBlock() {
               <span>Современные решения</span>
             </div>
             <ul
-              className={clsx("transition", {
+              className={clsx("transition max-[767px]:!opacity-100", {
                 "opacity-0": !openTwoItem,
               })}
             >
@@ -112,7 +112,7 @@ function InformationBlock() {
               <span>Простор и надёжность</span>
             </div>
             <ul
-              className={clsx("transition", {
+              className={clsx("transition max-[767px]:!opacity-100", {
                 "opacity-0": !openTreehItem,
               })}
             >
