@@ -12,7 +12,7 @@ function GalaOneHero() {
       <div className="wrapper">
         <div
           className="banner-info"
-          style={{ backgroundImage: `url(/img/gala-banner-img.png)` }}
+          style={{ backgroundImage: `url(/img/gala-banner-img.webp)` }}
         >
           <img src="/img/gala-logo.svg" alt="" className="gala-logo" />
           <h1>Gala One</h1>
