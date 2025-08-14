@@ -64,7 +64,7 @@ function ModalSendRequest() {
       mask: "+7 (000) 000-00-00",
     });
     return () => mask.destroy();
-  }, []);
+  }, [modalSendRequest]);
 
   return (
     <Modal

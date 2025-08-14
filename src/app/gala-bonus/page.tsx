@@ -6,7 +6,7 @@ import GalaBonus from "@/app/gala-bonus/gala-bonus";
 
 export async function generateMetadata() {
   return {
-    title: "Gala Bonus",
+    title: "Gala Bonus | Galamat",
   };
 }
 

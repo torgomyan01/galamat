@@ -129,6 +129,8 @@ function BonusBlock({ data }: IThisProps) {
     }
   }
 
+  console.log(userBonusLink);
+
   const [loading, setLoading] = useState(false);
 
   function ChangeStatus() {

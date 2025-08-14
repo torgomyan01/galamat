@@ -72,7 +72,7 @@ function MobileHorizontalFilter({ maxPrice, maxArea, projects }: IThisProps) {
     dispatch(
       setChangeParams({
         projectId: 0,
-        projectIds: [],
+        // projectIds: [],
         houseId: 0,
         rooms: [],
         "price[min]": 0,

@@ -137,6 +137,14 @@
     content: "\f00e"
 }
 
+.fa-eye:before {
+    content: "\f06e"
+}
+
+.fa-expand:before {
+    content: "\f065"
+}
+
 
 
 /*---------------------------------*/

@@ -24,6 +24,8 @@ export async function ActionSendNumberBitrix(id: number) {
       },
     );
 
+    console.log(updateProbabilities?.winner);
+
     return getAxios.data;
   } catch (error: any) {
     return error;

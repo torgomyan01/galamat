@@ -481,3 +481,12 @@ declare interface IDataOldProjects {
   address: string;
   date: string;
 }
+
+declare interface IArea {
+  id: string;
+  title: string;
+  shape: string;
+  fillColor: string;
+  strokeColor: string;
+  coords: number[];
+}

@@ -27,7 +27,6 @@ function RealEstatePlans({ projectsIds }: IThisProps) {
     isNaN(initialPageFromUrl) ? 1 : initialPageFromUrl,
   );
 
-  // ⏎ Երբ filterParams-ը փոխվում է՝ բեռնենք նոր տվյալներ
   useEffect(() => {
     const _filterParams: any = { ...filterParams };
 

@@ -27,7 +27,7 @@ function YourLayout() {
     ActionGetProjectsProperty("/plan", {
       isArchive: false,
       status: ["AVAILABLE"],
-      projectIds: [PROJECT_ID_GALA_ONE],
+      projectId: PROJECT_ID_GALA_ONE,
     }).then((result) => {
       const data: IPlan[] = result.data;
       allPlans.current = data;
@@ -43,6 +43,10 @@ function YourLayout() {
     );
 
     setPlans(findAllPlans);
+
+    if (window.innerWidth < 767) {
+      setModalViewPlansMobile(true);
+    }
   }
 
   const boards = useRef<IBoard | null>(null);
@@ -52,7 +56,9 @@ function YourLayout() {
       houseId: HOUSE_ID_GALA_ONE,
     }).then((result) => {
       boards.current = result;
-      fetchTooltipData(1);
+      if (window.innerWidth > 767) {
+        fetchTooltipData(1);
+      }
     });
   }, [HOUSE_ID_GALA_ONE]);
 
@@ -73,6 +79,7 @@ function YourLayout() {
     null,
   );
 
+  const [modalViewPlansMobile, setModalViewPlansMobile] = useState(false);
   const [modalViewProperty, setModalViewProperty] = useState(false);
   const [selectedFullPlan, setSelectedFullPlan] = useState<{
     plan: IPlan;
@@ -100,70 +107,7 @@ function YourLayout() {
     setSelectedProject(findProject || null);
   }
 
-  // const [markerOneImage] = useState(() => {
-  //   const image = new Image();
-  //   image.src = "/img/marker.svg";
-  //   return image;
-  // });
-  //
-  // const cords = [
-  //   {
-  //     id: 1,
-  //     cords: { x: 1680, y: 1800 },
-  //   },
-  //   {
-  //     id: 2,
-  //     cords: { x: 1680, y: 2350 },
-  //   },
-  //   {
-  //     id: 3,
-  //     cords: { x: 1380, y: 2780 },
-  //   },
-  //   {
-  //     id: 4,
-  //     cords: { x: 840, y: 2780 },
-  //   },
-  //   {
-  //     id: 5,
-  //     cords: { x: 560, y: 2380 },
-  //   },
-  //   {
-  //     id: 6,
-  //     cords: { x: 560, y: 1830 },
-  //   },
-  //   {
-  //     id: 7,
-  //     cords: { x: 460, y: 1280 },
-  //   },
-  //   {
-  //     id: 8,
-  //     cords: { x: 460, y: 780 },
-  //   },
-  //   {
-  //     id: 9,
-  //     cords: { x: 700, y: 310 },
-  //   },
-  //   {
-  //     id: 10,
-  //     cords: { x: 1270, y: 440 },
-  //   },
-  //   {
-  //     id: 11,
-  //     cords: { x: 1710, y: 700 },
-  //   },
-  //   {
-  //     id: 12,
-  //     cords: { x: 2690, y: 620 },
-  //   },
-  //   {
-  //     id: 13,
-  //     cords: { x: 3220, y: 780 },
-  //   },
-  //   {
-  //     id: 14,
-  //     cords: { x: 3660, y: 1050 },
-  //   },
-  // ];
+  const [selectedArea, setSelectedArea] = useState<IArea | null>(null);
 
   const myRef = useRef(null);
 
@@ -171,7 +115,7 @@ function YourLayout() {
   const areas = [
     {
       id: "1",
-      title: "Block 1",
+      title: "Секция 1",
       shape: "rect",
       fillColor: "rgba(127,2,23,0.44)",
       strokeColor: "black",
@@ -179,7 +123,7 @@ function YourLayout() {
     },
     {
       id: "2",
-      title: "Block 2",
+      title: "Секция 2",
       shape: "rect",
       fillColor: "rgba(127,2,23,0.44)",
       strokeColor: "black",
@@ -187,7 +131,7 @@ function YourLayout() {
     },
     {
       id: "3",
-      title: "Block 3",
+      title: "Секция 3",
       shape: "rect",
       fillColor: "rgba(127,2,23,0.44)",
       strokeColor: "black",
@@ -195,7 +139,7 @@ function YourLayout() {
     },
     {
       id: "4",
-      title: "Block 4",
+      title: "Секция 4",
       shape: "rect",
       fillColor: "rgba(127,2,23,0.44)",
       strokeColor: "black",
@@ -203,7 +147,7 @@ function YourLayout() {
     },
     {
       id: "5",
-      title: "Block 5",
+      title: "Секция 5",
       shape: "rect",
       fillColor: "rgba(127,2,23,0.44)",
       strokeColor: "black",
@@ -211,7 +155,7 @@ function YourLayout() {
     },
     {
       id: "6",
-      title: "Block 6",
+      title: "Секция 6",
       shape: "rect",
       fillColor: "rgba(127,2,23,0.44)",
       strokeColor: "black",
@@ -219,7 +163,7 @@ function YourLayout() {
     },
     {
       id: "7",
-      title: "Block 7",
+      title: "Секция 7",
       shape: "rect",
       fillColor: "rgba(127,2,23,0.44)",
       strokeColor: "black",
@@ -227,7 +171,7 @@ function YourLayout() {
     },
     {
       id: "8",
-      title: "Block 8",
+      title: "Секция 8",
       shape: "rect",
       fillColor: "rgba(127,2,23,0.44)",
       strokeColor: "black",
@@ -235,16 +179,15 @@ function YourLayout() {
     },
     {
       id: "9",
-      title: "Block 9",
+      title: "Секция 9",
       shape: "rect",
-      name: "1",
       fillColor: "rgba(127,2,23,0.44)",
       strokeColor: "black",
       coords: [105, 40, 230, 110],
     },
     {
       id: "10",
-      title: "Block 10",
+      title: "Секция 10",
       shape: "rect",
       fillColor: "rgba(127,2,23,0.44)",
       strokeColor: "black",
@@ -252,7 +195,7 @@ function YourLayout() {
     },
     {
       id: "11",
-      title: "Block 11",
+      title: "Секция 11",
       shape: "rect",
       fillColor: "rgba(127,2,23,0.44)",
       strokeColor: "black",
@@ -260,7 +203,7 @@ function YourLayout() {
     },
     {
       id: "12",
-      title: "Block 12",
+      title: "Секция 12",
       shape: "rect",
       fillColor: "rgba(127,2,23,0.44)",
       strokeColor: "black",
@@ -268,7 +211,7 @@ function YourLayout() {
     },
     {
       id: "13",
-      title: "Block 13",
+      title: "Секция 13",
       shape: "rect",
       fillColor: "rgba(127,2,23,0.44)",
       strokeColor: "black",
@@ -276,7 +219,7 @@ function YourLayout() {
     },
     {
       id: "14",
-      title: "Block 14",
+      title: "Секция 14",
       shape: "rect",
       fillColor: "rgba(127,2,23,0.44)",
       strokeColor: "black",
@@ -290,7 +233,7 @@ function YourLayout() {
         <div className="wrapper">
           <h2>Выберите свою планировку</h2>
           <div className="info">
-            <div className="images md:pb-10 md:!h-[730px] ">
+            <div className="images md:pb-10 md:!h-[730px] hidden md:block">
               <div className="scroll h-full">
                 {plans?.map((plan, i) => (
                   <div
@@ -308,12 +251,7 @@ function YourLayout() {
               </div>
             </div>
 
-            <div className="planing-info !h-[730px] w-full relative min-w-[970px] max-[768px]:overflow-x-auto overflow-hidden">
-              {/*<img*/}
-              {/*  src="/img/gala-one/top-view-max.webp"*/}
-              {/*  alt="bg"*/}
-              {/*  className="w-full h-full object-cover absolute left-0 top-0 blur-[3px] opacity-80"*/}
-              {/*/>*/}
+            <div className="planing-info !h-[730px] w-full relative min-w-[970px] overflow-hidden">
               <ImageMapper
                 ref={myRef}
                 src="/img/gala-one/top-view-max.webp"
@@ -323,25 +261,45 @@ function YourLayout() {
                 height={1000}
                 onClick={(area) => {
                   fetchTooltipData(+area.id);
+                  setSelectedArea(area as IArea);
                 }}
               />
 
-              {/*<Map image="/img/gala-one/top-view-max.webp">*/}
-              {/*  {cords.map((p, i) => (*/}
-              {/*    <Marker*/}
-              {/*      key={`marker-${i}`}*/}
-              {/*      image={markerOneImage}*/}
-              {/*      coords={p.cords}*/}
-              {/*      markerKey={`marker-one-${i}`}*/}
-              {/*      onClick={() => fetchTooltipData(p.id)}*/}
-              {/*    />*/}
-              {/*  ))}*/}
-              {/*</Map>*/}
               <i className="fa-regular fa-magnifying-glass-plus absolute top-4 right-4 text-[30px] text-[#7F0217]"></i>
             </div>
           </div>
         </div>
       </div>
+
+      <Modal
+        size="full"
+        isOpen={modalViewPlansMobile}
+        onClose={() => setModalViewPlansMobile(false)}
+      >
+        <ModalContent className="rounded-[18px] sm:rounded-[35px] max-w-[1226px]">
+          <ModalBody className="max-w-[1226px] p-4">
+            <h3 className="mb-2 font-medium">
+              Планировки {selectedArea?.title}
+            </h3>
+            <div className="w-full max-h-[calc(100dvh-50px)] grid grid-cols-2 gap-y-4 overflow-y-auto pb-10">
+              {plans?.map((plan, i) => (
+                <div
+                  className="img p-1 bg-[#7F0217] hover:bg-[#E8EAEF]/80 mr-2 rounded-[10px] cursor-pointer !w-[95%] relative"
+                  onClick={() => OpenModalViewInfo(plan)}
+                  key={i}
+                >
+                  <img
+                    src={plan.image.preview}
+                    alt="plan image"
+                    className="rounded-[8px] !h-auto !w-full"
+                  />
+                  <i className="fa-solid fa-expand absolute right-3 top-3 text-[14px] opacity-70"></i>
+                </div>
+              ))}
+            </div>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
 
       <Modal size="5xl" isOpen={modalViewProperty} hideCloseButton>
         <ModalContent className="rounded-[18px] sm:rounded-[35px] max-w-[1226px]">
@@ -454,7 +412,7 @@ function YourLayout() {
                         <img
                           src={selectedFullPlan.plan.image.big}
                           alt=""
-                          className="w-full h-auto"
+                          className="w-full h-auto !max-h-[200px]"
                           height={500}
                           width={400}
                         />

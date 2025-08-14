@@ -19,6 +19,7 @@
   .info {
     @include flex;
     align-items: stretch;
+    overflow-x: auto;
     @media(max-width: 1024px) {
       flex-direction: column-reverse;
     }
@@ -110,8 +111,9 @@
       @include flex;
       align-self: flex-start;
       border-radius: 24px;
-      img {
-        width: 100%;
+
+      #img-mapper{
+        min-width: 970px;
       }
     }
   }
