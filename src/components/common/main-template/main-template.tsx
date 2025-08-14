@@ -13,6 +13,7 @@ import { getTranslations } from "@/lib/translationCache";
 import CookieComponent from "@/components/common/main-template/cookie";
 import ModalSendRequest from "@/components/common/main-template/modal-send-request";
 import MobileBottomMenu from "@/components/common/mobile-bottom-menu/mobile-bottom-menu";
+import ModalGalaOne from "@/components/common/main-template/modal-gala-one";
 
 interface IThisProps {
   children?: React.ReactNode;
@@ -96,6 +97,8 @@ function MainTemplate({
       <CookieComponent />
 
       <MobileBottomMenu />
+
+      <ModalGalaOne />
     </HeroUIProvider>
   );
 }
