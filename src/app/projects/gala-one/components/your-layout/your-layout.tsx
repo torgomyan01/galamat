@@ -1,33 +1,25 @@
+"use client";
+
 import "./_your-leaut.scss";
 import "@/app/real-estate/_card-popup.scss";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
-import { polygonsData } from "@/utils/consts";
 import { formatKzt } from "@/utils/helpers";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Modal, ModalBody, ModalContent, Spinner } from "@heroui/react";
 import Link from "next/link";
 import { setModalSendRequestGalaOne } from "@/redux/modals";
+import ImageMapper from "react-img-mapper";
+
 moment.locale("ru");
 
 const PROJECT_ID_GALA_ONE = 54255;
 const HOUSE_ID_GALA_ONE = 141959;
 
-type Point = { x: number; y: number };
-type Polygon = {
-  id: number;
-  realIdForDb: number;
-  color: string;
-  points: Point[];
-  data?: any;
-};
-
 function YourLayout() {
   const dispatch = useDispatch();
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   const allPlans = useRef<IPlan[]>([]);
 
@@ -45,11 +37,6 @@ function YourLayout() {
   const [plans, setPlans] = useState<IPlan[] | null>(null);
 
   function FindAllProperty(ids: number[]) {
-    console.log(
-      allPlans.current,
-      "allPlans.currentallPlans.currentallPlans.current",
-    );
-
     const findAllPlans = ids.flatMap((_id: number) =>
       allPlans.current
         .filter((plan) => plan.properties.includes(String(_id)))
@@ -66,235 +53,22 @@ function YourLayout() {
       houseId: HOUSE_ID_GALA_ONE,
     }).then((result) => {
       boards.current = result;
-      fetchTooltipData(polygonsData[0]);
+      fetchTooltipData(1);
     });
   }, [HOUSE_ID_GALA_ONE]);
 
-  // Virtual canvas dimensions
-  const virtualWidth = 1500;
-  const virtualHeight = 1050;
-
-  const [scale, setScale] = useState(1);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
-
-  const [polygons, setPolygons] = useState<Polygon[] | any>([]);
-  const [imageEl, setImageEl] = useState<HTMLImageElement | null>(null);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (!containerRef.current || !canvasRef.current) {
-        return;
-      }
-
-      const container = containerRef.current;
-      const canvas = canvasRef.current;
-
-      const width = container.clientWidth;
-      const height = container.clientHeight;
-
-      canvas.width = width;
-      canvas.height = height;
-
-      const scaleX = width / virtualWidth;
-      const scaleY = height / virtualHeight;
-      const newScale = Math.max(0.0001, Math.min(scaleX, scaleY));
-
-      setScale(newScale);
-      setOffset({
-        x: (width - virtualWidth * newScale) / 2,
-        y: (height - virtualHeight * newScale) / 2,
-      });
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  useEffect(() => {
-    setPolygons(polygonsData);
-
-    const img = new Image();
-    img.src = "/img/gala-one/top-view-x-clear-bg.png";
-    img.onload = () => setImageEl(img);
-  }, []);
-
-  // Պոլիգոնի նկարումը
-  const drawPolygon = (
-    ctx: CanvasRenderingContext2D,
-    poly: Polygon,
-    isHovered: boolean,
-  ) => {
-    if (poly.points.length < 2) {
-      return;
-    }
-
-    ctx.beginPath();
-    ctx.moveTo(poly.points[0].x, poly.points[0].y);
-    for (let i = 1; i < poly.points.length; i++) {
-      const p = poly.points[i];
-      ctx.lineTo(p.x, p.y);
-    }
-
-    // Հիմնական գույնը
-    const baseColor = poly.color;
-    // Hover-ի դեպքում ավելի պայծառ գույն
-    const hoverColor = isHovered
-      ? adjustColorBrightness(baseColor, 30) // ավելացնում ենք պայծառությունը 30 միավորով
-      : baseColor;
-
-    const rgba = isHovered
-      ? hexToRgba(hoverColor, 0.5)
-      : hexToRgba(hoverColor, 0.25);
-
-    ctx.fillStyle = rgba;
-    ctx.strokeStyle = hoverColor;
-    ctx.lineWidth = (isHovered ? 2.5 : 1.5) / scale;
-
-    if (poly.points.length >= 3) {
-      ctx.closePath();
-    }
-    ctx.fill();
-    ctx.stroke();
-  };
-
-  // HEX to RGBA փոխակերպում
-  const hexToRgba = (hex: string, alpha: number) => {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-  };
-
-  const adjustColorBrightness = (hex: string, amount: number) => {
-    let r = parseInt(hex.slice(1, 3), 16);
-    let g = parseInt(hex.slice(3, 5), 16);
-    let b = parseInt(hex.slice(5, 7), 16);
-
-    r = Math.max(0, Math.min(255, r + amount));
-    g = Math.max(0, Math.min(255, g + amount));
-    b = Math.max(0, Math.min(255, b + amount));
-
-    return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
-  };
-
-  // redraw
-  const redraw = () => {
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext("2d");
-    if (!canvas || !ctx) {
-      return;
-    }
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx.save();
-    ctx.translate(offset.x, offset.y);
-    ctx.scale(scale, scale);
-
-    if (imageEl) {
-      ctx.drawImage(imageEl, 0, 0, virtualWidth, virtualHeight);
-    }
-
-    for (const poly of polygons) {
-      drawPolygon(ctx, poly, activeHoverId === poly.id);
-    }
-    ctx.restore();
-  };
-
-  const [activeHoverId, setActiveHoverId] = useState<number | null>(null);
-
-  const fetchTooltipData = (polygon: Polygon) => {
+  const fetchTooltipData = (polygonId: number) => {
     if (boards && boards.current) {
       const propertyIds: number[] = boards.current.floors
-        .map((floor) => floor.sections.find((sec) => sec.number === polygon.id))
+        .map((floor) => floor.sections.find((sec) => sec.number === polygonId))
         .filter((sec): sec is ISection => Boolean(sec))
         .flatMap((sec) => sec.cells)
         .map((c) => c.propertyId)
         .filter((id): id is number => id !== null);
 
-      console.log(polygon);
       FindAllProperty(propertyIds);
     }
   };
-
-  // screen -> virtual coords
-  const getVirtualCoords = (clientX: number, clientY: number): Point => {
-    const canvas = canvasRef.current;
-    if (!canvas) {
-      return { x: 0, y: 0 };
-    }
-
-    const rect = canvas.getBoundingClientRect();
-    const cssScaleX = rect.width / canvas.width;
-    const cssScaleY = rect.height / canvas.height;
-
-    const x = ((clientX - rect.left) / cssScaleX - offset.x) / scale;
-    const y = ((clientY - rect.top) / cssScaleY - offset.y) / scale;
-
-    return { x, y };
-  };
-
-  // Point in polygon
-  const isPointInPolygon = (point: Point, polygon: Point[]): boolean => {
-    if (polygon.length < 3) {
-      return false;
-    }
-
-    let inside = false;
-    for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-      const xi = polygon[i].x,
-        yi = polygon[i].y;
-      const xj = polygon[j].x,
-        yj = polygon[j].y;
-
-      const intersect =
-        yi > point.y !== yj > point.y &&
-        point.x < ((xj - xi) * (point.y - yi)) / (yj - yi) + xi;
-      if (intersect) {
-        inside = !inside;
-      }
-    }
-    return inside;
-  };
-
-  // Mouse move
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLCanvasElement>) => {
-      const { x, y } = getVirtualCoords(e.clientX, e.clientY);
-      const hovered = polygons.find((poly: Polygon) =>
-        isPointInPolygon({ x, y }, poly.points),
-      );
-
-      if (hovered) {
-        if (activeHoverId !== hovered.id) {
-          setActiveHoverId(hovered.id);
-          redraw(); // Անհրաժեշտ է վերանկարել hover էֆեկտի համար
-        }
-      } else if (activeHoverId !== null) {
-        setActiveHoverId(null);
-        redraw();
-      }
-    },
-    [polygons, activeHoverId],
-  );
-
-  // CLICK
-  const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    const { x, y } = getVirtualCoords(e.clientX, e.clientY);
-
-    const clickedPoly = polygons.find((poly: Polygon) =>
-      isPointInPolygon({ x, y }, poly.points),
-    );
-
-    if (clickedPoly) {
-      fetchTooltipData(clickedPoly);
-    }
-  };
-
-  useEffect(() => {
-    redraw();
-  }, [polygons, scale, offset, imageEl, activeHoverId]); // Ավելացված է activeHoverId-ի կախվածությունը
 
   const [selectedProject, setSelectedProject] = useState<IProjectMerged | null>(
     null,
@@ -320,21 +94,6 @@ function YourLayout() {
       setSelectedFullPlan({ plan, property: result.data[0] });
     });
 
-    // ActionGetProjectsProperty("/floor", {
-    //   isArchive: false,
-    //   status: ["AVAILABLE"],
-    //   houseId: plan.houseId,
-    // }).then((result) => {
-    //   console.log(result);
-    //
-    //   const fontFloor = result.find((floor: any) =>
-    //     floor.areas.some((_a: any) => plan.properties.includes(_a.propertyId)),
-    //   );
-    //   if (fontFloor) {
-    //     setFloor(fontFloor);
-    //   }
-    // });
-
     const findProject = projects.find(
       (proj) => proj.project_id === PROJECT_ID_GALA_ONE,
     );
@@ -342,14 +101,198 @@ function YourLayout() {
     setSelectedProject(findProject || null);
   }
 
+  // const [markerOneImage] = useState(() => {
+  //   const image = new Image();
+  //   image.src = "/img/marker.svg";
+  //   return image;
+  // });
+  //
+  // const cords = [
+  //   {
+  //     id: 1,
+  //     cords: { x: 1680, y: 1800 },
+  //   },
+  //   {
+  //     id: 2,
+  //     cords: { x: 1680, y: 2350 },
+  //   },
+  //   {
+  //     id: 3,
+  //     cords: { x: 1380, y: 2780 },
+  //   },
+  //   {
+  //     id: 4,
+  //     cords: { x: 840, y: 2780 },
+  //   },
+  //   {
+  //     id: 5,
+  //     cords: { x: 560, y: 2380 },
+  //   },
+  //   {
+  //     id: 6,
+  //     cords: { x: 560, y: 1830 },
+  //   },
+  //   {
+  //     id: 7,
+  //     cords: { x: 460, y: 1280 },
+  //   },
+  //   {
+  //     id: 8,
+  //     cords: { x: 460, y: 780 },
+  //   },
+  //   {
+  //     id: 9,
+  //     cords: { x: 700, y: 310 },
+  //   },
+  //   {
+  //     id: 10,
+  //     cords: { x: 1270, y: 440 },
+  //   },
+  //   {
+  //     id: 11,
+  //     cords: { x: 1710, y: 700 },
+  //   },
+  //   {
+  //     id: 12,
+  //     cords: { x: 2690, y: 620 },
+  //   },
+  //   {
+  //     id: 13,
+  //     cords: { x: 3220, y: 780 },
+  //   },
+  //   {
+  //     id: 14,
+  //     cords: { x: 3660, y: 1050 },
+  //   },
+  // ];
+
+  const myRef = useRef(null);
+
+  const name = "my-image-map";
+  const areas = [
+    {
+      id: "1",
+      title: "Block 1",
+      shape: "rect",
+      fillColor: "rgba(127,2,23,0.44)",
+      strokeColor: "black",
+      coords: [350, 360, 425, 490],
+    },
+    {
+      id: "2",
+      title: "Block 2",
+      shape: "rect",
+      fillColor: "rgba(127,2,23,0.44)",
+      strokeColor: "black",
+      coords: [360, 490, 425, 615],
+    },
+    {
+      id: "3",
+      title: "Block 3",
+      shape: "rect",
+      fillColor: "rgba(127,2,23,0.44)",
+      strokeColor: "black",
+      coords: [260, 611, 385, 685],
+    },
+    {
+      id: "4",
+      title: "Block 4",
+      shape: "rect",
+      fillColor: "rgba(127,2,23,0.44)",
+      strokeColor: "black",
+      coords: [130, 611, 255, 685],
+    },
+    {
+      id: "5",
+      title: "Block 5",
+      shape: "rect",
+      fillColor: "rgba(127,2,23,0.44)",
+      strokeColor: "black",
+      coords: [95, 490, 165, 615],
+    },
+    {
+      id: "6",
+      title: "Block 6",
+      shape: "rect",
+      fillColor: "rgba(127,2,23,0.44)",
+      strokeColor: "black",
+      coords: [90, 360, 165, 490],
+    },
+    {
+      id: "7",
+      title: "Block 7",
+      shape: "rect",
+      fillColor: "rgba(127,2,23,0.44)",
+      strokeColor: "black",
+      coords: [70, 235, 145, 360],
+    },
+    {
+      id: "8",
+      title: "Block 8",
+      shape: "rect",
+      fillColor: "rgba(127,2,23,0.44)",
+      strokeColor: "black",
+      coords: [75, 110, 145, 235],
+    },
+    {
+      id: "9",
+      title: "Block 9",
+      shape: "rect",
+      name: "1",
+      fillColor: "rgba(127,2,23,0.44)",
+      strokeColor: "black",
+      coords: [105, 40, 230, 110],
+    },
+    {
+      id: "10",
+      title: "Block 10",
+      shape: "rect",
+      fillColor: "rgba(127,2,23,0.44)",
+      strokeColor: "black",
+      coords: [235, 70, 360, 140],
+    },
+    {
+      id: "11",
+      title: "Block 11",
+      shape: "rect",
+      fillColor: "rgba(127,2,23,0.44)",
+      strokeColor: "black",
+      coords: [360, 105, 430, 230],
+    },
+    {
+      id: "12",
+      title: "Block 12",
+      shape: "rect",
+      fillColor: "rgba(127,2,23,0.44)",
+      strokeColor: "black",
+      coords: [555, 110, 685, 180],
+    },
+    {
+      id: "13",
+      title: "Block 13",
+      shape: "rect",
+      fillColor: "rgba(127,2,23,0.44)",
+      strokeColor: "black",
+      coords: [685, 145, 810, 215],
+    },
+    {
+      id: "14",
+      title: "Block 14",
+      shape: "rect",
+      fillColor: "rgba(127,2,23,0.44)",
+      strokeColor: "black",
+      coords: [810, 180, 885, 310],
+    },
+  ];
+
   return (
     <>
       <div className="your-layout !mt-10">
         <div className="wrapper">
           <h2>Выберите свою планировку</h2>
           <div className="info">
-            <div className="images md:pb-10 ">
-              <div className="scroll">
+            <div className="images md:pb-10 md:!h-[730px] ">
+              <div className="scroll h-full">
                 {plans?.map((plan, i) => (
                   <div
                     className="img p-4 md:p-6 bg-[#E8EAEF] hover:bg-[#E8EAEF]/80 mr-2 rounded-[10px] cursor-pointer !w-[95%]"
@@ -366,16 +309,36 @@ function YourLayout() {
               </div>
             </div>
 
-            <div
-              ref={containerRef}
-              className="planing-info !h-[300px] md:!h-[850px] bg-white w-full relative"
-            >
-              <canvas
-                ref={canvasRef}
-                className="absolute inset-0 cursor-pointer w-full h-full transform max-[420px]:scale-125 md:scale-125"
-                onMouseMove={handleMouseMove}
-                onMouseDown={handleMouseDown}
+            <div className="planing-info !h-[730px] w-full relative min-w-[970px] max-[768px]:overflow-x-auto overflow-hidden">
+              {/*<img*/}
+              {/*  src="/img/gala-one/top-view-max.webp"*/}
+              {/*  alt="bg"*/}
+              {/*  className="w-full h-full object-cover absolute left-0 top-0 blur-[3px] opacity-80"*/}
+              {/*/>*/}
+              <ImageMapper
+                ref={myRef}
+                src="/img/gala-one/top-view-max.webp"
+                name={name}
+                areas={areas}
+                width={1000}
+                height={1000}
+                onClick={(area) => {
+                  fetchTooltipData(+area.id);
+                }}
               />
+
+              {/*<Map image="/img/gala-one/top-view-max.webp">*/}
+              {/*  {cords.map((p, i) => (*/}
+              {/*    <Marker*/}
+              {/*      key={`marker-${i}`}*/}
+              {/*      image={markerOneImage}*/}
+              {/*      coords={p.cords}*/}
+              {/*      markerKey={`marker-one-${i}`}*/}
+              {/*      onClick={() => fetchTooltipData(p.id)}*/}
+              {/*    />*/}
+              {/*  ))}*/}
+              {/*</Map>*/}
+              <i className="fa-regular fa-magnifying-glass-plus absolute top-4 right-4 text-[30px] text-[#7F0217]"></i>
             </div>
           </div>
         </div>

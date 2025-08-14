@@ -133,6 +133,10 @@
     content: "\f232"
 }
 
+.fa-magnifying-glass-plus:before {
+    content: "\f00e"
+}
+
 
 
 /*---------------------------------*/

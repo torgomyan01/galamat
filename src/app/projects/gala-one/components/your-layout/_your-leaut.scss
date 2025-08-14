@@ -57,7 +57,6 @@
       }
 
       .scroll {
-        height: 800px;
         overflow-y: auto;
         border-radius: 16px;
         @media(max-width: 1024px) {
@@ -111,8 +110,6 @@
       @include flex;
       align-self: flex-start;
       border-radius: 24px;
-      overflow: hidden;
-
       img {
         width: 100%;
       }
