@@ -35,7 +35,6 @@ function YourLayout() {
   }, []);
 
   const [plans, setPlans] = useState<IPlan[] | null>(null);
-
   function FindAllProperty(ids: number[]) {
     const findAllPlans = ids.flatMap((_id: number) =>
       allPlans.current
