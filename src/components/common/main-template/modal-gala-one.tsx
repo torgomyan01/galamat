@@ -66,7 +66,10 @@ function ModalGalaOne() {
               </p>
 
               <Link href={SITE_URL.SALES}>
-                <Button className="red-btn mt-6" onPress={handleGetClick}>
+                <Button
+                  className="red-btn bg-[#DB1D31] mt-6 text-white rounded-full text-[20px] px-6"
+                  onPress={handleGetClick}
+                >
                   Получить
                 </Button>
               </Link>
