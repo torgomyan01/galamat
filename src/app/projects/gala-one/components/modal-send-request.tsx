@@ -8,12 +8,13 @@ import {
 } from "@heroui/react";
 import { Fade } from "react-awesome-reveal";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslate } from "@/hooks/useTranslate";
 import { isValidInternationalPhoneNumber } from "@/utils/consts";
 import { SendCallBack } from "@/utils/api";
 import { useDispatch, useSelector } from "react-redux";
 import { setModalSendRequestGalaOne } from "@/redux/modals";
+import IMask from "imask";
 
 function ModalSendRequest() {
   const dispatch = useDispatch();
@@ -52,6 +53,18 @@ function ModalSendRequest() {
       });
     }
   }
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (!inputRef.current) {
+      return;
+    }
+    const mask = IMask(inputRef.current, {
+      mask: "+7 (000) 000-00-00",
+    });
+    return () => mask.destroy();
+  }, []);
 
   return (
     <Modal
@@ -114,6 +127,7 @@ function ModalSendRequest() {
                         </div>
                         <div className="mb-4">
                           <Input
+                            ref={inputRef}
                             label={$t("phone_number")}
                             type="text"
                             name="phone"

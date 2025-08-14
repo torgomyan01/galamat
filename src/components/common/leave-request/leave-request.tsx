@@ -2,12 +2,13 @@ import "./leave-request.scss";
 import { Input } from "@heroui/react";
 import { addToast, Button } from "@heroui/react";
 import { SendCallBack } from "@/utils/api";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { isValidInternationalPhoneNumber } from "@/utils/consts";
 import { Fade } from "react-awesome-reveal";
 import Image from "next/image";
 import { useTranslate } from "@/hooks/useTranslate";
 import clsx from "clsx";
+import IMask from "imask";
 
 interface IThisProps {
   background?: string;
@@ -45,6 +46,18 @@ function LeaveRequest({ background, bgColorBtn }: IThisProps) {
       });
     }
   }
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (!inputRef.current) {
+      return;
+    }
+    const mask = IMask(inputRef.current, {
+      mask: "+7 (000) 000-00-00",
+    });
+    return () => mask.destroy();
+  }, []);
 
   return (
     <div id="leave-request" className="leave-request mt-12">
@@ -104,6 +117,7 @@ function LeaveRequest({ background, bgColorBtn }: IThisProps) {
                   </div>
                   <div className="mb-4">
                     <Input
+                      ref={inputRef}
                       label={$t("phone_number")}
                       type="text"
                       name="phone"
