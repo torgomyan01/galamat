@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { SITE_URL } from "@/utils/consts";
 
 const LS_KEY = "galaOneModalHideUntil";
-const ONE_HOUR_MS = 60 * 1000;
+const ONE_HOUR_MS = 60 * 60 * 1000;
 
 function ModalGalaOne() {
   const [modal, setModal] = useState(false);
@@ -24,7 +24,7 @@ function ModalGalaOne() {
     const shouldSuppress = hideUntil && now < hideUntil;
 
     if (!shouldSuppress) {
-      timerRef.current = window.setTimeout(() => setModal(true), 60 * 1000);
+      timerRef.current = window.setTimeout(() => setModal(true), 10 * 1000);
     }
 
     return () => {
