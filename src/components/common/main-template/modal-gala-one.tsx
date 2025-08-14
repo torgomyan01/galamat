@@ -3,8 +3,8 @@ import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { SITE_URL } from "@/utils/consts";
 
-const LS_KEY = "galaOneModalHideUntil"; // localStorage key
-const ONE_HOUR_MS = 60 * 60 * 1000; // 1 hour
+const LS_KEY = "galaOneModalHideUntil";
+const ONE_HOUR_MS = 60 * 1000;
 
 function ModalGalaOne() {
   const [modal, setModal] = useState(false);
