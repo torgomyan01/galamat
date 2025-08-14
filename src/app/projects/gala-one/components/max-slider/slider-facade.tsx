@@ -28,8 +28,6 @@ function SliderFacade() {
 
   const [activeSlider, setActiveSlider] = useState(0);
 
-  console.log(activeSlider);
-
   useEffect(() => {
     if (activeSlider) {
       slider.current.slideTo(activeSlider);

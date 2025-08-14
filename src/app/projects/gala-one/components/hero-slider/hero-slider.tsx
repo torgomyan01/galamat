@@ -3,6 +3,7 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import { useRef } from "react";
+import { PhotoProvider, PhotoView } from "react-photo-view";
 
 const images = [
   "/img/gala-one/gala-one-project-1.jpg",
@@ -27,56 +28,65 @@ function HeroSlider() {
   return (
     <div className="banner-slider-wrap">
       <div className="wrapper">
-        <Swiper
-          modules={[Pagination, Autoplay, Navigation]}
-          spaceBetween={15}
-          slidesPerView={5}
-          loop={true}
-          autoplay={{
-            delay: 3000,
-            disableOnInteraction: false,
-          }}
-          navigation={{
-            nextEl: next.current,
-            prevEl: prev.current,
-          }}
-          pagination={{ clickable: true }}
-          breakpoints={{
-            320: {
-              slidesPerView: 2,
-              spaceBetween: 10,
-            },
-            480: {
-              slidesPerView: 3,
-              spaceBetween: 10,
-            },
-            1024: {
-              slidesPerView: 4,
-              spaceBetween: 10,
-            },
-            1200: {
-              slidesPerView: 5,
-            },
-          }}
-          className="bannerSwiper"
-        >
-          {images.map((sliderItem, index) => {
-            return (
-              <SwiperSlide key={`home-slider-gala-one-${index}`}>
-                <Image src={sliderItem} alt="Слайд" width={300} height={200} />
-              </SwiperSlide>
-            );
-          })}
-          <div ref={prev} className="arrows-wrap relative z-10">
-            <div className="swiper-button-prev cursor-pointer">
-              <img src="/img/gala-slider-arr.svg" alt="" />
+        <PhotoProvider loop={false}>
+          <Swiper
+            modules={[Pagination, Autoplay, Navigation]}
+            spaceBetween={15}
+            slidesPerView={5}
+            loop={true}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+            navigation={{
+              nextEl: next.current,
+              prevEl: prev.current,
+            }}
+            pagination={{ clickable: true }}
+            breakpoints={{
+              320: {
+                slidesPerView: 2,
+                spaceBetween: 10,
+              },
+              480: {
+                slidesPerView: 3,
+                spaceBetween: 10,
+              },
+              1024: {
+                slidesPerView: 4,
+                spaceBetween: 10,
+              },
+              1200: {
+                slidesPerView: 5,
+              },
+            }}
+            className="bannerSwiper"
+          >
+            {images.map((sliderItem, index) => {
+              return (
+                <SwiperSlide key={`home-slider-gala-one-${index}`}>
+                  <PhotoView src={sliderItem}>
+                    <Image
+                      src={sliderItem}
+                      alt="Слайд"
+                      width={300}
+                      height={200}
+                    />
+                  </PhotoView>
+                </SwiperSlide>
+              );
+            })}
+            <div ref={prev} className="arrows-wrap relative z-10">
+              <div className="swiper-button-prev cursor-pointer">
+                <img src="/img/gala-slider-arr.svg" alt="" />
+              </div>
+              <div className="swiper-pagination"></div>
+              <div ref={next} className="swiper-button-next cursor-pointer">
+                <img src="/img/gala-slider-arr.svg" alt="" />
+              </div>
             </div>
-            <div className="swiper-pagination"></div>
-            <div ref={next} className="swiper-button-next cursor-pointer">
-              <img src="/img/gala-slider-arr.svg" alt="" />
-            </div>
-          </div>
-        </Swiper>
+          </Swiper>
+        </PhotoProvider>
       </div>
     </div>
   );
