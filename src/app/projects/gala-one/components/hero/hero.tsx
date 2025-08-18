@@ -28,7 +28,7 @@ function GalaOneHero() {
             </Link>
             <Button
               className="blue-btn"
-              onPress={() => dispatch(setModalSendRequestGalaOne(true))}
+              onPress={() => dispatch(setModalSendRequestGalaOne(" "))}
             >
               Оставить заявку
             </Button>

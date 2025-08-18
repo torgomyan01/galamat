@@ -14,6 +14,7 @@ import CookieComponent from "@/components/common/main-template/cookie";
 import ModalSendRequest from "@/components/common/main-template/modal-send-request";
 import MobileBottomMenu from "@/components/common/mobile-bottom-menu/mobile-bottom-menu";
 import ModalGalaOne from "@/components/common/main-template/modal-gala-one";
+import ModalSendRequestPlan from "@/app/projects/gala-one/components/modal-send-request";
 
 interface IThisProps {
   children?: React.ReactNode;
@@ -99,6 +100,8 @@ function MainTemplate({
       <MobileBottomMenu />
 
       <ModalGalaOne />
+
+      <ModalSendRequestPlan />
     </HeroUIProvider>
   );
 }

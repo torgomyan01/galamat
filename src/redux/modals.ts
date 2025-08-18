@@ -4,7 +4,7 @@ interface IInterface {
   modalSelectedHouse: IHouse | null;
   objectInfo: IObjectData[] | null;
   modalSendRequest: boolean;
-  modalSendRequestGlaOne: boolean;
+  modalSendRequestGlaOne: string | null;
 }
 
 // Սկզբնական state
@@ -12,7 +12,7 @@ const initialState: IInterface = {
   modalSelectedHouse: null,
   objectInfo: null,
   modalSendRequest: false,
-  modalSendRequestGlaOne: false,
+  modalSendRequestGlaOne: null,
 };
 
 // Ստեղծել slice
@@ -29,7 +29,10 @@ export const modalsSite = createSlice({
     setModalSendRequest: (state, action: PayloadAction<boolean>) => {
       state.modalSendRequest = action.payload;
     },
-    setModalSendRequestGalaOne: (state, action: PayloadAction<boolean>) => {
+    setModalSendRequestGalaOne: (
+      state,
+      action: PayloadAction<string | null>,
+    ) => {
       state.modalSendRequestGlaOne = action.payload;
     },
   },

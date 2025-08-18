@@ -400,7 +400,11 @@ function YourLayout() {
                               className="border border-blue rounded-full"
                               variant="bordered"
                               onPress={() =>
-                                dispatch(setModalSendRequestGalaOne(true))
+                                dispatch(
+                                  setModalSendRequestGalaOne(
+                                    `№${selectedFullPlan.property.number}`,
+                                  ),
+                                )
                               }
                             >
                               Оставить заявку

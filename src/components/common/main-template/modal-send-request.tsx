@@ -1,3 +1,5 @@
+import "@/components/common/leave-request/leave-request.scss";
+
 import {
   addToast,
   Button,

@@ -17,6 +17,7 @@ import "./_card-popup.scss";
 import { ActionGetProjectInfo } from "@/app/actions/admin/projects/get-project-info";
 import Link from "next/link";
 import PrintPlanItem from "@/app/real-estate/print-plan-item";
+import { RandomKey } from "@/utils/helpers";
 
 interface IThisProps {
   status: boolean;
@@ -186,7 +187,7 @@ function DrawerViewPlansAndItems({
                 <div className="mt-4">
                   {plans.map((_plan) => (
                     <PrintPlanItem
-                      key={`key__plans-${_plan.id}`}
+                      key={RandomKey()}
                       _plan={_plan}
                       OpenPlanMaxView={(plan: IPlan) => OpenPlanMaxView(plan)}
                       areas={areas}

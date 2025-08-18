@@ -11,7 +11,7 @@ declare interface IModalState {
     modalSelectedHouse: IHouse | null;
     objectInfo: IObjectData[] | null;
     modalSendRequest: boolean;
-    modalSendRequestGlaOne: boolean;
+    modalSendRequestGlaOne: string | null;
   };
 }
 

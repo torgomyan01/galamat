@@ -7,14 +7,17 @@ import React, { useEffect, useState } from "react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
 import { ActionGetProjectInfo } from "@/app/actions/admin/projects/get-project-info";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
+import { setModalSendRequestGalaOne } from "@/redux/modals";
 
 interface IThisProps {
   property: IProperty | null;
 }
 
 function BoxItemChess({ property }: IThisProps) {
+  const dispatch = useDispatch();
+
   const filterParams = useSelector(
     (state: IFilterParamsState) => state.filterParams.params,
   );
@@ -96,14 +99,16 @@ function BoxItemChess({ property }: IThisProps) {
         setSelectedFullPlan({ plan: result.data[0], property });
       });
 
+      console.log(property);
       ActionGetProjectsProperty("/floor", {
-        isArchive: false,
-        status: ["AVAILABLE"],
         houseId: property.house_id,
       }).then((result) => {
         const fontFloor = result.find((floor: any) =>
           floor.areas.some((_a: any) => _a.propertyId === property.id),
         );
+
+        console.log(result);
+
         if (fontFloor) {
           setFloor(fontFloor);
         }
@@ -259,6 +264,13 @@ function BoxItemChess({ property }: IThisProps) {
                                 color="primary"
                                 className="border border-blue rounded-full"
                                 variant="bordered"
+                                onPress={() =>
+                                  dispatch(
+                                    setModalSendRequestGalaOne(
+                                      `№${selectedFullPlan.property.number}`,
+                                    ),
+                                  )
+                                }
                               >
                                 Оставить заявку
                               </Button>

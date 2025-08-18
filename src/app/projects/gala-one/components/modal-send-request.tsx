@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setModalSendRequestGalaOne } from "@/redux/modals";
 import IMask from "imask";
 
-function ModalSendRequest() {
+function ModalSendRequestPlan() {
   const dispatch = useDispatch();
   const modalSendRequest = useSelector(
     (state: IModalState) => state.modals.modalSendRequestGlaOne,
@@ -42,7 +42,7 @@ function ModalSendRequest() {
       }
 
       setLoading(true);
-      SendCallBack(phone, name, "Gala One").then(() => {
+      SendCallBack(phone, name, modalSendRequest || "").then(() => {
         setLoading(false);
         setSendStatus(true);
       });
@@ -68,15 +68,15 @@ function ModalSendRequest() {
 
   return (
     <Modal
-      isOpen={modalSendRequest}
+      isOpen={!!modalSendRequest}
       size="5xl"
-      onOpenChange={() => dispatch(setModalSendRequestGalaOne(false))}
+      onOpenChange={() => dispatch(setModalSendRequestGalaOne(null))}
     >
       <ModalContent className="bg-white bottom-scroll-hidden">
         <ModalBody className="p-0 max-[768px]:min-h-[600px] bottom-scroll-hidden">
           <div id="leave-request" className="leave-request !h-full relative">
             <div className="wrapper !px-0 !h-[500px]">
-              <div className="leave-request-info !h-full">
+              <div className="leave-request-info !h-full !flex-jsb-s">
                 <Fade direction="left" className="md:w-[55%]" triggerOnce>
                   <div className="info h-auto md:h-full !p-0 !rounded-none overflow-hidden  !bg-white">
                     <Image
@@ -151,7 +151,7 @@ function ModalSendRequest() {
             </div>
             <button
               className="absolute top-2 right-4 w-8 h-8 bg-white md:bg-[#7F0217]/50 transition hover:bg-[#7F0217] text-[#7F0217] md:text-white rounded-full"
-              onClick={() => dispatch(setModalSendRequestGalaOne(false))}
+              onClick={() => dispatch(setModalSendRequestGalaOne(null))}
             >
               <i className="fa-solid fa-xmark"></i>
             </button>
@@ -162,4 +162,4 @@ function ModalSendRequest() {
   );
 }
 
-export default ModalSendRequest;
+export default ModalSendRequestPlan;
