@@ -26,6 +26,10 @@ function Header({ info = true }: IThisProps) {
     (state: IStateTranslate) => state.translateSite.selectedLang,
   );
 
+  function openModalSendRequest() {
+    dispatch(setModalSendRequest(true));
+  }
+
   const menuItems = [
     {
       name: $t("real_estate"),
@@ -37,7 +41,8 @@ function Header({ info = true }: IThisProps) {
     },
     {
       name: $t("bid"),
-      url: `${SITE_URL.HOME}#leave-request`,
+      url: "#",
+      onClick: openModalSendRequest,
     },
     {
       name: $t("about_company"),
@@ -81,10 +86,6 @@ function Header({ info = true }: IThisProps) {
 
       dispatch(setLang(getKey));
     }
-  }
-
-  function openModalSendRequest() {
-    dispatch(setModalSendRequest(true));
   }
 
   const lastScrollY = useRef(0);
@@ -207,6 +208,7 @@ function Header({ info = true }: IThisProps) {
                       className={clsx({
                         "!opacity-70": menuItem.url === pathname,
                       })}
+                      onClick={menuItem.onClick}
                     >
                       {menuItem.name}
                     </Link>
@@ -262,6 +264,7 @@ function Header({ info = true }: IThisProps) {
                   className={clsx({
                     active: menuItem.url === pathname,
                   })}
+                  onClick={menuItem.onClick}
                 >
                   <Link href={menuItem.url}>{menuItem.name}</Link>
                 </li>

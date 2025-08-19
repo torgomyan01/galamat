@@ -113,13 +113,13 @@ function ContentOrleuProject({ sendRequest }: IThisProps) {
       >
         <div className="info transform scale-80 min-h-[900px]:scale-100">
           <div className="texts">
-            <img src="img/orleu-logo.svg" alt="" />
+            <img src="/img/orleu-logo.svg" alt="" />
             <p>
-              <img src="img/icon1.svg" alt="" />
+              <img src="/img/icon1.svg" alt="" />
               Срок сдачи: I квартал 2026 года
             </p>
             <p>
-              <img src="img/iicon2.svg" alt="" />
+              <img src="/img/iicon2.svg" alt="" />
               г. Астана, р-н Алматы, ул. Айнаколь
             </p>
             <div className="buttons">

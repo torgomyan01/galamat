@@ -45,7 +45,7 @@ function Footer() {
         <div>
           <div className="flex-js-c gap-3">
             <Link
-              href="#"
+              href={SITE_URL.PRIVACY_POLICY}
               className="private underline text-blue text-[12px] md:text-[16px]"
             >
               {$t("privacy_policy__")}

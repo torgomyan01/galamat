@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
 import { Spinner, Pagination } from "@heroui/react";
@@ -40,10 +40,12 @@ function RealEstatePlans({ projectsIds }: IThisProps) {
       _filterParams.houseId = [filterParams.houseId];
     }
 
+    setPlans(null);
+
     ActionGetProjectsProperty("/plan", {
       isArchive: false,
       status: ["AVAILABLE"],
-      projectIds: projectsIds,
+      ...(!filterParams.projectId && { projectIds: projectsIds }),
       ..._filterParams,
     }).then((result) => {
       const data: IPlan[] = result.data;
@@ -70,11 +72,23 @@ function RealEstatePlans({ projectsIds }: IThisProps) {
     <div className="cards-wrap">
       {plans ? (
         <>
-          <div className="cards">
-            {currentPlans.map((plan: IPlan) => (
-              <PlanItem key={`key-plan-${plan.id}`} plan={plan} plans={plans} />
-            ))}
-          </div>
+          {plans.length ? (
+            <div className="cards">
+              {currentPlans.map((plan: IPlan) => (
+                <PlanItem
+                  key={`key-plan-${plan.id}`}
+                  plan={plan}
+                  plans={plans}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="w-full h-[400px] flex items-center justify-center">
+              <h3 className="text-center text-black/60 md:text-[25px]">
+                Пока что у нас нет, соответствующего указанным параметрам.
+              </h3>
+            </div>
+          )}
 
           <div className="flex-jc-c sm:flex-je-c gap-4 mt-6 flex-col sm:flex-row">
             <span>

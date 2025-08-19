@@ -39,7 +39,7 @@ function Filter({ projects }: IThisProps) {
             onClose={() => setMobileFilter(false)}
           />
 
-          <Facade projects={projects} fakeItem={2} />
+          <Facade projects={projects} fakeItem={1} />
         </div>
       </div>
 

@@ -18,6 +18,8 @@ import { filesLink, filesLinkRemove, filesLinkSave } from "@/utils/consts";
 import { ActionUpdatePageSection } from "@/app/actions/admin/section-components/update-section-components";
 import moment from "moment";
 import { parseDate } from "@internationalized/date";
+import SortableList, { SortableItem } from "react-easy-sort";
+import { arrayMove } from "@dnd-kit/sortable";
 
 function CompanyOldProjects() {
   const [_data, setData] = useState<IDataOldProjects[] | null>(null);
@@ -26,7 +28,12 @@ function CompanyOldProjects() {
     useState<IDataOldProjects | null>(null);
 
   function updateData(data: IDataOldProjects[]) {
-    ActionUpdatePageSection(1, data);
+    ActionUpdatePageSection(1, data).then(() => {
+      addToast({
+        title: "Успешно обновляется",
+        color: "success",
+      });
+    });
   }
 
   useEffect(() => {
@@ -72,8 +79,8 @@ function CompanyOldProjects() {
         ];
 
         setData(newData);
-
         updateData(newData);
+
         setLoading(false);
         setModalCreateProj(false);
       }
@@ -116,18 +123,11 @@ function CompanyOldProjects() {
     const date = e.target.date.value;
     const file = e.target.image_url.files[0];
 
-    const formData = new FormData();
-    formData.append("image", file);
-
-    const maxSizeInBytes = 300 * 1024;
-
     if (file) {
-      axios
-        .post(filesLinkRemove, { url: modalChangeProj.image_url })
-        .then((res) => {
-          console.log(res);
-        });
+      const formData = new FormData();
+      formData.append("image", file);
 
+      const maxSizeInBytes = 300 * 1024;
       if (file.size > maxSizeInBytes) {
         addToast({
           title: "Размер изображения не должен превышать 300 КБ.",
@@ -155,10 +155,10 @@ function CompanyOldProjects() {
           ];
 
           setData(newData);
-
           updateData(newData);
+
           setLoading(false);
-          setModalCreateProj(false);
+          setModalChangeProj(null);
 
           addToast({
             title: "Успешно обновляется",
@@ -182,10 +182,10 @@ function CompanyOldProjects() {
       ];
 
       setData(newData);
-
       updateData(newData);
+
       setLoading(false);
-      setModalCreateProj(false);
+      setModalChangeProj(null);
 
       addToast({
         title: "Успешно обновляется",
@@ -193,6 +193,17 @@ function CompanyOldProjects() {
       });
     }
   }
+
+  const onSortEnd = (oldIndex: number, newIndex: number) => {
+    setData((array) => {
+      if (!array) {
+        return array;
+      }
+      const newArray = arrayMove(array, oldIndex, newIndex);
+      updateData(newArray);
+      return newArray;
+    });
+  };
 
   return (
     <div className="w-full">
@@ -207,46 +218,58 @@ function CompanyOldProjects() {
       </div>
 
       {_data ? (
-        <div className="w-full grid grid-cols-3 gap-4">
+        <div>
           {_data.length ? (
-            _data.map((item, i) => (
-              <Card key={`item-proj-${i}`} className="py-4 relative">
-                <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-                  <p className="text-tiny uppercase font-bold">
-                    {item.address}
-                  </p>
-                  <small className="text-default-500">
-                    Сдан {moment(item.date).format("YYYY")}
-                  </small>
-                  <h4 className="font-bold text-large">ЖК {item.name}</h4>
-                </CardHeader>
-                <CardBody className="overflow-visible py-2">
-                  <Image
-                    alt="Card background"
-                    className="rounded-xl h-[300px] object-cover"
-                    src={`${filesLink}${item.image_url}`}
-                    width={270}
-                    height={270}
-                  />
+            <SortableList
+              onSortEnd={onSortEnd}
+              className="w-full grid grid-cols-3 gap-4"
+              draggedItemClassName="dragged"
+            >
+              {_data.map((item, i) => (
+                <SortableItem key={`sort-item-${i}`}>
+                  <Card className="py-4 relative focus:!cursor-grabbing !transition-none">
+                    <div className="absolute top-2 right-2 cursor-grab focus:cursor-grabbing text-gray-500 w-5 h-5 flex-jc-c z-20">
+                      <i className="fa-regular fa-arrows-up-down-left-right"></i>
+                    </div>
 
-                  <div className="flex-jsb-c gap-4">
-                    <Button
-                      className="mt-2 w-full"
-                      onPress={() => RemoveOldProject(item.image_url)}
-                    >
-                      Удалить
-                    </Button>
-                    <Button
-                      color="danger"
-                      className="mt-2 w-full"
-                      onPress={() => setModalChangeProj(item)}
-                    >
-                      Изменить
-                    </Button>
-                  </div>
-                </CardBody>
-              </Card>
-            ))
+                    <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+                      <p className="text-tiny uppercase font-bold">
+                        {item.address}
+                      </p>
+                      <small className="text-default-500">
+                        Сдан {moment(item.date).format("YYYY")}
+                      </small>
+                      <h4 className="font-bold text-large">ЖК {item.name}</h4>
+                    </CardHeader>
+                    <CardBody className="overflow-visible py-2">
+                      <Image
+                        alt="Card background"
+                        className="rounded-xl h-[300px] object-cover"
+                        src={`${filesLink}${item.image_url}`}
+                        width={270}
+                        height={270}
+                      />
+
+                      <div className="flex-jsb-c gap-4">
+                        <Button
+                          className="mt-2 w-full"
+                          onPress={() => RemoveOldProject(item.image_url)}
+                        >
+                          Удалить
+                        </Button>
+                        <Button
+                          color="danger"
+                          className="mt-2 w-full"
+                          onPress={() => setModalChangeProj(item)}
+                        >
+                          Изменить
+                        </Button>
+                      </div>
+                    </CardBody>
+                  </Card>
+                </SortableItem>
+              ))}
+            </SortableList>
           ) : (
             <h1 className="text-center col-span-3 mb-4 text-black/60">
               Пока информация не заполнено
@@ -257,6 +280,7 @@ function CompanyOldProjects() {
         <h1 className="text-center">Loading...</h1>
       )}
 
+      {/* Modal Create */}
       <Modal isOpen={modalCreateProj} onClose={() => setModalCreateProj(false)}>
         <ModalContent>
           <ModalHeader className="flex flex-col gap-1">
@@ -265,7 +289,7 @@ function CompanyOldProjects() {
           <ModalBody>
             <form action="#" onSubmit={AddOldProject}>
               <Input
-                label="Выбрать картинку  "
+                label="Выбрать картинку"
                 type="file"
                 className="w-full mb-3"
                 accept="image/*"
@@ -290,7 +314,7 @@ function CompanyOldProjects() {
                 className="w-full mb-3"
                 isRequired
                 name="date"
-                label="Дата сдачи "
+                label="Дата сдачи"
               />
               <div className="w-full flex-je-c mt-4 mb-4">
                 <Button
@@ -307,6 +331,7 @@ function CompanyOldProjects() {
         </ModalContent>
       </Modal>
 
+      {/* Modal Change */}
       <Modal
         isOpen={!!modalChangeProj}
         onClose={() => setModalChangeProj(null)}
@@ -320,7 +345,7 @@ function CompanyOldProjects() {
               <ModalBody>
                 <form action="#" onSubmit={ChangeOldProject}>
                   <Input
-                    label="Выбрать картинку  "
+                    label="Выбрать картинку"
                     type="file"
                     className="w-full mb-3"
                     accept="image/*"
@@ -347,7 +372,7 @@ function CompanyOldProjects() {
                     isRequired
                     name="date"
                     defaultValue={parseDate(modalChangeProj.date)}
-                    label="Дата сдачи "
+                    label="Дата сдачи"
                   />
                   <div className="w-full flex-je-c mt-4 mb-4">
                     <Button
@@ -356,7 +381,7 @@ function CompanyOldProjects() {
                       className="text-white"
                       isLoading={loading}
                     >
-                      Сохранит
+                      Сохранить
                     </Button>
                   </div>
                 </form>

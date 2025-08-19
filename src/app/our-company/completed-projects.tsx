@@ -67,7 +67,7 @@ function CompletedProjects({ onSuccess }: IThisProps) {
                   }}
                 />
                 <b className="name">ЖК {item.name}</b>
-                <span className="address">{item.address}</span>
+                <span className="address min-h-[60px]">{item.address}</span>
                 <span className="date">
                   Сдан {moment(item.date).format("YYYY")}
                 </span>

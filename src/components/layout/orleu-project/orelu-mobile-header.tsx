@@ -33,7 +33,7 @@ function OreluMobileHeader({ sendRequest }: IThisProps) {
           className="w-full h-auto object-cover"
         />
         <img
-          src="img/sect2-bg.png"
+          src="/img/sect2-bg.png"
           alt=""
           className="absolute bottom-[-30px] right-0 w-full max-w-[500px] pointer-events-none z-[1000]"
         />
@@ -43,11 +43,11 @@ function OreluMobileHeader({ sendRequest }: IThisProps) {
         <div className="info !p-1">
           <div className="texts">
             <p>
-              <img src="img/icon1.svg" alt="" />
+              <img src="/img/icon1.svg" alt="" />
               Срок сдачи: I квартал 2026 года
             </p>
             <p>
-              <img src="img/iicon2.svg" alt="" />
+              <img src="/img/iicon2.svg" alt="" />
               г. Астана, р-н Алматы, ул. Айнаколь
             </p>
             <div className="buttons">
@@ -77,12 +77,12 @@ function OreluMobileHeader({ sendRequest }: IThisProps) {
                 height={500}
                 className="w-full h-auto object-cover"
               />
-              <img src="img/style.png" alt="" className="style" />
+              <img src="/img/style.png" alt="" className="style" />
             </div>
 
             <div className="texts mt-10">
               <h2>
-                <img src="img/title-style.svg" alt="" /> Преимущества
+                <img src="/img/title-style.svg" alt="" /> Преимущества
               </h2>
               <p>
                 Жилой комплекс «Örleu» — это новый проект комфорт+ класса от

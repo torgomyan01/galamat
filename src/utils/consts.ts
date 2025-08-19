@@ -5,6 +5,7 @@ export const filesLinkSave = `${filesLink}/save-images.php`;
 export const filesLinkRemove = `${filesLink}/remove-image.php`;
 export const SITE_URL = {
   HOME: "/",
+  PRIVACY_POLICY: "/privacy-policy",
   REQUESTS: "/requests",
   OUR_COMPANY: "/our-company",
   SALES: "/gala-bonus",

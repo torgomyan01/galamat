@@ -5,7 +5,7 @@ import "@/app/real-estate/_card-popup.scss";
 
 import React, { useEffect, useRef, useState } from "react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
-import { formatKzt } from "@/utils/helpers";
+import { formatKzt, PrintMonthKz } from "@/utils/helpers";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Modal, ModalBody, ModalContent, Spinner } from "@heroui/react";
@@ -352,9 +352,14 @@ function YourLayout() {
                                 Срок сдачи:
                               </h4>
                               <h3 className="text-[18px] sm:text-[26px] text-blue font-medium capitalize">
-                                {moment(
-                                  selectedProject?.completion_date || "",
-                                ).format("MMMM YYYY")}
+                                {PrintMonthKz(
+                                  +moment(
+                                    selectedProject?.completion_date || "",
+                                  ).format("M"),
+                                  +moment(
+                                    selectedProject?.completion_date || "",
+                                  ).format("YYYY"),
+                                )}
                               </h3>
                             </div>
                             <div className="sm:col-span-2 sm:mt-4">
@@ -416,7 +421,7 @@ function YourLayout() {
                         <img
                           src={selectedFullPlan.plan.image.big}
                           alt=""
-                          className="w-full h-auto !max-h-[200px]"
+                          className="w-full h-auto max-[768px]:!max-h-[200px]"
                           height={500}
                           width={400}
                         />

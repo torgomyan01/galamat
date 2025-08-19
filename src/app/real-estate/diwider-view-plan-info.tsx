@@ -1,8 +1,9 @@
 import { Divider, Drawer, DrawerBody, DrawerContent } from "@heroui/react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { formatKzt, getClosestPlansByPrice, RandomKey } from "@/utils/helpers";
-import Image from "next/image";
 import Link from "next/link";
+import PrintPlanItem from "@/app/real-estate/print-plan-item";
+import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
 
 interface IThisProps {
   status: boolean;
@@ -27,6 +28,29 @@ function DiwiderViewPlanInfo({ status, plan, plans, onClose }: IThisProps) {
       setRecommended(getRecommendedHouses);
     }
   }, [status]);
+
+  const [areas, setAreas] = useState<IProperty[] | null>(null);
+
+  useEffect(() => {
+    if (status) {
+      const requests = recommended.flatMap((area) =>
+        area.properties.map((id) =>
+          ActionGetProjectsProperty("/property", { id }),
+        ),
+      );
+
+      Promise.all(requests)
+        .then((responses) => {
+          const getAreaData = responses
+            .map((r) => r?.data?.[0])
+            .filter(Boolean);
+          setAreas(getAreaData);
+        })
+        .catch((err) => {
+          console.error("Property fetch failed:", err);
+        });
+    }
+  }, [selectedPlan, recommended]);
 
   return (
     <Drawer isOpen={status} onOpenChange={onClose} radius="none" size="4xl">
@@ -67,35 +91,13 @@ function DiwiderViewPlanInfo({ status, plan, plans, onClose }: IThisProps) {
 
           <div className="text-end font-medium">Мы также предлагаем</div>
           <div className="mb-6">
-            {recommended.map((plan) => (
-              <div
+            {recommended.map((_plan) => (
+              <PrintPlanItem
                 key={RandomKey()}
-                onClick={() => setSelectedPlan(plan)}
-                className="w-full p-2 border border-black/10 hover:shadow transition rounded-[8px] flex-js-s gap-4 cursor-pointer mb-2"
-              >
-                <div className="min-w-[180px] h-[100px] bg-blue/20 rounded-[8px] flex-jc-c overflow-hidden">
-                  <Image
-                    src={plan.image.preview}
-                    alt="rec image"
-                    width={200}
-                    height={200}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="w-full">
-                  <div className="w-full mb-2 flex-jsb-c">
-                    <h3 className="text-[20px] font-medium">
-                      {formatKzt(+plan.priceRange.min)}
-                    </h3>
-                    <div className="bg-green-500 text-white px-4 py-1 rounded-[4px] text-[14px]">
-                      Свободно
-                    </div>
-                  </div>
-                  <h3 className="text-[15px] text-black/50">
-                    {formatKzt(+plan.priceRange.min / +plan.areaRange.min)} / м²
-                  </h3>
-                </div>
-              </div>
+                _plan={_plan}
+                OpenPlanMaxView={(plan: IPlan) => setSelectedPlan(plan)}
+                areas={areas}
+              />
             ))}
           </div>
         </DrawerBody>

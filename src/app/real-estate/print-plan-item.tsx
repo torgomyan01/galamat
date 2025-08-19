@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { formatKzt } from "@/utils/helpers";
 import React from "react";
+import { Skeleton } from "@heroui/react";
 
 interface IThisProps {
   _plan: IPlan;
@@ -47,9 +48,16 @@ function PrintPlanItem({ _plan, OpenPlanMaxView, areas }: IThisProps) {
             Продано
           </div>
         );
+      } else {
+        return (
+          <div className="bg-[#a7a7a7] text-white px-4 py-1 rounded-[20px] text-[14px]">
+            Недоступно
+          </div>
+        );
       }
     }
   }
+
   return (
     <div
       onClick={() => OpenPlanMaxView(_plan)}
@@ -70,15 +78,23 @@ function PrintPlanItem({ _plan, OpenPlanMaxView, areas }: IThisProps) {
             {formatKzt(+_plan.priceRange.min)}
           </h3>
 
-          <div>{PrintStatus(_plan)}</div>
+          {getFloor ? (
+            <div>{PrintStatus(_plan)}</div>
+          ) : (
+            <Skeleton className="w-[100px] h-[25px] rounded-[25px]" />
+          )}
         </div>
         <h3 className="text-[15px] text-black/50">
           {formatKzt(+_plan.priceRange.min / +_plan.areaRange.min)} / м²
         </h3>
       </div>
-      <h4 className="text-[13px] opacity-70 absolute right-4 bottom-4">
-        {getFloor?.floor} этаж
-      </h4>
+      {getFloor ? (
+        <h4 className="text-[13px] opacity-70 absolute right-4 bottom-4">
+          {getFloor?.floor} этаж | {getFloor.area.area_total} м²
+        </h4>
+      ) : (
+        <Skeleton className="w-[70px] h-[11px] rounded-[2px] absolute right-2 bottom-4" />
+      )}
     </div>
   );
 }

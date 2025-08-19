@@ -1,7 +1,7 @@
 import { Button, Spinner } from "@heroui/react";
 import clsx from "clsx";
 import { Tooltip } from "@heroui/react";
-import { formatKzt } from "@/utils/helpers";
+import { formatKzt, PrintMonthKz } from "@/utils/helpers";
 import { Modal, ModalBody, ModalContent } from "@heroui/react";
 import React, { useEffect, useState } from "react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
@@ -99,15 +99,12 @@ function BoxItemChess({ property }: IThisProps) {
         setSelectedFullPlan({ plan: result.data[0], property });
       });
 
-      console.log(property);
       ActionGetProjectsProperty("/floor", {
         houseId: property.house_id,
       }).then((result) => {
         const fontFloor = result.find((floor: any) =>
           floor.areas.some((_a: any) => _a.propertyId === property.id),
         );
-
-        console.log(result);
 
         if (fontFloor) {
           setFloor(fontFloor);
@@ -223,9 +220,14 @@ function BoxItemChess({ property }: IThisProps) {
                                   Срок сдачи:
                                 </h4>
                                 <h3 className="text-[18px] sm:text-[26px] text-blue font-medium">
-                                  {moment(
-                                    selectedProject?.completion_date || "",
-                                  ).format("MMMM YYYY")}
+                                  {PrintMonthKz(
+                                    +moment(
+                                      selectedProject?.completion_date || "",
+                                    ).format("M"),
+                                    +moment(
+                                      selectedProject?.completion_date || "",
+                                    ).format("YYYY"),
+                                  )}
                                 </h3>
                               </div>
                               <div className="sm:col-span-2 sm:mt-4">

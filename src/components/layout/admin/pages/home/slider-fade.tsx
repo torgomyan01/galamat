@@ -9,6 +9,7 @@ import { RandomKey } from "@/utils/helpers";
 import { ActionRemoveSliderFade } from "@/app/actions/admin/pages/home/slider-fade/remove-slider";
 import { addToast } from "@heroui/react";
 import axios from "axios";
+import Image from "next/image";
 
 interface IThisProps {
   slider: "fade-slider" | "slider-carousel";
@@ -116,9 +117,11 @@ function SliderFade({ slider }: IThisProps) {
                     <span className="px-2 rounded-[2px] absolute right-[-2px] top-[-2px] bg-blue text-white">
                       {sub_child.lang_key}
                     </span>
-                    <img
+                    <Image
                       src={`${filesLink}${sub_child.image_path}`}
                       alt="img"
+                      width={100}
+                      height={100}
                       className="h-full w-full object-cover rounded-[6px]"
                     />
                   </div>

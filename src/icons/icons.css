@@ -145,6 +145,10 @@
     content: "\f065"
 }
 
+.fa-arrows-up-down-left-right:before {
+    content: "\f047"
+}
+
 
 
 /*---------------------------------*/
