@@ -40,6 +40,8 @@ function HorizontalFilter({
     (state: IFilterParamsState) => state.filterParams.params,
   );
 
+  console.log(filterParams);
+
   const [maxPrice, setMaxPrice] = useState<number>(0);
   const [maxArea, setMaxArea] = useState<number>(0);
 

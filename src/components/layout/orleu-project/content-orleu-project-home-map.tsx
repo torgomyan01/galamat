@@ -65,10 +65,10 @@ function ContentOrleuProjectHomeMap({ sendRequest }: IThisProps) {
           <div className="arrow-wrap">
             <div className="slider-navigation">
               <button type="button" className="slick-prev" onClick={SliderPrev}>
-                <img src="img/slider-arr.svg" alt="" />
+                <img src="/img/slider-arr.svg" alt="" />
               </button>
               <button type="button" className="slick-next" onClick={SliderNext}>
-                <img src="img/slider-arr.svg" alt="" />
+                <img src="/img/slider-arr.svg" alt="" />
               </button>
             </div>
             <Button onPress={sendRequest} className="planing-btn">

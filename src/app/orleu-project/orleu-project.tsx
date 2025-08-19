@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MainTemplate from "@/components/common/main-template/main-template";
 import ContentOrleuProject from "@/components/layout/orleu-project/content-orleu-project";
 import ContentOrleuProjectTwo from "@/components/layout/orleu-project/content-orleu-project-two";
@@ -17,9 +17,30 @@ import OreluMobileHeader from "@/components/layout/orleu-project/orelu-mobile-he
 import ContentOrleuProjectSliderMobile from "@/components/layout/orleu-project/content-orleu-project-slider-mobile";
 import Link from "next/link";
 import { SITE_URL } from "@/utils/consts";
+import ShakhmatContent from "@/app/real-estate/shakhmat-content";
+import { setChangeParams } from "@/redux/filter";
+import { useDispatch, useSelector } from "react-redux";
 
 function OrleuProject() {
+  const dispatch = useDispatch();
+
+  const filterParams = useSelector(
+    (state: IFilterParamsState) => state.filterParams.params,
+  );
+
   const [isOpen, setIsOpen] = useState(false);
+
+  function ChangeParams(value: string | number) {
+    const _filterParams: any = { ...filterParams };
+
+    _filterParams["houseId"] = value;
+
+    dispatch(setChangeParams(_filterParams));
+  }
+
+  useEffect(() => {
+    ChangeParams(137486);
+  }, []);
 
   return (
     <MainTemplate footer={false} headerInfo={false}>
@@ -59,6 +80,15 @@ function OrleuProject() {
         <ContentOrleuProjectAllHotelSlider />
 
         <ContentOrleuProjectAlPanorama />
+
+        <section className="section section8 md:!mb-[-300] lg:!mb-[-500px]">
+          <div className="planning-wrap">
+            <div className="title-wrap max-[500px]:!mb-4">
+              <h2>Шахматка</h2>
+            </div>
+            <ShakhmatContent />
+          </div>
+        </section>
 
         <ContentOrleuEndSection />
       </div>

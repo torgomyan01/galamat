@@ -13,7 +13,7 @@ function ContentOrleuProjectMap() {
             width="100%"
             height="720"
             frameBorder="0"
-            className="h-[60dvh] lg:h-[80dvh]"
+            className="h-[50dvh] lg:h-[70dvh]"
           ></iframe>
         </div>
       </div>

@@ -69,7 +69,7 @@ function ContentOrleuProjectSlider() {
   return (
     <div
       ref={containerRef}
-      className="h-[1000px] md:h-[4000px] relative !z-[100]"
+      className="h-[1000px] md:h-[4000px] relative !z-[10]"
     >
       <LightGallery
         galleryId="product-gallery"
