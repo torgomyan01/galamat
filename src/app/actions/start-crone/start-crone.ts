@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
 
 const prisma = new PrismaClient();
-const CONCURRENT_REQUESTS = 10; // Միաժամանակյա հարցումների քանակ
 
 export async function StartParsing() {
   try {
