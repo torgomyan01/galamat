@@ -81,7 +81,7 @@ function OrleuProject() {
 
         <ContentOrleuProjectAlPanorama />
 
-        <section className="section section8 md:!mb-[-300] lg:!mb-[-500px]">
+        <section className="section section8 ">
           <div className="planning-wrap">
             <div className="title-wrap max-[500px]:!mb-4">
               <h2>Шахматка</h2>
