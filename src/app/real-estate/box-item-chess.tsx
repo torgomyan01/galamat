@@ -171,7 +171,7 @@ function BoxItemChess({ property }: IThisProps) {
 
       {modalViewProperty && (
         <Modal size="5xl" isOpen={modalViewProperty} hideCloseButton>
-          <ModalContent className="rounded-[18px] sm:rounded-[35px] max-w-[1226px]">
+          <ModalContent className="rounded-[18px] sm:rounded-[35px] max-w-[1226px] !z-[10000000]">
             <ModalBody className="max-w-[1226px] p-4 sm:p-10">
               <div className="wrapper !p-0">
                 <div className="flex-je-c mb-4">
