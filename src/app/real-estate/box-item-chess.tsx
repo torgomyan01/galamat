@@ -215,21 +215,23 @@ function BoxItemChess({ property }: IThisProps) {
                                   {selectedFullPlan.property.floor}
                                 </h3>
                               </div>
-                              <div>
-                                <h4 className="text-[13px] text-blue">
-                                  Срок сдачи:
-                                </h4>
-                                <h3 className="text-[18px] sm:text-[26px] text-blue font-medium">
-                                  {PrintMonthKz(
-                                    +moment(
-                                      selectedProject?.completion_date || "",
-                                    ).format("M"),
-                                    +moment(
-                                      selectedProject?.completion_date || "",
-                                    ).format("YYYY"),
-                                  )}
-                                </h3>
-                              </div>
+                              {selectedProject ? (
+                                <div>
+                                  <h4 className="text-[13px] text-blue">
+                                    Срок сдачи:
+                                  </h4>
+                                  <h3 className="text-[18px] sm:text-[26px] text-blue font-medium">
+                                    {PrintMonthKz(
+                                      +moment(
+                                        selectedProject?.completion_date || "",
+                                      ).format("M"),
+                                      +moment(
+                                        selectedProject?.completion_date || "",
+                                      ).format("YYYY"),
+                                    )}
+                                  </h3>
+                                </div>
+                              ) : null}
                               <div className="sm:col-span-2 sm:mt-4">
                                 <h4 className="text-[13px] text-blue">
                                   Стоимость:

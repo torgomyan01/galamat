@@ -265,16 +265,18 @@ export const getDevicePlatform = ():
 };
 
 export const PrintMonthKz = (month: number, year: number) => {
-  if (month > 1 && month < 3) {
+  console.log(month, year);
+
+  if (month > 1 && month <= 3) {
     return `1 квартал ${year}`;
   }
-  if (month > 3 && month < 6) {
+  if (month > 3 && month <= 6) {
     return `2 квартал ${year}`;
   }
-  if (month > 6 && month < 9) {
+  if (month > 6 && month <= 9) {
     return `3 квартал ${year}`;
   }
-  if (month > 9 && month < 12) {
+  if (month > 9 && month <= 12) {
     return `4 квартал ${year}`;
   }
 };
