@@ -1,6 +1,7 @@
 "use client";
 
 import "react-photo-view/dist/react-photo-view.css";
+import "./gala-one.scss";
 
 import MainTemplate from "@/components/common/main-template/main-template";
 import { BreadcrumbItem, Breadcrumbs } from "@heroui/react";
