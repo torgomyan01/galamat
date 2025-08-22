@@ -641,7 +641,7 @@ function CanvasEditorHouse({ objectInfo, house }: IThisProps) {
             <i
               className="fa-regular fa-xmark mb-4 text-black/50 text-[20px] cursor-pointer"
               onClick={() => setCreateObject(false)}
-            ></i>
+            />
           </div>
           {floor.map((floor) =>
             !polygons.some((_p) => _p.id === floor.id) ? (
@@ -652,8 +652,11 @@ function CanvasEditorHouse({ objectInfo, house }: IThisProps) {
                 <img
                   src={floor.images.big}
                   alt="huse image"
-                  className="w-full h-[250px] rounded-[10px] object-cover"
+                  className="w-full h-[250px] rounded-[10px] object-cover object-right"
                 />
+                <span className="absolute bg-white top-4 left-4 px-2 rounded-[5px] shadow">
+                  <b>{floor.sectionNumber}</b> <sub>Section</sub>
+                </span>
                 <Button
                   size="sm"
                   color="primary"

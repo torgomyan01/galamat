@@ -25,6 +25,7 @@ import ModalSelectAreas from "@/components/common/horizontal-filter/modal-select
 import ModalSelectFloor from "@/components/common/horizontal-filter/modal-select-floor";
 import ModalSelectPrice from "@/components/common/horizontal-filter/modal-select-price";
 import ModalSelectPlace from "@/components/common/horizontal-filter/modal-select-place";
+import { useTranslate } from "@/hooks/useTranslate";
 
 interface IThisProps {
   maxPrice: number;
@@ -33,6 +34,7 @@ interface IThisProps {
 }
 
 function MobileHorizontalFilter({ maxPrice, maxArea, projects }: IThisProps) {
+  const $t = useTranslate();
   const dispatch = useDispatch();
   const filterParams = useSelector(
     (state: IFilterParamsState) => state.filterParams.params,
@@ -129,42 +131,42 @@ function MobileHorizontalFilter({ maxPrice, maxArea, projects }: IThisProps) {
               className="rounded-[4px] bg-white text-[12px]"
               onPress={() => setModalSelectProjects(true)}
             >
-              Жилой комплекс
+              {$t("residential_complex")}
               <i className="fa-regular fa-chevron-down"></i>
             </Button>
             <Button
               className="rounded-[4px] bg-white text-[12px]"
               onPress={() => setModalSelectHouse(true)}
             >
-              Объекты
+              {$t("objects_")}
               <i className="fa-regular fa-chevron-down"></i>
             </Button>
             <Button
               className="rounded-[4px] bg-white text-[12px]"
               onPress={() => setModalSelectFloor(true)}
             >
-              Этаж
+              {$t("floor__")}
               <i className="fa-regular fa-chevron-down"></i>
             </Button>
             <Button
               className="rounded-[4px] bg-white text-[12px]"
               onPress={() => setModalSelectAreas(true)}
             >
-              Комнатность
+              {$t("roominess")}
               <i className="fa-regular fa-chevron-down"></i>
             </Button>
             <Button
               className="rounded-[4px] bg-white text-[12px]"
               onPress={() => setModalSelectPrice(true)}
             >
-              Стоимость
+              {$t("price")}
               <i className="fa-regular fa-chevron-down"></i>
             </Button>
             <Button
               className="rounded-[4px] bg-white text-[12px]"
               onPress={() => setModalSelectPlace(true)}
             >
-              Площадь М²
+              {$t("area_m")}
               <i className="fa-regular fa-chevron-down"></i>
             </Button>
           </div>

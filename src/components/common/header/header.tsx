@@ -6,7 +6,13 @@ import { localStorageKeys, SITE_URL } from "@/utils/consts";
 import clsx from "clsx";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Button, Select, SelectItem, SharedSelection } from "@heroui/react";
+import {
+  Button,
+  Select,
+  SelectItem,
+  SharedSelection,
+  Skeleton,
+} from "@heroui/react";
 import Image from "next/image";
 import { GetLanguage } from "@/app/actions/admin/language/get-languages";
 import { useDispatch, useSelector } from "react-redux";
@@ -88,6 +94,14 @@ function Header({ info = true }: IThisProps) {
     }
   }
 
+  function selectLanguageMobile(key: string | null) {
+    if (key) {
+      localStorage.setItem(localStorageKeys.languages, key);
+
+      dispatch(setLang(key));
+    }
+  }
+
   const lastScrollY = useRef(0);
   const getBottomLine = useRef<HTMLDivElement>(null);
   const [menuBottomLineFix, setMenuBottomLineFix] = useState<number>(0);
@@ -140,7 +154,32 @@ function Header({ info = true }: IThisProps) {
               />
             </Link>
             <div className="social-icons">
-              <Link href="https://wa.me/+77001085757" target="_blank">
+              {languages.length ? (
+                <div className="min-[576px]:hidden flex-jsb-c border border-blue rounded-[2px] overflow-hidden">
+                  {languages.map((lang) => (
+                    <span
+                      key={`mobile-lang-${lang.key}`}
+                      className={clsx(
+                        "px-2 h-6 flex-jc-c text-[12px] text-[#353535] rounded-[1px]",
+                        {
+                          "bg-blue text-white": activeLang === lang.key,
+                        },
+                      )}
+                      onClick={() => selectLanguageMobile(lang.key)}
+                    >
+                      {lang.name}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <Skeleton className="w-[50px] h-6 rounded-[2px]" />
+              )}
+
+              <Link
+                href="https://wa.me/+77001085757"
+                target="_blank"
+                className="max-[576px]:!hidden"
+              >
                 <Image
                   src="/img/wp-icon.svg"
                   alt="icon soc sites"
@@ -158,7 +197,11 @@ function Header({ info = true }: IThisProps) {
               {/*    className="h-auto"*/}
               {/*  />*/}
               {/*</Link>*/}
-              <Link href="tel: +7 700 108 5757" target="_blank">
+              <Link
+                href="tel: +7 700 108 5757"
+                target="_blank"
+                className="max-[576px]:!hidden"
+              >
                 <Image
                   src="/img/phone-icon.svg"
                   alt="icon soc sites"
@@ -188,7 +231,9 @@ function Header({ info = true }: IThisProps) {
             </Select>
 
             <div
-              className={clsx("drop-menu", { "is-active": mobileMenu })}
+              className={clsx("drop-menu max-[576px]:!hidden", {
+                "is-active": mobileMenu,
+              })}
               onClick={() => setMobileMenu(!mobileMenu)}
             >
               <span className="line"></span>

@@ -3,9 +3,8 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { ActionGetObject } from "@/app/actions/admin/objects/get-objects";
 import clsx from "clsx";
-import { Spinner } from "@heroui/react";
+import { Spinner, Button } from "@heroui/react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
-import { Button } from "@heroui/react";
 import DrawerViewPlansAndItems from "@/app/real-estate/drawer-view-plans-and-items";
 import { filesLink } from "@/utils/consts";
 import ChessView from "@/app/real-estate/chess-view";
@@ -40,7 +39,6 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
   const imageRef = useRef<HTMLImageElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
 
-  // Virtual canvas dimensions
   const virtualWidth = 1300;
   const virtualHeight = 700;
 
@@ -52,15 +50,15 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
   const [tooltipData, setTooltipData] = useState<IFloor | null>(null);
   const [loadingData, setLoadingData] = useState(false);
   const [activeHoverId, setActiveHoverId] = useState<number | null>(null);
-
   const [viewPlan, setViewPlan] = useState<boolean>(false);
 
-  // For canvas scaling
+  // zoom
   const [scale, setScale] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const minScale = 0.5;
+  const maxScale = 3;
 
   const [activeHouse, setActiveHouse] = useState<IObjectData | null>(null);
-
   const [chess, setChess] = useState<boolean>(false);
 
   function CloseModal() {
@@ -74,7 +72,7 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
     }
   }, [objectInfo]);
 
-  // Initialize and handle resize
+  // initial resize
   useEffect(() => {
     const handleResize = () => {
       if (!containerRef.current || !canvasRef.current) {
@@ -129,52 +127,30 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
     };
   }, [objectInfo, house, activeHouse]);
 
-  // Fetch tooltip data on hover
+  // Fetch tooltip data
   const fetchTooltipData = async (polygon: Polygon) => {
     setLoadingData(true);
-
-    // const api_url =
-    //   objectInfo.api_url === "/projects"
-    //     ? "/house"
-    //     : objectInfo.api_url === "/house"
-    //       ? "/floor"
-    //       : "";
-
     if (objectInfo.length) {
       if (objectInfo[0].api_url === "/house") {
         ActionGetProjectsProperty("/floor", {
           houseId: objectInfo[0].project_house_id,
         }).then((result) => {
           setLoadingData(false);
-
           const _dats: IFloor[] = [...result];
-          //
           const filterResult = _dats.find((floor) => floor.id === polygon.id);
-          //
           if (filterResult) {
             setTooltipData(filterResult);
           }
         });
       }
     }
-
-    // try {
-    //   const response = await fetch(`/api/polygon-data?id=${polygonId}`);
-    //   const data = await response.json();
-    //   setTooltipData(data);
-    // } catch (error) {
-    //   console.error("Failed to fetch tooltip data:", error);
-    // } finally {
-    //   setLoadingData(false);
-    // }
   };
 
-  // Convert coordinates
+  // coords utils
   const getVirtualCoords = (clientX: number, clientY: number): Point => {
     if (!canvasRef.current) {
       return { x: 0, y: 0 };
     }
-
     const rect = canvasRef.current.getBoundingClientRect();
     return {
       x: (clientX - rect.left - offset.x) / scale,
@@ -183,13 +159,10 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
   };
 
   const getPhysicalCoords = (virtualX: number, virtualY: number): Point => {
-    return {
-      x: virtualX * scale + offset.x,
-      y: virtualY * scale + offset.y,
-    };
+    return { x: virtualX * scale + offset.x, y: virtualY * scale + offset.y };
   };
 
-  // Debounced hover handler
+  // hover
   const handleHover = useCallback(
     debounce((polygon: Polygon | null) => {
       setHoveredPolygon(polygon);
@@ -200,7 +173,6 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
     [],
   );
 
-  // Mouse move handler
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {
       const { x, y } = getVirtualCoords(e.clientX, e.clientY);
@@ -211,7 +183,6 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
       if (hovered) {
         if (activeHoverId !== hovered.id) {
           setActiveHoverId(hovered.id);
-
           const center = getPolygonCenter(hovered.points);
           const physicalPos = getPhysicalCoords(center.x, center.y);
 
@@ -230,7 +201,6 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
     [polygons, activeHoverId, handleHover],
   );
 
-  // Mouse leave handler
   const handleMouseLeave = useCallback(() => {
     setActiveHoverId(null);
     handleHover(null);
@@ -238,15 +208,12 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
 
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const { x, y } = getVirtualCoords(e.clientX, e.clientY);
-
     const clickedPoly = polygons.find((poly) =>
       isPointInPolygon({ x, y }, poly.points),
     );
-
     if (clickedPoly) {
       setViewPlan(true);
     }
-
     if (currentPolygon) {
       setCurrentPolygon({
         ...currentPolygon,
@@ -255,19 +222,41 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
     }
   };
 
-  // Polygon helpers
+  // zoom handler
+  const handleWheel = (e: React.WheelEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    const delta = -e.deltaY / 500; // sensitivity
+    const newScale = Math.min(Math.max(scale + delta, minScale), maxScale);
+
+    const mouse = getVirtualCoords(e.clientX, e.clientY);
+
+    const worldX = mouse.x;
+    const worldY = mouse.y;
+
+    const newOffsetX =
+      e.clientX -
+      worldX * newScale -
+      canvasRef.current!.getBoundingClientRect().left;
+    const newOffsetY =
+      e.clientY -
+      worldY * newScale -
+      canvasRef.current!.getBoundingClientRect().top;
+
+    setScale(newScale);
+    setOffset({ x: newOffsetX, y: newOffsetY });
+  };
+
+  // helpers
   const isPointInPolygon = (point: Point, polygon: Point[]): boolean => {
     if (polygon.length < 3) {
       return false;
     }
-
     let inside = false;
     for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
       const xi = polygon[i].x,
         yi = polygon[i].y;
       const xj = polygon[j].x,
         yj = polygon[j].y;
-
       const intersect =
         yi > point.y !== yj > point.y &&
         point.x < ((xj - xi) * (point.y - yi)) / (yj - yi) + xi;
@@ -275,22 +264,20 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
         inside = !inside;
       }
     }
-
     return inside;
   };
 
   const getPolygonCenter = (points: Point[]): Point => {
     const center = { x: 0, y: 0 };
-    points.forEach((point) => {
-      center.x += point.x;
-      center.y += point.y;
+    points.forEach((p) => {
+      center.x += p.x;
+      center.y += p.y;
     });
     center.x /= points.length;
     center.y /= points.length;
     return center;
   };
 
-  // Main drawing function
   const redraw = () => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
@@ -299,17 +286,14 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     ctx.save();
     ctx.translate(offset.x, offset.y);
     ctx.scale(scale, scale);
 
-    // Draw image
     if (imageRef.current) {
       ctx.drawImage(imageRef.current, 0, 0, virtualWidth, virtualHeight);
     }
 
-    // Draw polygons
     polygons.forEach((poly) => {
       drawPolygon(ctx, poly, poly === hoveredPolygon);
     });
@@ -321,7 +305,6 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
     ctx.restore();
   };
 
-  // Polygon rendering with hover effect
   const drawPolygon = (
     ctx: CanvasRenderingContext2D,
     poly: Polygon,
@@ -330,31 +313,20 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
     if (poly.points.length < 2) {
       return;
     }
-
     ctx.beginPath();
     ctx.moveTo(poly.points[0].x, poly.points[0].y);
     poly.points.forEach((p, i) => i > 0 && ctx.lineTo(p.x, p.y));
-
-    ctx.fillStyle = `${poly.color}${isHovered ? "80" : "40"}`;
-    ctx.strokeStyle = poly.color;
-    ctx.lineWidth = (isHovered ? 2.5 : 1.5) / scale;
-
     if (poly.points.length >= 3) {
       ctx.closePath();
     }
+
+    ctx.globalAlpha = isHovered ? 0.4 : 0;
+    ctx.fillStyle = poly.color;
+    ctx.strokeStyle = poly.color;
+    ctx.lineWidth = (isHovered ? 2.5 : 1.5) / scale;
     ctx.fill();
     ctx.stroke();
-
-    if (poly === currentPolygon) {
-      poly.points.forEach((p) => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 4 / scale, 0, Math.PI * 2);
-        ctx.fillStyle = poly.color;
-        ctx.fill();
-        ctx.strokeStyle = "white";
-        ctx.stroke();
-      });
-    }
+    ctx.globalAlpha = 1;
   };
 
   useEffect(() => {
@@ -367,19 +339,11 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
         ref={containerRef}
         className="fixed top-0 left-0 w-full h-[100dvh] z-[10] backdrop-blur-[5px]"
       >
-        <div
-          className={clsx({
-            hidden: !chess,
-          })}
-        >
+        <div className={clsx({ hidden: !chess })}>
           {chess && <ChessView projects={projects} activeHouse={activeHouse} />}
         </div>
 
-        <div
-          className={clsx({
-            hidden: chess,
-          })}
-        >
+        <div className={clsx({ hidden: chess })}>
           <img
             src={`${filesLink}${activeHouse?.image_path}`}
             alt="image fon"
@@ -391,6 +355,7 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             onMouseDown={handleMouseDown}
+            onWheel={handleWheel}
           />
 
           <div className="w-full absolute left-6 bottom-6 grid grid-cols-5 gap-4 z-[1000] h-[150px]">
@@ -420,16 +385,16 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
             <Button
               variant={chess ? "bordered" : "flat"}
               onPress={() => setChess(false)}
-              className={clsx("h-full rounded-[6px] w-full", {
-                "text-white": !chess,
+              className={clsx("h-full rounded-[6px] w-full border-none", {
+                "text-white bg-blue": !chess,
               })}
             >
               Объекты
             </Button>
             <Button
               variant={chess ? "flat" : "bordered"}
-              className={clsx("h-full rounded-[6px] w-full", {
-                "text-white": chess,
+              className={clsx("h-full rounded-[6px] w-full border-none", {
+                "text-white bg-blue": chess,
               })}
               onPress={() => setChess(true)}
             >

@@ -40,11 +40,11 @@ function Objects() {
   return (
     <div className="wrapper md:!mb-12 !mt-10 md:!mt-[100px]">
       <div className="tabs">
-        <div className="tab-buttons !mr-[15px] min-[425px]:mr-5">
+        <div className="tab-buttons gap-0 !mr-[15px] min-[425px]:mr-5">
           {tabContents.map((tab, index) => (
             <button
               key={`tab-${index}`}
-              className={clsx("tab-btn", {
+              className={clsx("tab-btn mr-[-10px] sm:mr-0", {
                 active: activeTab === index,
               })}
               onClick={() => setActiveTab(index)}

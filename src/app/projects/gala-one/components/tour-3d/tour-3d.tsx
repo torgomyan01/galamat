@@ -42,18 +42,20 @@ function Tour3d() {
   return (
     <div className="tour-3d mt-10">
       <div className="tab-cont-wrap">
-        <div className="tab-content active">
-          <div className="img-wrap">{tabsTour[activeTab].component}</div>
+        <div className="wrapper">
+          <div className="tab-content active !rounded-[12px] sm:!rounded-[16px] overflow-hidden">
+            <div className="img-wrap">{tabsTour[activeTab].component}</div>
+          </div>
         </div>
       </div>
-      <div className="wrapper !mt-[-70px]">
-        <div className="w-full flex-jsb-c">
+      <div className="wrapper h-[60px] !mt-[-60px]">
+        <div className="w-full h-full flex-jsb-c bg-white relative rounded-[0_0_12px_12px] sm:!rounded-[0_0_16px_16px] px-2 sm:px-6">
           <div className="tabs">
-            <div className="tab-buttons">
+            <div className="tab-buttons max-[576px]:!gap-0">
               {tabsTour.map((item, index) => (
                 <button
                   key={`key-tour-${index}`}
-                  className={clsx("tab-btn", {
+                  className={clsx("tab-btn max-[576px]:!px-2", {
                     active: activeTab === index,
                   })}
                   onClick={() => {

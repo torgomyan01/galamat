@@ -6,8 +6,10 @@ import IconGalaBonus from "@/components/common/icons/icon-gala-bonus";
 import IconCompany from "@/components/common/icons/icon-company";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
+import { useTranslate } from "@/hooks/useTranslate";
 
 function MobileBottomMenu() {
+  const $t = useTranslate();
   const pathname = usePathname();
 
   return (
@@ -25,7 +27,7 @@ function MobileBottomMenu() {
             "!text-[#132C5E]": pathname.includes(SITE_URL.REAL_ESTATE),
           })}
         >
-          Недвижимость
+          {$t("real_estate")}
         </span>
       </Link>
       <Link href={SITE_URL.PROJECTS} className="flex-je-c gap-2 flex-col">
@@ -41,7 +43,7 @@ function MobileBottomMenu() {
             "!text-[#132C5E]": pathname.includes(SITE_URL.PROJECTS),
           })}
         >
-          Проекты
+          {$t("projects")}
         </span>
       </Link>
 
@@ -52,7 +54,9 @@ function MobileBottomMenu() {
         <div className="w-[54px] h-[54px] bg-[#B31623] rounded-[19px] flex-jc-c text-white text-[20px]">
           <i className="fa-solid fa-phone"></i>
         </div>
-        <span className="text-[8px] font-medium text-[#A1ACC3]">Связаться</span>
+        <span className="text-[8px] font-medium text-[#A1ACC3]">
+          {$t("contact")}
+        </span>
       </Link>
 
       <Link href={SITE_URL.SALES} className="flex-je-c gap-2 flex-col">
@@ -84,7 +88,7 @@ function MobileBottomMenu() {
             "!text-[#132C5E]": pathname.includes(SITE_URL.OUR_COMPANY),
           })}
         >
-          О нас
+          {$t("about_us__")}
         </span>
       </Link>
     </div>
