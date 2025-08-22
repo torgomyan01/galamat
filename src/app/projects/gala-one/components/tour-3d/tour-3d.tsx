@@ -30,14 +30,12 @@ function Tour3d() {
   function Next() {
     if (activeItem <= tabsTour[activeTab].maxLength - 1) {
       setActiveItem(activeItem + 1);
-      setActiveItem(0);
     }
   }
 
   function Prev() {
     if (activeItem >= 0) {
       setActiveItem(activeItem - 1);
-      setActiveItem(0);
     }
   }
 
@@ -58,7 +56,10 @@ function Tour3d() {
                   className={clsx("tab-btn", {
                     active: activeTab === index,
                   })}
-                  onClick={() => setActiveTab(index)}
+                  onClick={() => {
+                    setActiveTab(index);
+                    setActiveItem(0);
+                  }}
                 >
                   {item.name}
                 </button>
