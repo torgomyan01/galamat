@@ -23,7 +23,7 @@ function Tour3d() {
     {
       name: "Холлы",
       component: <Halls activeIndex={activeItem} />,
-      maxLength: 3,
+      maxLength: 2,
     },
   ];
 
