@@ -8,8 +8,8 @@ function Facade() {
       allow="xr-spatial-tracking; gyroscope; accelerometer"
       allowFullScreen
       scrolling="no"
-      className="h-[400px] md:h-[750px]"
-      src="https://kuula.co/share/collection/7DmKS?logo=0&info=1&fs=1&vr=1&sd=1&thumbs=1"
+      className="h-[60dvh]"
+      src="https://kuula.co/share/hxH0x?logo=1&info=0&logosize=110&fs=1&vr=0&thumbs=3&inst=0"
     />
   );
 }

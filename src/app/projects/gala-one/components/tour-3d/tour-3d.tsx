@@ -17,8 +17,8 @@ function Tour3d() {
     },
     {
       name: "Двор",
-      component: <Yard />,
-      maxLength: 1,
+      component: <Yard activeIndex={activeItem} />,
+      maxLength: 3,
     },
     {
       name: "Холлы",
@@ -30,12 +30,14 @@ function Tour3d() {
   function Next() {
     if (activeItem <= tabsTour[activeTab].maxLength - 1) {
       setActiveItem(activeItem + 1);
+      setActiveItem(0);
     }
   }
 
   function Prev() {
     if (activeItem >= 0) {
       setActiveItem(activeItem - 1);
+      setActiveItem(0);
     }
   }
 
