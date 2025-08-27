@@ -77,8 +77,12 @@ function ModalSendRequestPlan() {
           <div id="leave-request" className="leave-request !h-full relative">
             <div className="wrapper !px-0 !h-[500px]">
               <div className="leave-request-info !h-full !flex-jsb-s">
-                <Fade direction="left" className="md:w-[55%]" triggerOnce>
-                  <div className="info h-auto md:h-full !p-0 !rounded-none overflow-hidden  !bg-white">
+                <Fade
+                  direction="left"
+                  className="w-full md:w-[55%]"
+                  triggerOnce
+                >
+                  <div className="info h-auto md:h-full !p-0 !rounded-none overflow-hidden  !bg-white w-full">
                     <Image
                       src="/img/gala-one/modal-send-request.png"
                       alt="def image"

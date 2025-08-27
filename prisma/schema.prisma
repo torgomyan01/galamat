@@ -30,6 +30,7 @@ model sliders_tb {
   parent_id     String @db.VarChar(255)
   sub_parent_id Int?
   lang_key      String @db.VarChar(250)
+  sort_index    Int
 }
 
 model projects {

@@ -42,6 +42,7 @@ export async function ActionCreateSliderFade(
           parent_id: "",
           lang_key: langKey,
           slider_name: "",
+          sort_index: 0,
         },
       });
       return {

@@ -91,17 +91,23 @@ function BoxItemChess({ property }: IThisProps) {
     if (property && property.status === "AVAILABLE" && !isHidden) {
       setModalViewProperty(true);
 
+      console.log(property);
+
       ActionGetProjectsProperty("/plan", {
         isArchive: false,
         status: ["AVAILABLE"],
         layoutCode: [property.layoutCode],
       }).then((result) => {
+        console.log(result, "/plan");
+
         setSelectedFullPlan({ plan: result.data[0], property });
       });
 
       ActionGetProjectsProperty("/floor", {
         houseId: property.house_id,
       }).then((result) => {
+        console.log(result, "floor");
+
         const fontFloor = result.find((floor: any) =>
           floor.areas.some((_a: any) => _a.propertyId === property.id),
         );

@@ -53,27 +53,29 @@ function AdsSlider() {
               pagination={{ clickable: true }}
               className="info-swiper rounded-[16px] overflow-hidden lg:h-[510px] relative"
             >
-              {allSlides.map((sliderItem) => {
-                const imagePath = sliderItem.children?.find(
-                  (child) => child.lang_key === activeLang,
-                )?.image_path;
+              {allSlides
+                .sort((a, b) => a.sort_index - b.sort_index)
+                .map((sliderItem) => {
+                  const imagePath = sliderItem.children?.find(
+                    (child) => child.lang_key === activeLang,
+                  )?.image_path;
 
-                return (
-                  <SwiperSlide key={`home-slider-ads-${sliderItem.id}`}>
-                    <Link href={sliderItem.url} className="w-full h-auto">
-                      {imagePath && (
-                        <Image
-                          className="w-full object-cover rounded-[20px] lg:h-[510px] object-left-top"
-                          src={`${filesLink}${imagePath}`}
-                          alt="Слайд"
-                          width={1000}
-                          height={700}
-                        />
-                      )}
-                    </Link>
-                  </SwiperSlide>
-                );
-              })}
+                  return (
+                    <SwiperSlide key={`home-slider-ads-${sliderItem.id}`}>
+                      <Link href={sliderItem.url} className="w-full h-auto">
+                        {imagePath && (
+                          <Image
+                            className="w-full object-cover rounded-[20px] lg:h-[510px] object-left-top"
+                            src={`${filesLink}${imagePath}`}
+                            alt="Слайд"
+                            width={1000}
+                            height={700}
+                          />
+                        )}
+                      </Link>
+                    </SwiperSlide>
+                  );
+                })}
               <div className="absolute left-0 top-[50%] w-full flex-jsb-c px-2 md:px-4 z-10 transform translate-y-[-50%]">
                 <div className="swiper-button-prev-header-slider w-8 md:w-[50px] h-8 md:h-[50px] bg-white rounded-full flex-jc-c cursor-pointer opacity-60 hover:opacity-100">
                   <img

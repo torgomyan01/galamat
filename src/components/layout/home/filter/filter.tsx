@@ -1,5 +1,5 @@
 import HorizontalFilter from "@/components/common/horizontal-filter/horizontal-filter";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CanvasViewHouse from "@/app/real-estate/canvas-view-house";
 import { useDispatch, useSelector } from "react-redux";
 import Facade from "@/app/real-estate/facade";
@@ -21,6 +21,16 @@ function Filter({ projects }: IThisProps) {
   const modalSelectedHouse = useSelector(
     (state: IModalState) => state.modals.modalSelectedHouse,
   );
+
+  useEffect(() => {
+    if (modalSelectedHouse) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "unset";
+    }
+  }, [modalSelectedHouse]);
 
   function closeModal() {
     dispatch(setHouse(null));

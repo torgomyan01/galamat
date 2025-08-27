@@ -14,6 +14,7 @@ export async function ActionCreateSliderFade(parent_id: string) {
         parent_id,
         sub_parent_id: null,
         lang_key: "",
+        sort_index: 30,
       },
     });
 

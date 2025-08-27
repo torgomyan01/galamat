@@ -98,6 +98,16 @@ function RealEstateContent({ projects }: IThisProps) {
     (state: IModalState) => state.modals.modalSelectedHouse,
   );
 
+  useEffect(() => {
+    if (modalSelectedHouse) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "unset";
+    }
+  }, [modalSelectedHouse]);
+
   function closeModal() {
     dispatch(setHouse(null));
     dispatch(setObjectInfo(null));

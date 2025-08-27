@@ -57,11 +57,15 @@ function Houses({ projectsIds }: IThisProps) {
     });
   }
 
+  const FilteredHouses = filterParams.houseId
+    ? houses?.filter((house) => house.id === filterParams.houseId)
+    : houses;
+
   return (
     <div className="w-full">
       {houses ? (
         <div className="w-full h-auto grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {houses.map((house: IHouse) => (
+          {FilteredHouses?.map((house: IHouse) => (
             <div
               key={`house-${house.id}`}
               className="w-full bg-white p-4 rounded-[12px] cursor-pointer group"

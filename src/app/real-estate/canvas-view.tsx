@@ -434,7 +434,7 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
       {/* Tooltip */}
       <div
         className={clsx(
-          "absolute bg-white text-black p-4 rounded-[12px] shadow-lg z-[2000] pointer-events-none transition min-w-[350px] h-[250px]",
+          "absolute bg-white text-black p-4 rounded-[12px] shadow-lg z-[2000] pointer-events-none transition min-w-[350px] h-[250px] hidden sm:block",
           {
             "opacity-100": hoveredPolygon,
             "opacity-0": !hoveredPolygon,

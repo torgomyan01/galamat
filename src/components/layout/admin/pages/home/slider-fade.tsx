@@ -10,6 +10,7 @@ import { ActionRemoveSliderFade } from "@/app/actions/admin/pages/home/slider-fa
 import { addToast } from "@heroui/react";
 import axios from "axios";
 import Image from "next/image";
+import { ActionUpdateSliderSort } from "@/app/actions/slider-home/change-slider-home-index";
 
 interface IThisProps {
   slider: "fade-slider" | "slider-carousel";
@@ -72,6 +73,15 @@ function SliderFade({ slider }: IThisProps) {
 
   const [moadlUploadImage, setModalUpload] = useState<ISliderItem | null>(null);
 
+  function changeSortIndex(id: number, value: string) {
+    ActionUpdateSliderSort(id, +value).then(() => {
+      addToast({
+        title: "Информация успешно обновлено",
+        color: "success",
+      });
+    });
+  }
+
   return (
     <>
       {items ? (
@@ -126,6 +136,18 @@ function SliderFade({ slider }: IThisProps) {
                     />
                   </div>
                 ))}
+
+                <label className="w-8 h-8 border overflow-hidden -right-2 -bottom-2 absolute rounded-[4px]">
+                  <input
+                    type="number"
+                    className="w-full h-full text-center text-[14px]"
+                    title="Номер очереди"
+                    max={20}
+                    defaultValue={child.sort_index}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={(e) => changeSortIndex(child.id, e.target.value)}
+                  />
+                </label>
               </div>
             )),
           )}

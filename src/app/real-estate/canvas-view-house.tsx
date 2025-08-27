@@ -43,7 +43,7 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
   const virtualHeight = 700;
 
   const [polygons, setPolygons] = useState<Polygon[]>([]);
-  const [currentPolygon, setCurrentPolygon] = useState<Polygon | null>(null);
+  const currentPolygon: Polygon | null = null;
   const [imageLoaded, setImageLoaded] = useState(false);
   const [hoveredPolygon, setHoveredPolygon] = useState<Polygon | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
@@ -52,11 +52,14 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
   const [activeHoverId, setActiveHoverId] = useState<number | null>(null);
   const [viewPlan, setViewPlan] = useState<boolean>(false);
 
-  // zoom
+  // Zoom + Pan
   const [scale, setScale] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const minScale = 0.5;
   const maxScale = 3;
+
+  const isDraggingRef = useRef(false);
+  const lastMouseRef = useRef({ x: 0, y: 0 });
 
   const [activeHouse, setActiveHouse] = useState<IObjectData | null>(null);
   const [chess, setChess] = useState<boolean>(false);
@@ -72,16 +75,14 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
     }
   }, [objectInfo]);
 
-  // initial resize
+  // Initial resize + disable page zoom
   useEffect(() => {
     const handleResize = () => {
       if (!containerRef.current || !canvasRef.current) {
         return;
       }
-
       const container = containerRef.current;
       const canvas = canvasRef.current;
-
       canvas.width = container.clientWidth;
       canvas.height = container.clientHeight;
 
@@ -98,10 +99,22 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
 
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+
+    // Block ctrl+scroll zoom
+    const blockZoom = (e: WheelEvent) => {
+      if (e.ctrlKey) {
+        e.preventDefault();
+      }
+    };
+    window.addEventListener("wheel", blockZoom, { passive: false });
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("wheel", blockZoom);
+    };
   }, []);
 
-  // Load data and image
+  // Load polygons + image
   useEffect(() => {
     if (activeHouse) {
       ActionGetObject(activeHouse.id).then((res) => {
@@ -117,36 +130,17 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
           ),
         );
       });
+
+      const img = new Image();
+      img.src = `${filesLink}${activeHouse?.image_path}`;
+      img.onload = () => {
+        imageRef.current = img;
+        setImageLoaded(true);
+      };
     }
+  }, [activeHouse]);
 
-    const img = new Image();
-    img.src = `${filesLink}${activeHouse?.image_path}`;
-    img.onload = () => {
-      imageRef.current = img;
-      setImageLoaded(true);
-    };
-  }, [objectInfo, house, activeHouse]);
-
-  // Fetch tooltip data
-  const fetchTooltipData = async (polygon: Polygon) => {
-    setLoadingData(true);
-    if (objectInfo.length) {
-      if (objectInfo[0].api_url === "/house") {
-        ActionGetProjectsProperty("/floor", {
-          houseId: objectInfo[0].project_house_id,
-        }).then((result) => {
-          setLoadingData(false);
-          const _dats: IFloor[] = [...result];
-          const filterResult = _dats.find((floor) => floor.id === polygon.id);
-          if (filterResult) {
-            setTooltipData(filterResult);
-          }
-        });
-      }
-    }
-  };
-
-  // coords utils
+  // Utils
   const getVirtualCoords = (clientX: number, clientY: number): Point => {
     if (!canvasRef.current) {
       return { x: 0, y: 0 };
@@ -158,95 +152,110 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
     };
   };
 
-  const getPhysicalCoords = (virtualX: number, virtualY: number): Point => {
-    return { x: virtualX * scale + offset.x, y: virtualY * scale + offset.y };
+  const getPhysicalCoords = (virtualX: number, virtualY: number): Point => ({
+    x: virtualX * scale + offset.x,
+    y: virtualY * scale + offset.y,
+  });
+
+  // Hover - FIXED: useCallback-ը ճիշտ է օգտագործված
+  const fetchTooltipData = async (polygon: Polygon) => {
+    setLoadingData(true);
+    if (objectInfo.length && objectInfo[0].api_url === "/house") {
+      ActionGetProjectsProperty("/floor", {
+        houseId: objectInfo[0].project_house_id,
+      }).then((result) => {
+        setLoadingData(false);
+        const _dats: IFloor[] = [...result];
+        const filterResult = _dats.find((floor) => floor.id === polygon.id);
+        if (filterResult) {
+          setTooltipData(filterResult);
+        }
+      });
+    }
   };
 
-  // hover
-  const handleHover = useCallback(
+  // FIXED: Debounce-ը ճիշտ է իրականացված
+  const debouncedHoverHandler = useRef(
     debounce((polygon: Polygon | null) => {
       setHoveredPolygon(polygon);
       if (polygon && !polygon.data) {
         fetchTooltipData(polygon);
       }
     }, 100),
-    [],
-  );
+  ).current;
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLCanvasElement>) => {
-      const { x, y } = getVirtualCoords(e.clientX, e.clientY);
-      const hovered = polygons.find((poly) =>
-        isPointInPolygon({ x, y }, poly.points),
-      );
-
-      if (hovered) {
-        if (activeHoverId !== hovered.id) {
-          setActiveHoverId(hovered.id);
-          const center = getPolygonCenter(hovered.points);
-          const physicalPos = getPhysicalCoords(center.x, center.y);
-
-          setTooltipPosition({
-            x: physicalPos.x + e.currentTarget.getBoundingClientRect().left,
-            y: physicalPos.y + e.currentTarget.getBoundingClientRect().top,
-          });
-
-          handleHover(hovered);
-        }
-      } else if (activeHoverId !== null) {
-        setActiveHoverId(null);
-        handleHover(null);
-      }
+  const handleHover = useCallback(
+    (polygon: Polygon | null) => {
+      debouncedHoverHandler(polygon);
     },
-    [polygons, activeHoverId, handleHover],
+    [debouncedHoverHandler],
   );
 
-  const handleMouseLeave = useCallback(() => {
-    setActiveHoverId(null);
-    handleHover(null);
-  }, [handleHover]);
+  const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (isDraggingRef.current) {
+      const dx = e.clientX - lastMouseRef.current.x;
+      const dy = e.clientY - lastMouseRef.current.y;
+      setOffset((prev) => ({ x: prev.x + dx, y: prev.y + dy }));
+      lastMouseRef.current = { x: e.clientX, y: e.clientY };
+      return; // ❗stop hover logic while dragging
+    }
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const { x, y } = getVirtualCoords(e.clientX, e.clientY);
-    const clickedPoly = polygons.find((poly) =>
+    const hovered = polygons.find((poly) =>
       isPointInPolygon({ x, y }, poly.points),
     );
-    if (clickedPoly) {
-      setViewPlan(true);
-    }
-    if (currentPolygon) {
-      setCurrentPolygon({
-        ...currentPolygon,
-        points: [...currentPolygon.points, { x, y }],
-      });
+    if (hovered) {
+      if (activeHoverId !== hovered.id) {
+        setActiveHoverId(hovered.id);
+        const center = getPolygonCenter(hovered.points);
+        const pos = getPhysicalCoords(center.x, center.y);
+        setTooltipPosition({
+          x: pos.x + e.currentTarget.getBoundingClientRect().left,
+          y: pos.y + e.currentTarget.getBoundingClientRect().top,
+        });
+        handleHover(hovered);
+      }
+    } else if (activeHoverId !== null) {
+      setActiveHoverId(null);
+      handleHover(null);
     }
   };
 
-  // zoom handler
+  // FIXED: handleMouseLeave-ը ապակոմենտարված է
+  const handleMouseLeave = () => {
+    if (!isDraggingRef.current) {
+      setActiveHoverId(null);
+      handleHover(null);
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    isDraggingRef.current = true;
+    lastMouseRef.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const handleMouseUp = () => {
+    isDraggingRef.current = false;
+  };
+
   const handleWheel = (e: React.WheelEvent<HTMLCanvasElement>) => {
     e.preventDefault();
-    const delta = -e.deltaY / 500; // sensitivity
+    const delta = -e.deltaY / 500;
     const newScale = Math.min(Math.max(scale + delta, minScale), maxScale);
-
     const mouse = getVirtualCoords(e.clientX, e.clientY);
-
-    const worldX = mouse.x;
-    const worldY = mouse.y;
-
     const newOffsetX =
       e.clientX -
-      worldX * newScale -
+      mouse.x * newScale -
       canvasRef.current!.getBoundingClientRect().left;
     const newOffsetY =
       e.clientY -
-      worldY * newScale -
+      mouse.y * newScale -
       canvasRef.current!.getBoundingClientRect().top;
-
     setScale(newScale);
     setOffset({ x: newOffsetX, y: newOffsetY });
   };
 
-  // helpers
+  // Helpers
   const isPointInPolygon = (point: Point, polygon: Point[]): boolean => {
     if (polygon.length < 3) {
       return false;
@@ -268,41 +277,14 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
   };
 
   const getPolygonCenter = (points: Point[]): Point => {
-    const center = { x: 0, y: 0 };
+    const c = { x: 0, y: 0 };
     points.forEach((p) => {
-      center.x += p.x;
-      center.y += p.y;
+      c.x += p.x;
+      c.y += p.y;
     });
-    center.x /= points.length;
-    center.y /= points.length;
-    return center;
-  };
-
-  const redraw = () => {
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext("2d");
-    if (!canvas || !ctx || !imageLoaded) {
-      return;
-    }
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.save();
-    ctx.translate(offset.x, offset.y);
-    ctx.scale(scale, scale);
-
-    if (imageRef.current) {
-      ctx.drawImage(imageRef.current, 0, 0, virtualWidth, virtualHeight);
-    }
-
-    polygons.forEach((poly) => {
-      drawPolygon(ctx, poly, poly === hoveredPolygon);
-    });
-
-    if (currentPolygon) {
-      drawPolygon(ctx, currentPolygon, false);
-    }
-
-    ctx.restore();
+    c.x /= points.length;
+    c.y /= points.length;
+    return c;
   };
 
   const drawPolygon = (
@@ -327,6 +309,30 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
     ctx.fill();
     ctx.stroke();
     ctx.globalAlpha = 1;
+  };
+
+  const redraw = () => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext("2d");
+    if (!canvas || !ctx || !imageLoaded) {
+      return;
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.translate(offset.x, offset.y);
+    ctx.scale(scale, scale);
+
+    if (imageRef.current) {
+      ctx.drawImage(imageRef.current, 0, 0, virtualWidth, virtualHeight);
+    }
+
+    polygons.forEach((poly) => drawPolygon(ctx, poly, poly === hoveredPolygon));
+    if (currentPolygon) {
+      drawPolygon(ctx, currentPolygon, false);
+    }
+
+    ctx.restore();
   };
 
   useEffect(() => {
@@ -355,6 +361,7 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             onMouseDown={handleMouseDown}
+            onMouseUp={handleMouseUp}
             onWheel={handleWheel}
           />
 
@@ -381,7 +388,7 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
         </div>
 
         <div className="absolute top-[50px] md:top-6 left-0 flex-jc-c w-full z-[1000000]">
-          <div className="w-[300px] h-12 border border-white/50 rounded-[6px] flex-jsb-c backdrop-blur-[10px] bg-black/30">
+          <div className="w-[300px] h-12 rounded-[6px] flex-jsb-c backdrop-blur-[10px] bg-black/30">
             <Button
               variant={chess ? "bordered" : "flat"}
               onPress={() => setChess(false)}

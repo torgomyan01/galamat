@@ -134,6 +134,7 @@ declare interface ISliderItem {
   sub_parent_id: number;
   lang_key: string;
   children?: ISliderItem[];
+  sort_index: number;
 }
 
 type IProjectDataPositions =
