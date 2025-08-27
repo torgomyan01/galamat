@@ -51,7 +51,6 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
   const [loadingData, setLoadingData] = useState(false);
   const [activeHoverId, setActiveHoverId] = useState<number | null>(null);
   const [viewPlan, setViewPlan] = useState<boolean>(false);
-
   // Zoom + Pan
   const [scale, setScale] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
