@@ -38,7 +38,11 @@ function GalaOneHero() {
               <img src="/img/addr-icon1.svg" alt="" />
               Срок сдачи: III квартал 2026 года
             </span>
-            <Link href="https://go.2gis.com/JCf5N" target="_blank">
+            <Link
+              href="https://go.2gis.com/JCf5N"
+              target="_blank"
+              className="text-white flex-js-c gap-2 mt-2 text-[13px] font-medium"
+            >
               <img src="/img/addr-icon2.svg" alt="" />
               г. Астана, р-н Нура, пересечение ул Казыбек Би и Е75, Е77
             </Link>
