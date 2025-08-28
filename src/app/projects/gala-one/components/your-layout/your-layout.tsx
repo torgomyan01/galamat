@@ -16,7 +16,7 @@ import ImageMapper from "react-img-mapper";
 moment.locale("ru");
 
 const PROJECT_ID_GALA_ONE = 54255;
-const HOUSE_ID_GALA_ONE = 141959;
+const HOUSE_ID_GALA_ONE = 142663;
 
 function YourLayout() {
   const dispatch = useDispatch();
