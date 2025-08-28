@@ -14,7 +14,7 @@ export async function ActionSendNumberBitrix(id: number) {
     });
 
     const getAxios = await axios.get(
-      "https://bitrix.galamat.kz/services/webhooks/gen_link/index.php",
+      "https://crm.galamat.kz/services/webhooks/gen_link/index.php",
       {
         params: {
           name: updateProbabilities?.name,
