@@ -2,37 +2,42 @@ import { Button, Modal, ModalBody, ModalContent } from "@heroui/react";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { SITE_URL } from "@/utils/consts";
+import { usePathname } from "next/navigation";
 
 const LS_KEY = "galaOneModalHideUntil";
 const ONE_HOUR_MS = 60 * 60 * 1000;
 
 function ModalGalaOne() {
+  const pathname = usePathname();
+
   const [modal, setModal] = useState(false);
   const timerRef = useRef<number | null>(null);
 
   useEffect(() => {
-    // run only on client
-    const now = Date.now();
-    let hideUntil = 0;
+    if (pathname !== SITE_URL.SALES) {
+      // run only on client
+      const now = Date.now();
+      let hideUntil = 0;
 
-    const raw =
-      typeof window !== "undefined" ? localStorage.getItem(LS_KEY) : null;
-    if (raw) {
-      hideUntil = Number(raw) || 0;
-    }
-
-    const shouldSuppress = hideUntil && now < hideUntil;
-
-    if (!shouldSuppress) {
-      timerRef.current = window.setTimeout(() => setModal(true), 10 * 1000);
-    }
-
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-        timerRef.current = null;
+      const raw =
+        typeof window !== "undefined" ? localStorage.getItem(LS_KEY) : null;
+      if (raw) {
+        hideUntil = Number(raw) || 0;
       }
-    };
+
+      const shouldSuppress = hideUntil && now < hideUntil;
+
+      if (!shouldSuppress) {
+        timerRef.current = window.setTimeout(() => setModal(true), 10 * 1000);
+      }
+
+      return () => {
+        if (timerRef.current) {
+          clearTimeout(timerRef.current);
+          timerRef.current = null;
+        }
+      };
+    }
   }, []);
 
   const handleGetClick = () => {
