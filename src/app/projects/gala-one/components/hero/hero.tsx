@@ -44,7 +44,7 @@ function GalaOneHero() {
               className="text-white flex-js-c gap-2 mt-2 text-[13px] font-medium"
             >
               <img src="/img/addr-icon2.svg" alt="" />
-              г. Астана, р-н Нура, пересечение ул Казыбек Би и Е75, Е77
+              г.Астана, р-н Нура, проспект Улы Дала 40
             </Link>
           </div>
         </div>
