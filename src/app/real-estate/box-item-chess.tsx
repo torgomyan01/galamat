@@ -296,11 +296,12 @@ function BoxItemChess({ property }: IThisProps) {
                           <Link
                             href={selectedFullPlan.plan.image.big}
                             target="_blank"
+                            className="w-full"
                           >
                             <img
                               src={selectedFullPlan.plan.image.big}
                               alt=""
-                              className="w-full"
+                              className="w-full min-w-[470px]"
                             />
                           </Link>
                         </div>
