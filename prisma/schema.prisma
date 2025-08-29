@@ -75,7 +75,7 @@ model probabilities {
 
 model property {
   id          Int  @id @default(autoincrement())
-  property_id Int
+  property_id Int  @unique(map: "property_id")
   data        Json
 }
 

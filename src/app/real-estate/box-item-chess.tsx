@@ -5,7 +5,6 @@ import { formatKzt, PrintMonthKz } from "@/utils/helpers";
 import { Modal, ModalBody, ModalContent } from "@heroui/react";
 import React, { useEffect, useState } from "react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
-import { ActionGetProjectInfo } from "@/app/actions/admin/projects/get-project-info";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
@@ -31,15 +30,14 @@ function BoxItemChess({ property }: IThisProps) {
   );
 
   const [modalViewProperty, setModalViewProperty] = useState(false);
-  const [floor, setFloor] = useState<IFloor | null>(null);
+  // const [floor, setFloor] = useState<IFloor | null>(null);
   const [selectedFullPlan, setSelectedFullPlan] = useState<{
     plan: IPlan;
     property: IProperty;
   } | null>(null);
 
-  const [ourProjectDbInfo, serOurProjectDbInfo] = useState<IProjectData | null>(
-    null,
-  );
+  const [ourProjectDbInfo, serOurProjectDbInfo] =
+    useState<IProjectMerged | null>(null);
 
   function PrintTypePurpose(_property: IProperty) {
     if (_property.typePurpose === "residential") {
@@ -59,15 +57,12 @@ function BoxItemChess({ property }: IThisProps) {
 
   useEffect(() => {
     if (selectedFullPlan && selectedFullPlan?.plan?.projectId) {
-      ActionGetProjectInfo(selectedFullPlan.plan.projectId).then((res) => {
-        serOurProjectDbInfo(res.data as IProjectData);
-      });
-
       const findProject = projects.find(
-        (proj) => proj.project_id === selectedFullPlan?.plan?.projectId,
+        (proj) => proj.project_id === selectedFullPlan.plan.projectId,
       );
+      serOurProjectDbInfo(findProject as IProjectMerged);
 
-      setSelectedProject(findProject || null);
+      setSelectedProject(findProject as IProjectMerged);
     }
   }, [selectedFullPlan]);
 
@@ -91,32 +86,30 @@ function BoxItemChess({ property }: IThisProps) {
     if (property && property.status === "AVAILABLE" && !isHidden) {
       setModalViewProperty(true);
 
-      console.log(property, "propertypropertypropertyproperty");
-
       ActionGetProjectsProperty("/plan", {
         isArchive: false,
         status: ["AVAILABLE"],
-        layoutCode: [property.layoutCode],
       }).then((result) => {
-        console.log(result, "/plan/plan/plan/plan");
-
-        setSelectedFullPlan({ plan: result.data[0], property });
-      });
-
-      console.log(property.house_id, "property.house_id");
-      ActionGetProjectsProperty("/floor", {
-        houseId: property.house_id,
-      }).then((result) => {
-        console.log(result, "/floor/floor/floor/floor");
-
-        const fontFloor = result.find((floor: any) =>
-          floor.areas.some((_a: any) => _a.propertyId === property.id),
+        const AllPlans: IPlan = result.data.find((plan: IPlan) =>
+          plan.properties.find((id) => +id === property.id),
         );
 
-        if (fontFloor) {
-          setFloor(fontFloor);
-        }
+        setSelectedFullPlan({ plan: AllPlans, property });
       });
+
+      // ActionGetProjectsProperty("/floor", {
+      //   houseId: property.house_id,
+      // }).then((result) => {
+      //   console.log(result, "/floor/floor/floor/floor");
+      //
+      //   // const fontFloor = result.find((floor: any) =>
+      //   //   floor.areas.some((_a: any) => _a.propertyId === property.id),
+      //   // );
+      //
+      //   // if (fontFloor) {
+      //   //   setFloor(fontFloor);
+      //   // }
+      // });
     }
   }
 
@@ -181,7 +174,7 @@ function BoxItemChess({ property }: IThisProps) {
           <ModalContent className="rounded-[18px] sm:rounded-[35px] max-w-[1226px] !z-[10000000]">
             <ModalBody className="max-w-[1226px] p-4 sm:p-10">
               <div className="wrapper !p-0">
-                <div className="flex-je-c mb-4">
+                <div className="flex-je-c mb-4 relative z-[100]">
                   <Button
                     className="text-white min-w-[24px] sm:min-w-[30px] min-h-[24px] sm:min-h-[30px] text-[20px] rounded-[7px]"
                     color="primary"
@@ -190,8 +183,8 @@ function BoxItemChess({ property }: IThisProps) {
                     <i className="fa-regular fa-xmark"></i>
                   </Button>
                 </div>
-                <div id="card-popup" className="">
-                  {selectedFullPlan && floor ? (
+                <div id="card-popup" className="mt-[-60px]">
+                  {selectedFullPlan ? (
                     <div className="popup-body !p-0">
                       <div className="info flex-jsb-s lg:gap-10 flex-col lg:flex-row !px-0 !max-w-full">
                         <div className="texts lg:min-w-[350px] !w-full">
@@ -300,11 +293,16 @@ function BoxItemChess({ property }: IThisProps) {
                           </div>
                         </div>
                         <div className="img-wrap">
-                          <img
-                            src={selectedFullPlan.plan.image.big}
-                            alt=""
-                            className="w-full"
-                          />
+                          <Link
+                            href={selectedFullPlan.plan.image.big}
+                            target="_blank"
+                          >
+                            <img
+                              src={selectedFullPlan.plan.image.big}
+                              alt=""
+                              className="w-full"
+                            />
+                          </Link>
                         </div>
                       </div>
                     </div>
