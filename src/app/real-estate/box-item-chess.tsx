@@ -183,7 +183,7 @@ function BoxItemChess({ property }: IThisProps) {
                     <i className="fa-regular fa-xmark"></i>
                   </Button>
                 </div>
-                <div id="card-popup" className="mt-[-60px]">
+                <div id="card-popup" className="sm:mt-[-60px]">
                   {selectedFullPlan ? (
                     <div className="popup-body !p-0">
                       <div className="info flex-jsb-s lg:gap-10 flex-col lg:flex-row !px-0 !max-w-full">
@@ -301,7 +301,7 @@ function BoxItemChess({ property }: IThisProps) {
                             <img
                               src={selectedFullPlan.plan.image.big}
                               alt=""
-                              className="w-full min-w-[470px]"
+                              className="w-full sm:min-w-[470px]"
                             />
                           </Link>
                         </div>
