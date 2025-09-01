@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { SITE_URL } from "@/utils/consts";
 
 interface IInterface {
   modalSelectedHouse: IHouse | null;
@@ -27,13 +28,21 @@ export const modalsSite = createSlice({
       state.objectInfo = action.payload;
     },
     setModalSendRequest: (state, action: PayloadAction<boolean>) => {
-      state.modalSendRequest = action.payload;
+      if (window.innerWidth > 576) {
+        state.modalSendRequest = action.payload;
+      } else {
+        window.location.href = SITE_URL.SEND_REQUEST;
+      }
     },
     setModalSendRequestGalaOne: (
       state,
       action: PayloadAction<string | null>,
     ) => {
-      state.modalSendRequestGlaOne = action.payload;
+      if (window.innerWidth > 576) {
+        state.modalSendRequestGlaOne = action.payload;
+      } else {
+        window.location.href = SITE_URL.SEND_REQUEST;
+      }
     },
   },
 });

@@ -15,6 +15,7 @@ export const SITE_URL = {
   SEND_CALLBACK: "/send-callback",
   COOKIE: "/cookie",
   CONTACT: "/contact",
+  SEND_REQUEST: "/send-request",
   PROJECTS: "/projects",
   PROJECTS_GALA_ONE: "/projects/gala-one",
   REAL_ESTATE: "/real-estate",
