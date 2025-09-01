@@ -83,6 +83,7 @@ async function startParsing() {
                 where: { property_id: propertyId }, // ⚠️ միայն unique field
                 data: { data },
               });
+
               console.log(
                 `🔄 Թարմացված property_id: ${propertyId} (${i + index + 1}/${
                   allPropertyIds.length
