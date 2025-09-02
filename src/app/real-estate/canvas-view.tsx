@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { filesLink } from "@/utils/consts";
 import { ActionGetObject } from "@/app/actions/admin/objects/get-objects";
 import clsx from "clsx";
-import { Spinner, Chip, Divider, addToast } from "@heroui/react";
+import { Spinner, Chip, Divider, addToast, Button } from "@heroui/react";
 import { ActionGetProjectsProperty } from "@/app/actions/projects/get-projects-property";
 import { formatKzt } from "@/utils/helpers";
 import { setHouse, setObjectInfo } from "@/redux/modals";
@@ -130,6 +130,7 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
         status: ["AVAILABLE"],
         id: polygon.id,
       });
+
       const house = result.data.find((h: IHouse) => h.id === polygon.id);
       if (house) {
         setTooltipData(house);
@@ -288,6 +289,9 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
   };
 
   // ---------- Click on polygon ----------
+
+  let currentTooltipData = tooltipData;
+
   const handleClickCanvas = async (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (isDragging) {
       return;
@@ -303,7 +307,6 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
 
     addToast({ title: "Подождите пожалуйста", color: "warning" });
 
-    let currentTooltipData = tooltipData;
     if (!currentTooltipData || currentTooltipData.id !== clickedPoly.id) {
       const house = await fetchTooltipData(clickedPoly);
       if (!house) {
@@ -313,21 +316,23 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
       currentTooltipData = house;
     }
 
-    ActionGetObjectInfo(clickedPoly.id, "/house").then((res) => {
-      if (res.status) {
-        const object: any = { ...res.data };
-        ActionGetObject(object.id)
-          .then((resultObjects) => {
-            dispatch(setHouse(currentTooltipData));
-            dispatch(setObjectInfo(resultObjects.data as IObjectData[]));
-            addToast({
-              title: `Спасибо, можете смотреть ${currentTooltipData.title}`,
-              color: "success",
-            });
-          })
-          .finally(() => onClose());
-      }
-    });
+    if (window.innerWidth > 640) {
+      ActionGetObjectInfo(clickedPoly.id, "/house").then((res) => {
+        if (res.status) {
+          const object: any = { ...res.data };
+          ActionGetObject(object.id)
+            .then((resultObjects) => {
+              dispatch(setHouse(currentTooltipData));
+              dispatch(setObjectInfo(resultObjects.data as IObjectData[]));
+              addToast({
+                title: `Спасибо, можете смотреть ${currentTooltipData?.title}`,
+                color: "success",
+              });
+            })
+            .finally(() => onClose());
+        }
+      });
+    }
   };
 
   // ---------- Helpers ----------
@@ -402,6 +407,28 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
     ctx.stroke();
   };
 
+  function openMobilePlanModal() {
+    if (hoveredPolygon) {
+      addToast({ title: "Подождите пожалуйста", color: "warning" });
+
+      ActionGetObjectInfo(hoveredPolygon.id, "/house").then((res) => {
+        if (res.status) {
+          const object: any = { ...res.data };
+          ActionGetObject(object.id)
+            .then((resultObjects) => {
+              dispatch(setHouse(currentTooltipData));
+              dispatch(setObjectInfo(resultObjects.data as IObjectData[]));
+              addToast({
+                title: `Спасибо, можете смотреть`,
+                color: "success",
+              });
+            })
+            .finally(() => onClose());
+        }
+      });
+    }
+  }
+
   useEffect(() => {
     redraw();
   }, [polygons, imageLoaded, scale, offset, hoveredPolygon]);
@@ -434,17 +461,18 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
       {/* Tooltip */}
       <div
         className={clsx(
-          "absolute bg-white text-black p-4 rounded-[12px] shadow-lg z-[2000] pointer-events-none transition min-w-[350px] h-[250px] hidden sm:block",
+          "absolute bg-white text-black p-4 rounded-[12px] shadow-lg z-[2000] sm:pointer-events-none transition w-full sm:min-w-[350px] min-h-[250px] max-[639px]:left-0 max-[639px]:bottom-0",
           {
             "opacity-100": hoveredPolygon,
             "opacity-0": !hoveredPolygon,
           },
         )}
         style={{
-          left: `${tooltipPosition.x}px`,
-          top: `${tooltipPosition.y}px`,
-          transform: "translate(20%, -40%)",
-          width: "300px",
+          left: `${window.innerWidth > 639 ? tooltipPosition.x : 0}px`,
+          top: window.innerWidth > 639 ? `${tooltipPosition.y}px` : "unset",
+          transform:
+            window.innerWidth > 639 ? "translate(20%, -40%)" : "inherit",
+          width: window.innerWidth > 639 ? "300px" : "100%",
         }}
       >
         {loadingData ? (
@@ -455,12 +483,22 @@ function CanvasView({ objectInfo, project, onClose }: IThisProps) {
           <div className="w-full">
             <div className="w-full flex-jsb-c">
               <h3 className="font-semibold">{tooltipData.title}</h3>
-              <Chip>
-                {tooltipData.salesStart?.month}.{tooltipData.salesStart?.year}
-              </Chip>
+              {window.innerWidth > 640 ? (
+                tooltipData.salesStart ? (
+                  <Chip>
+                    {tooltipData.salesStart?.month}.
+                    {tooltipData.salesStart?.year}
+                  </Chip>
+                ) : null
+              ) : (
+                <Button size="sm" color="primary" onPress={openMobilePlanModal}>
+                  Смотреть планировки
+                  <i className="fa-regular fa-chevron-right"></i>
+                </Button>
+              )}
             </div>
             <Divider className="my-4" />
-            <div className="flex-js-c mb-2">
+            <div className="flex-js-s mb-2">
               <span className="text-black/60 mr-2">Адрес:</span>
               {tooltipData.address.full}
             </div>

@@ -68,7 +68,11 @@ function MainTemplate({
 
   return (
     <HeroUIProvider>
-      <ToastProvider />
+      <ToastProvider
+        toastProps={{
+          timeout: 1500,
+        }}
+      />
       <Header info={headerInfo} />
       {pageOff ? (
         <div className="w-full h-[calc(100dvh-165px)] bg-[#132C5E] flex-jc-c flex-col gap-4">

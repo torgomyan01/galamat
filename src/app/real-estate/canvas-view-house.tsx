@@ -43,7 +43,6 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
   const virtualHeight = 700;
 
   const [polygons, setPolygons] = useState<Polygon[]>([]);
-  const currentPolygon: Polygon | null = null;
   const [imageLoaded, setImageLoaded] = useState(false);
   const [hoveredPolygon, setHoveredPolygon] = useState<Polygon | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
@@ -51,6 +50,8 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
   const [loadingData, setLoadingData] = useState(false);
   const [activeHoverId, setActiveHoverId] = useState<number | null>(null);
   const [viewPlan, setViewPlan] = useState<boolean>(false);
+  const [currentPolygon, setCurrentPolygon] = useState<Polygon | null>(null);
+
   // Zoom + Pan
   const [scale, setScale] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -62,6 +63,16 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
 
   const [activeHouse, setActiveHouse] = useState<IObjectData | null>(null);
   const [chess, setChess] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (projects) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "unset";
+    }
+  }, [projects]);
 
   function CloseModal() {
     setChess(false);
@@ -159,18 +170,16 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
   // Hover - FIXED: useCallback-ը ճիշտ է օգտագործված
   const fetchTooltipData = async (polygon: Polygon) => {
     setLoadingData(true);
-    if (objectInfo.length && objectInfo[0].api_url === "/house") {
-      ActionGetProjectsProperty("/floor", {
-        houseId: objectInfo[0].project_house_id,
-      }).then((result) => {
-        setLoadingData(false);
-        const _dats: IFloor[] = [...result];
-        const filterResult = _dats.find((floor) => floor.id === polygon.id);
-        if (filterResult) {
-          setTooltipData(filterResult);
-        }
-      });
-    }
+    ActionGetProjectsProperty("/floor", {
+      houseId: objectInfo[0].project_house_id,
+    }).then((result) => {
+      setLoadingData(false);
+      const _dats: IFloor[] = [...result];
+      const filterResult = _dats.find((floor) => floor.id === polygon.id);
+      if (filterResult) {
+        setTooltipData(filterResult);
+      }
+    });
   };
 
   // FIXED: Debounce-ը ճիշտ է իրականացված
@@ -228,9 +237,28 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
     }
   };
 
+  console.log(viewPlan);
+
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    isDraggingRef.current = true;
-    lastMouseRef.current = { x: e.clientX, y: e.clientY };
+    const { x, y } = getVirtualCoords(e.clientX, e.clientY);
+
+    const clickedPoly = polygons.find((poly) =>
+      isPointInPolygon({ x, y }, poly.points),
+    );
+
+    console.log(clickedPoly, "clickedPolyclickedPoly", objectInfo);
+
+    if (clickedPoly) {
+      setViewPlan(true);
+      fetchTooltipData(clickedPoly);
+    }
+
+    if (currentPolygon) {
+      setCurrentPolygon({
+        ...currentPolygon,
+        points: [...currentPolygon.points, { x, y }],
+      });
+    }
   };
 
   const handleMouseUp = () => {
@@ -338,6 +366,8 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
     redraw();
   }, [polygons, currentPolygon, imageLoaded, scale, offset, hoveredPolygon]);
 
+  console.log(tooltipData, viewPlan, objectInfo.length);
+
   return (
     <>
       <div
@@ -387,7 +417,7 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
         </div>
 
         <div className="absolute top-[50px] md:top-6 left-0 flex-jc-c w-full z-[1000000]">
-          <div className="w-[300px] h-12 rounded-[6px] flex-jsb-c backdrop-blur-[10px] bg-black/30">
+          <div className="w-[calc(100%-44px)] sm:w-[300px] h-9 sm:h-12 rounded-[6px] flex-jsb-c backdrop-blur-[10px] bg-black/30">
             <Button
               variant={chess ? "bordered" : "flat"}
               onPress={() => setChess(false)}
