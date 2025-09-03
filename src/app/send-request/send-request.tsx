@@ -95,7 +95,7 @@ function SendRequest() {
                       <h1 className="text-[32px] lg:text-[54px] font-medium md:leading-[46px]">
                         Оставьте заявку
                       </h1>
-                      <h3 className="text-[18px] lg:text-[27px] md:mt-4 mb-4">
+                      <h3 className="text-[18px] md:mt-4 mb-4">
                         Мы с вами свяжемся в скором времени
                       </h3>
                       <div className="mb-4">
