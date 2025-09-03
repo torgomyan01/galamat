@@ -2,15 +2,13 @@
 
 import {
   Button,
-  Checkbox,
-  CheckboxGroup,
   Divider,
   Modal,
   ModalBody,
   ModalContent,
   NumberInput,
-  Radio,
-  RadioGroup,
+  Select,
+  SelectItem,
 } from "@heroui/react";
 import IconCompany from "@/components/common/icons/icon-options";
 import React, { useEffect, useState } from "react";
@@ -26,14 +24,21 @@ import ModalSelectFloor from "@/components/common/horizontal-filter/modal-select
 import ModalSelectPrice from "@/components/common/horizontal-filter/modal-select-price";
 import ModalSelectPlace from "@/components/common/horizontal-filter/modal-select-place";
 import { useTranslate } from "@/hooks/useTranslate";
+import { motion } from "framer-motion";
 
 interface IThisProps {
   maxPrice: number;
   maxArea: number;
   projects: IProjectMerged[];
+  page: "home" | "estate";
 }
 
-function MobileHorizontalFilter({ maxPrice, maxArea, projects }: IThisProps) {
+function MobileHorizontalFilter({
+  maxPrice,
+  maxArea,
+  projects,
+  page = "home",
+}: IThisProps) {
   const $t = useTranslate();
   const dispatch = useDispatch();
   const filterParams = useSelector(
@@ -97,19 +102,16 @@ function MobileHorizontalFilter({ maxPrice, maxArea, projects }: IThisProps) {
   }
 
   useEffect(() => {
-    ActionGetProjectsProperty("/house", {
-      isArchive: false,
-      status: ["AVAILABLE"],
-      projectIds: projects.map((_proj) => _proj.project_id),
-    }).then((result) => {
-      setHouses(result.data);
-    });
+    if (filterParams.projectId) {
+      ActionGetProjectsProperty("/house", {
+        isArchive: false,
+        status: ["AVAILABLE"],
+        ...filterParams,
+      }).then((result) => {
+        setHouses(result.data);
+      });
+    }
   }, [filterParams]);
-
-  function selectProjects(value: string[]) {
-    const getValuesNumber = value.map((__proj) => +__proj);
-    ChangeParams("projectIds", getValuesNumber);
-  }
 
   function SubmitForm(e: any) {
     e.preventDefault();
@@ -125,52 +127,55 @@ function MobileHorizontalFilter({ maxPrice, maxArea, projects }: IThisProps) {
         >
           <IconCompany />
         </Button>
-        <div className="w-full overflow-x-auto bottom-scroll-hidden">
-          <div className="flex-js-c gap-2 w-[750px]">
-            <Button
-              className="rounded-[4px] bg-white text-[12px]"
-              onPress={() => setModalSelectProjects(true)}
-            >
-              {$t("residential_complex")}
-              <i className="fa-regular fa-chevron-down"></i>
-            </Button>
-            <Button
-              className="rounded-[4px] bg-white text-[12px]"
-              onPress={() => setModalSelectHouse(true)}
-            >
-              {$t("objects_")}
-              <i className="fa-regular fa-chevron-down"></i>
-            </Button>
-            <Button
-              className="rounded-[4px] bg-white text-[12px]"
-              onPress={() => setModalSelectFloor(true)}
-            >
-              {$t("floor__")}
-              <i className="fa-regular fa-chevron-down"></i>
-            </Button>
-            <Button
-              className="rounded-[4px] bg-white text-[12px]"
-              onPress={() => setModalSelectAreas(true)}
-            >
-              {$t("roominess")}
-              <i className="fa-regular fa-chevron-down"></i>
-            </Button>
-            <Button
-              className="rounded-[4px] bg-white text-[12px]"
-              onPress={() => setModalSelectPrice(true)}
-            >
-              {$t("price")}
-              <i className="fa-regular fa-chevron-down"></i>
-            </Button>
-            <Button
-              className="rounded-[4px] bg-white text-[12px]"
-              onPress={() => setModalSelectPlace(true)}
-            >
-              {$t("area_m")}
-              <i className="fa-regular fa-chevron-down"></i>
-            </Button>
+
+        {page !== "estate" ? (
+          <div className="w-full overflow-x-auto bottom-scroll-hidden">
+            <div className="flex-js-c gap-2 w-[750px]">
+              <Button
+                className="rounded-[4px] bg-white text-[12px]"
+                onPress={() => setModalSelectProjects(true)}
+              >
+                {$t("residential_complex")}
+                <i className="fa-regular fa-chevron-down"></i>
+              </Button>
+              <Button
+                className="rounded-[4px] bg-white text-[12px]"
+                onPress={() => setModalSelectHouse(true)}
+              >
+                {$t("objects_")}
+                <i className="fa-regular fa-chevron-down"></i>
+              </Button>
+              <Button
+                className="rounded-[4px] bg-white text-[12px]"
+                onPress={() => setModalSelectFloor(true)}
+              >
+                {$t("floor__")}
+                <i className="fa-regular fa-chevron-down"></i>
+              </Button>
+              <Button
+                className="rounded-[4px] bg-white text-[12px]"
+                onPress={() => setModalSelectAreas(true)}
+              >
+                {$t("roominess")}
+                <i className="fa-regular fa-chevron-down"></i>
+              </Button>
+              <Button
+                className="rounded-[4px] bg-white text-[12px]"
+                onPress={() => setModalSelectPrice(true)}
+              >
+                {$t("price")}
+                <i className="fa-regular fa-chevron-down"></i>
+              </Button>
+              <Button
+                className="rounded-[4px] bg-white text-[12px]"
+                onPress={() => setModalSelectPlace(true)}
+              >
+                {$t("area_m")}
+                <i className="fa-regular fa-chevron-down"></i>
+              </Button>
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
 
       <ModalSelectProject
@@ -178,7 +183,13 @@ function MobileHorizontalFilter({ maxPrice, maxArea, projects }: IThisProps) {
         onClose={() => setModalSelectProjects(false)}
         projects={projects}
         onClearFilter={ClearFilter}
-        onSelectProjects={selectProjects}
+        onSelectProjects={(e) => {
+          ChangeParams("projectId", e.currentKey ? +e.currentKey : 0);
+
+          if (!e.currentKey) {
+            setHouses(null);
+          }
+        }}
       />
 
       <ModalSelectObject
@@ -226,188 +237,259 @@ function MobileHorizontalFilter({ maxPrice, maxArea, projects }: IThisProps) {
         size="full"
       >
         <ModalContent as="form" onSubmit={SubmitForm}>
-          <ModalBody className="pt-6 overflow-y-auto">
-            <div className="w-full h-full overflow-y-auto flex-js-s gap-4 flex-col">
-              <div className="w-full flex-js-s gap-2 flex-col">
-                <h3 className="text-[12px] font-medium">Жилые комплексы</h3>
-                <CheckboxGroup onValueChange={selectProjects}>
-                  {projects.map((project) => (
-                    <Checkbox
-                      key={`__proj__${project.id}`}
-                      value={`${project.project_id}`}
-                      className="filter-checkbox"
-                      classNames={{ label: "text-[12px]" }}
+          <ModalBody className="pt-6 px-4 overflow-y-auto">
+            <div className="w-full h-full overflow-y-auto">
+              <div className="pr-2 w-full flex-js-s gap-4 flex-col">
+                <div className="w-full">
+                  <h3 className="text-[12px] font-medium mb-1">
+                    {$t("residential_complex")}
+                  </h3>
+                  <Select
+                    placeholder="Выбрайте проект"
+                    selectedKeys={[`${filterParams?.projectId || 0}`]}
+                    className="w-full rounded-[8px] "
+                    color="primary"
+                    variant="flat"
+                    radius="sm"
+                    onSelectionChange={(e) => {
+                      ChangeParams(
+                        "projectId",
+                        e.currentKey ? +e.currentKey : 0,
+                      );
+
+                      if (!e.currentKey) {
+                        setHouses(null);
+                      }
+                    }}
+                  >
+                    {projects.map((projectName: IProjectMerged) => (
+                      <SelectItem key={`${projectName.project_id}`}>
+                        {projectName.title}
+                      </SelectItem>
+                    ))}
+                  </Select>
+                </div>
+
+                <Divider />
+
+                {houses ? (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="w-full"
                     >
-                      {project.title}
-                    </Checkbox>
-                  ))}
-                </CheckboxGroup>
-              </div>
+                      <h3 className="text-[12px] font-medium mb-1">
+                        {$t("residential_complex")}
+                      </h3>
+                      <Select
+                        placeholder="Выбрайте объекты"
+                        selectedKeys={[`${filterParams?.houseId || 0}`]}
+                        className="w-full rounded-[8px]"
+                        color="primary"
+                        variant="flat"
+                        radius="sm"
+                        onSelectionChange={(e) =>
+                          ChangeParams(
+                            "houseId",
+                            e.currentKey ? +e.currentKey : 0,
+                          )
+                        }
+                      >
+                        {houses.map((house: IHouse) => (
+                          <SelectItem key={`${house.id}`}>
+                            {house.title}
+                          </SelectItem>
+                        ))}
+                      </Select>
+                    </motion.div>
 
-              <Divider />
+                    <Divider />
+                  </>
+                ) : null}
 
-              <div className="w-full flex-js-s gap-2 flex-col">
-                <h3 className="text-[12px] font-medium">Объекты</h3>
+                <div className="w-full flex-js-s gap-2 flex-col">
+                  <h3 className="text-[12px] font-medium">Комнатность</h3>
+                  <div className="flex-js-c gap-1">
+                    {Array.from({ length: 4 }).map((room, index) => (
+                      <span
+                        key={`rooms-${index}`}
+                        className={clsx(
+                          "w-[40px] h-[34px] border-[2px] border-black/10 !rounded-[4px] text-[14px] flex-jc-c text-black/70",
+                          {
+                            "!bg-blue !text-white":
+                              filterParams?.rooms?.includes(index + 1),
+                          },
+                        )}
+                        onClick={() => toggleNumber(index + 1)}
+                      >
+                        {index + 1}
+                        {index + 1 === 4 ? "+" : ""}
+                      </span>
+                    ))}
+                  </div>
+                </div>
 
-                <RadioGroup
-                  onValueChange={(value) => ChangeParams("houseId", +value)}
-                >
-                  {houses?.map((house) => (
-                    <Radio
-                      key={`house__${house.id}`}
-                      value={`${house.id}`}
-                      className="filter-radio"
-                      classNames={{ label: "text-[12px]" }}
-                    >
-                      {house.title}
-                    </Radio>
-                  ))}
-                </RadioGroup>
-              </div>
+                <Divider />
 
-              <Divider />
+                <div className="w-full flex-js-s gap-2 flex-col">
+                  <h3 className="text-[12px] font-medium">Стоимость</h3>
 
-              <div className="w-full flex-js-s gap-2 flex-col">
-                <h3 className="text-[12px] font-medium">Комнатность</h3>
-                <div className="flex-js-c gap-1">
-                  {Array.from({ length: 4 }).map((room, index) => (
-                    <span
-                      key={`rooms-${index}`}
-                      className={clsx(
-                        "w-[40px] h-[34px] border-[2px] border-black/10 !rounded-[4px] text-[14px] flex-jc-c text-black/70",
-                        {
-                          "!bg-blue !text-white": filterParams?.rooms?.includes(
-                            index + 1,
-                          ),
-                        },
-                      )}
-                      onClick={() => toggleNumber(index + 1)}
-                    >
-                      {index + 1}
-                      {index + 1 === 4 ? "+" : ""}
-                    </span>
-                  ))}
+                  <div className="w-full grid grid-cols-2 gap-2">
+                    <label>
+                      <span className="text-[12px] text-[#9D9D9D] mb-1 block">
+                        От
+                      </span>
+                      <NumberInput
+                        size="sm"
+                        className="h-[30px]"
+                        variant="bordered"
+                        minValue={0}
+                        color="primary"
+                        onValueChange={(value: number) =>
+                          ChangeParams("price[min]", value)
+                        }
+                        endContent="₸"
+                      />
+                    </label>
+                    <label>
+                      <span className="text-[12px] text-[#9D9D9D] mb-1 block">
+                        До
+                      </span>
+                      <NumberInput
+                        size="sm"
+                        maxValue={maxPrice}
+                        className="h-[30px]"
+                        variant="bordered"
+                        color="primary"
+                        onValueChange={(value: number) =>
+                          ChangeParams("price[max]", value)
+                        }
+                        endContent="₸"
+                      />
+                    </label>
+                  </div>
+                </div>
+
+                <Divider className="mt-6" />
+
+                <div className="w-full flex-js-s gap-2 flex-col">
+                  <h3 className="text-[12px] font-medium">Площадь М²</h3>
+
+                  <div className="w-full grid grid-cols-2 gap-2">
+                    <label>
+                      <span className="text-[12px] text-[#9D9D9D] mb-1 block">
+                        От
+                      </span>
+                      <NumberInput
+                        size="sm"
+                        className="h-[30px]"
+                        variant="bordered"
+                        minValue={10}
+                        defaultValue={10}
+                        color="primary"
+                        onValueChange={(value: number) =>
+                          ChangeParams("area[min]", value)
+                        }
+                        endContent="м²"
+                      />
+                    </label>
+                    <label>
+                      <span className="text-[12px] text-[#9D9D9D] mb-1 block">
+                        До
+                      </span>
+                      <NumberInput
+                        size="sm"
+                        maxValue={maxArea}
+                        defaultValue={maxArea}
+                        className="h-[30px]"
+                        variant="bordered"
+                        color="primary"
+                        onValueChange={(value: number) =>
+                          ChangeParams("area[max]", value)
+                        }
+                        endContent="м²"
+                      />
+                    </label>
+                  </div>
+                </div>
+
+                <Divider className="mt-6" />
+
+                <div className="w-full flex-js-s gap-2 flex-col">
+                  <h3 className="text-[12px] font-medium">Этаж</h3>
+
+                  <div className="w-full grid grid-cols-2 gap-2">
+                    <label>
+                      <span className="text-[12px] text-[#9D9D9D] mb-1 block">
+                        От
+                      </span>
+                      <NumberInput
+                        size="sm"
+                        className="h-[30px]"
+                        variant="bordered"
+                        minValue={1}
+                        color="primary"
+                        onValueChange={(value: number) =>
+                          ChangeParams("minFloor", value)
+                        }
+                        defaultValue={1}
+                      />
+                    </label>
+                    <label>
+                      <span className="text-[12px] text-[#9D9D9D] mb-1 block">
+                        До
+                      </span>
+                      <NumberInput
+                        size="sm"
+                        maxValue={100}
+                        defaultValue={100}
+                        className="h-[30px]"
+                        color="primary"
+                        onValueChange={(value: number) =>
+                          ChangeParams("maxFloor", value)
+                        }
+                        variant="bordered"
+                      />
+                    </label>
+                  </div>
                 </div>
               </div>
 
-              <Divider />
+              {/*<div className="w-full flex-js-s gap-2 flex-col">*/}
+              {/*  <h3 className="text-[12px] font-medium">Жилые комплексы</h3>*/}
+              {/*  <CheckboxGroup onValueChange={selectProjects}>*/}
+              {/*    {projects.map((project) => (*/}
+              {/*      <Checkbox*/}
+              {/*        key={`__proj__${project.id}`}*/}
+              {/*        value={`${project.project_id}`}*/}
+              {/*        className="filter-checkbox"*/}
+              {/*        classNames={{ label: "text-[12px]" }}*/}
+              {/*      >*/}
+              {/*        {project.title}*/}
+              {/*      </Checkbox>*/}
+              {/*    ))}*/}
+              {/*  </CheckboxGroup>*/}
+              {/*</div>*/}
 
-              <div className="w-full flex-js-s gap-2 flex-col">
-                <h3 className="text-[12px] font-medium">Стоимость</h3>
+              {/*<div className="w-full flex-js-s gap-2 flex-col">*/}
+              {/*  <h3 className="text-[12px] font-medium">Объекты</h3>*/}
 
-                <div className="w-full grid grid-cols-2 gap-2">
-                  <label>
-                    <span className="text-[12px] text-[#9D9D9D] mb-1 block">
-                      От
-                    </span>
-                    <NumberInput
-                      size="sm"
-                      className="h-[30px]"
-                      variant="bordered"
-                      minValue={0}
-                      onValueChange={(value: number) =>
-                        ChangeParams("price[min]", value)
-                      }
-                      endContent="₸"
-                    />
-                  </label>
-                  <label>
-                    <span className="text-[12px] text-[#9D9D9D] mb-1 block">
-                      До
-                    </span>
-                    <NumberInput
-                      size="sm"
-                      maxValue={maxPrice}
-                      className="h-[30px]"
-                      variant="bordered"
-                      onValueChange={(value: number) =>
-                        ChangeParams("price[max]", value)
-                      }
-                      endContent="₸"
-                    />
-                  </label>
-                </div>
-              </div>
-
-              <Divider className="mt-6" />
-
-              <div className="w-full flex-js-s gap-2 flex-col">
-                <h3 className="text-[12px] font-medium">Площадь М²</h3>
-
-                <div className="w-full grid grid-cols-2 gap-2">
-                  <label>
-                    <span className="text-[12px] text-[#9D9D9D] mb-1 block">
-                      От
-                    </span>
-                    <NumberInput
-                      size="sm"
-                      className="h-[30px]"
-                      variant="bordered"
-                      minValue={10}
-                      defaultValue={10}
-                      onValueChange={(value: number) =>
-                        ChangeParams("area[min]", value)
-                      }
-                      endContent="м²"
-                    />
-                  </label>
-                  <label>
-                    <span className="text-[12px] text-[#9D9D9D] mb-1 block">
-                      До
-                    </span>
-                    <NumberInput
-                      size="sm"
-                      maxValue={maxArea}
-                      defaultValue={maxArea}
-                      className="h-[30px]"
-                      variant="bordered"
-                      onValueChange={(value: number) =>
-                        ChangeParams("area[max]", value)
-                      }
-                      endContent="м²"
-                    />
-                  </label>
-                </div>
-              </div>
-
-              <Divider className="mt-6" />
-
-              <div className="w-full flex-js-s gap-2 flex-col">
-                <h3 className="text-[12px] font-medium">Этаж</h3>
-
-                <div className="w-full grid grid-cols-2 gap-2">
-                  <label>
-                    <span className="text-[12px] text-[#9D9D9D] mb-1 block">
-                      От
-                    </span>
-                    <NumberInput
-                      size="sm"
-                      className="h-[30px]"
-                      variant="bordered"
-                      minValue={1}
-                      onValueChange={(value: number) =>
-                        ChangeParams("minFloor", value)
-                      }
-                      defaultValue={1}
-                    />
-                  </label>
-                  <label>
-                    <span className="text-[12px] text-[#9D9D9D] mb-1 block">
-                      До
-                    </span>
-                    <NumberInput
-                      size="sm"
-                      maxValue={100}
-                      defaultValue={100}
-                      className="h-[30px]"
-                      onValueChange={(value: number) =>
-                        ChangeParams("maxFloor", value)
-                      }
-                      variant="bordered"
-                    />
-                  </label>
-                </div>
-              </div>
+              {/*  <RadioGroup*/}
+              {/*    onValueChange={(value) => ChangeParams("houseId", +value)}*/}
+              {/*  >*/}
+              {/*    {houses?.map((house) => (*/}
+              {/*      <Radio*/}
+              {/*        key={`house__${house.id}`}*/}
+              {/*        value={`${house.id}`}*/}
+              {/*        className="filter-radio"*/}
+              {/*        classNames={{ label: "text-[12px]" }}*/}
+              {/*      >*/}
+              {/*        {house.title}*/}
+              {/*      </Radio>*/}
+              {/*    ))}*/}
+              {/*  </RadioGroup>*/}
+              {/*</div>*/}
             </div>
           </ModalBody>
           <ModalFooter>

@@ -9,7 +9,7 @@ function Facade() {
       allowFullScreen
       scrolling="no"
       className="h-[60dvh]"
-      src="https://kuula.co/share/hxH0x?logo=1&info=0&logosize=110&fs=1&vr=0&thumbs=3&inst=0"
+      src="https://kuula.co/share/hCJtH?logo=1&info=0&logosize=110&fs=1&vr=0&thumbs=3&inst=0"
     />
   );
 }

@@ -1,19 +1,21 @@
 import {
   Button,
-  Checkbox,
-  CheckboxGroup,
   Modal,
   ModalBody,
   ModalContent,
+  Select,
+  SelectItem,
 } from "@heroui/react";
 import { ModalFooter } from "@heroui/modal";
 import React from "react";
+import { useTranslate } from "@/hooks/useTranslate";
+import { useSelector } from "react-redux";
 
 interface IThisProps {
   status: boolean;
   onClose: () => void;
   projects: IProjectMerged[];
-  onSelectProjects: (value: string[]) => void;
+  onSelectProjects: (value: any) => void;
   onClearFilter: () => void;
 }
 
@@ -24,24 +26,35 @@ function ModalSelectProject({
   onSelectProjects,
   onClearFilter,
 }: IThisProps) {
+  const $t = useTranslate();
+
+  const filterParams = useSelector(
+    (state: IFilterParamsState) => state.filterParams.params,
+  );
+
   return (
     <Modal isOpen={status} onOpenChange={onClose}>
       <ModalContent className="rounded-[12px_12px_0_0] w-full m-0">
         <ModalBody className="pt-6 overflow-y-auto">
-          <div className="w-full flex-js-s gap-3 flex-col">
-            <h3 className="text-[12px] font-medium">Жилые комплексы</h3>
-            <CheckboxGroup onValueChange={onSelectProjects}>
-              {projects.map((project) => (
-                <Checkbox
-                  key={`__proj__${project.id}`}
-                  value={`${project.project_id}`}
-                  className="filter-checkbox"
-                  classNames={{ label: "text-[12px]" }}
-                >
-                  {project.title}
-                </Checkbox>
+          <div className="w-full">
+            <h3 className="text-[12px] font-medium mb-1">
+              {$t("residential_complex")}
+            </h3>
+            <Select
+              placeholder="Выбрайте проект"
+              selectedKeys={[`${filterParams?.projectId || 0}`]}
+              className="w-full rounded-[8px] "
+              color="primary"
+              variant="flat"
+              radius="sm"
+              onSelectionChange={onSelectProjects}
+            >
+              {projects.map((projectName: IProjectMerged) => (
+                <SelectItem key={`${projectName.project_id}`}>
+                  {projectName.title}
+                </SelectItem>
               ))}
-            </CheckboxGroup>
+            </Select>
           </div>
         </ModalBody>
         <ModalFooter>

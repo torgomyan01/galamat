@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setHouse, setObjectInfo } from "@/redux/modals";
 import IconShakhmat from "@/components/common/icons/icon-shakhmat";
 import ShakhmatContent from "@/app/real-estate/shakhmat-content";
-import { BreadcrumbItem, Breadcrumbs } from "@heroui/react";
+import { BreadcrumbItem, Breadcrumbs, Button } from "@heroui/react";
 import { useTranslate } from "@/hooks/useTranslate";
 import { SITE_URL } from "@/utils/consts";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -53,7 +53,7 @@ function RealEstateContent({ projects }: IThisProps) {
   const tabItems = [
     {
       name: $t("facades"),
-      icon: <i className="fa-regular fa-map mr-2 text-[23px]" />,
+      icon: <i className="fa-regular fa-map mr-2 text-[18px] sm:text-[23px]" />,
       content: <Facade projects={projects} />,
     },
     {
@@ -68,7 +68,9 @@ function RealEstateContent({ projects }: IThisProps) {
     },
     {
       name: $t("premises"),
-      icon: <i className="fa-regular fa-list mr-2 text-[23px]" />,
+      icon: (
+        <i className="fa-regular fa-list mr-2 text-[20px] sm:text-[23px]" />
+      ),
       content: <TableEstate projectsIds={projectIds} />,
     },
     {
@@ -118,8 +120,8 @@ function RealEstateContent({ projects }: IThisProps) {
   return (
     <MainTemplate>
       <div className="filter-wrapper">
-        <div className="wrapper !pt-1">
-          <Breadcrumbs className="mb-10 text-[14px]">
+        <div className="wrapper !pt-2">
+          <Breadcrumbs className="mb-8 text-[14px]">
             <BreadcrumbItem href={SITE_URL.HOME}>{$t("home__")}</BreadcrumbItem>
             <BreadcrumbItem>{$t("real_estate")}</BreadcrumbItem>
           </Breadcrumbs>
@@ -128,8 +130,9 @@ function RealEstateContent({ projects }: IThisProps) {
             className={mobileFilter ? "open" : ""}
             projects={projects}
             onClose={() => setMobileFilter(false)}
+            page="estate"
           />
-          <div className="tab2-wrap relative">
+          <div className="tab2-wrap relative hidden sm:block">
             <div className="tab2 overflow-x-scroll bottom-scroll-hidden">
               <div className="tabs2">
                 {tabItems.map((item, i) => (
@@ -143,6 +146,23 @@ function RealEstateContent({ projects }: IThisProps) {
                     {item.icon}
                     {item.name}
                   </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-4 w-[calc(100%-50px)] ml-[50px] mt-[-65px]">
+            <div className="w-full overflow-x-auto bottom-scroll-hidden">
+              <div className="flex-js-c gap-2 w-[750px]">
+                {tabItems.map((item, i) => (
+                  <Button
+                    key={item.name}
+                    className="rounded-[4px] bg-white text-[12px]"
+                    onPress={() => handleTabChange(i)}
+                  >
+                    {item.icon}
+                    {item.name}
+                  </Button>
                 ))}
               </div>
             </div>

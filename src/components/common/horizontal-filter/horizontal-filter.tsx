@@ -25,6 +25,7 @@ interface IThisProps {
   projects: IProjectMerged[];
   onClose?: () => void;
   isCloseSelectProjects?: boolean;
+  page?: "home" | "estate";
 }
 
 function HorizontalFilter({
@@ -32,6 +33,7 @@ function HorizontalFilter({
   projects,
   onClose,
   isCloseSelectProjects = false,
+  page = "home",
 }: IThisProps) {
   const dispatch = useDispatch();
   const $t = useTranslate();
@@ -379,6 +381,7 @@ function HorizontalFilter({
         maxPrice={maxPrice}
         maxArea={maxArea}
         projects={projects}
+        page={page}
       />
     </>
   );

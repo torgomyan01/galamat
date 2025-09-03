@@ -44,7 +44,7 @@ function ContentOrleuProjectAlPanorama() {
             allowFullScreen
             scrolling="no"
             className="rounded-[8px]"
-            src="https://kuula.co/share/collection/7D5Ns?logo=1&info=0&logosize=110&fs=0&vr=0&autop=10&thumbs=-1&inst=ru"
+            src="https://kuula.co/share/hCJx3?logo=1&info=0&logosize=110&fs=1&vr=0&thumbs=3&inst=0"
           />
         </div>
       </div>

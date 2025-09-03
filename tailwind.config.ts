@@ -109,7 +109,10 @@ export default {
       themes: {
         light: {
           colors: {
-            primary: "#132C5E",
+            primary: {
+              DEFAULT: "#132C5E",
+              foreground: "#F8F2EA",
+            },
           },
         },
       },

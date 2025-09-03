@@ -29,7 +29,7 @@ function Objects() {
     },
     {
       name: $t("office_"),
-      content: <OurObjects height={500} className="h-[400px] sm:h-[631px]" />,
+      content: <OurObjects height={500} />,
     },
     {
       name: $t("objects_"),
