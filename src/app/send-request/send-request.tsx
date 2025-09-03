@@ -17,7 +17,6 @@ function SendRequest() {
 
   const [loading, setLoading] = useState(false);
   const [sendStatus, setSendStatus] = useState(false);
-
   function startCallBack(e: any) {
     e.preventDefault();
     const phone = e.target.phone.value;
