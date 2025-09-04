@@ -151,7 +151,7 @@ function RealEstateContent({ projects }: IThisProps) {
             </div>
           </div>
 
-          <div className="mb-4 w-[calc(100%-50px)] ml-[50px] mt-[-65px]">
+          <div className="mb-4 w-[calc(100%-50px)] ml-[50px] mt-[-65px] block sm:hidden">
             <div className="w-full overflow-x-auto bottom-scroll-hidden">
               <div className="flex-js-c gap-2 w-[750px]">
                 {tabItems.map((item, i) => (
