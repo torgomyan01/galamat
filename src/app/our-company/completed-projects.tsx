@@ -61,7 +61,7 @@ function CompletedProjects({ onSuccess }: IThisProps) {
             <SwiperSlide key={`home-ads-${i}`}>
               <Link
                 href={SITE_URL.REAL_ESTATE}
-                className="completed-projects-item cursor-pointer bg-white p-6 rounded-[16px]"
+                className="completed-projects-item cursor-pointer bg-white p-6 rounded-[16px] transition transform hover:scale-[1.01] origin-top-center hover:shadow"
               >
                 <div className="relative">
                   <Image
