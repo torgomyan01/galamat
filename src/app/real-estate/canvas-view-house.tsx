@@ -65,14 +65,14 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
   const [chess, setChess] = useState<boolean>(false);
 
   useEffect(() => {
-    if (projects) {
+    if (objectInfo.length) {
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
       document.documentElement.style.overflow = "unset";
     }
-  }, [projects]);
+  }, [objectInfo]);
 
   function CloseModal() {
     setChess(false);
@@ -237,16 +237,12 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
     }
   };
 
-  console.log(viewPlan);
-
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const { x, y } = getVirtualCoords(e.clientX, e.clientY);
 
     const clickedPoly = polygons.find((poly) =>
       isPointInPolygon({ x, y }, poly.points),
     );
-
-    console.log(clickedPoly, "clickedPolyclickedPoly", objectInfo);
 
     if (clickedPoly) {
       setViewPlan(true);
@@ -365,8 +361,6 @@ function CanvasViewHouse({ objectInfo, house, onClose, projects }: IThisProps) {
   useEffect(() => {
     redraw();
   }, [polygons, currentPolygon, imageLoaded, scale, offset, hoveredPolygon]);
-
-  console.log(tooltipData, viewPlan, objectInfo.length);
 
   return (
     <>

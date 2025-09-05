@@ -8,10 +8,10 @@ import Objects from "@/components/layout/home/objects/objects";
 import VideoBlock from "@/components/layout/home/video-block/video-block";
 import OurOffice from "@/components/layout/home/our-office/our-office";
 import React from "react";
-import Filter from "@/components/layout/home/filter/filter";
 import { useTranslate } from "@/hooks/useTranslate";
 import { motion } from "framer-motion";
 import { motionOptionText } from "@/utils/consts";
+import ProductItem from "@/components/common/product-item/product-item";
 
 interface IThisProps {
   projects: IProjectMerged[];
@@ -33,13 +33,22 @@ export default function Home({ projects }: IThisProps) {
         viewport={{ once: true, amount: 0.1 }}
         variants={motionOptionText}
       >
-        <div className="wrapper !mb-[-20px]">
+        <div className="wrapper">
           <h3 className="text-[32px] md:text-[45px] font-medium text-[#353535]">
             {$t("projects")} Galamat
           </h3>
         </div>
       </motion.div>
-      <Filter projects={projects} />
+
+      <div className="wrapper !mt-6">
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {projects.map((project: IProjectMerged) => (
+            <ProductItem key={`complex-${project.id}`} project={project} />
+          ))}
+        </div>
+      </div>
+
+      {/*<Filter projects={projects} />*/}
       <Objects />
       <LeaveRequest />
       <WhyUs />

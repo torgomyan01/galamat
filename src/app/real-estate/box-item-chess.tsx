@@ -257,7 +257,7 @@ function BoxItemChess({ property }: IThisProps) {
 
                             <div className="flex-js-c gap-4 mb-4">
                               <Link
-                                href={selectedFullPlan.plan.image.big}
+                                href={selectedFullPlan.plan?.image?.big}
                                 target="_blank"
                                 className="download !rounded-full !mb-0"
                                 download={`${selectedFullPlan.property.projectName}-${selectedFullPlan.property.id}.jpeg`}
@@ -294,12 +294,12 @@ function BoxItemChess({ property }: IThisProps) {
                         </div>
                         <div className="img-wrap">
                           <Link
-                            href={selectedFullPlan.plan.image.big}
+                            href={selectedFullPlan?.plan?.image?.big}
                             target="_blank"
                             className="w-full"
                           >
                             <img
-                              src={selectedFullPlan.plan.image.big}
+                              src={selectedFullPlan?.plan?.image?.big}
                               alt=""
                               className="w-full sm:min-w-[470px]"
                             />

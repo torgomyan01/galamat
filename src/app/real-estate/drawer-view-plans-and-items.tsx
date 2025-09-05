@@ -156,10 +156,11 @@ function DrawerViewPlansAndItems({
                 {house ? (
                   <div className="w-full flex-je-c mt-8">
                     <Select
-                      className="w-[140px] border rounded-[6px] border-black/10"
+                      className="w-[140px] rounded-[6px] "
                       placeholder={`${selectedPlan.number}/${house.maxFloor} Этажей`}
                       onSelectionChange={ChangeFloor}
                       variant="bordered"
+                      color="primary"
                     >
                       {Array.from({ length: house.maxFloor }).map((_, i) => (
                         <SelectItem key={i + 1}>{i + 1}</SelectItem>
