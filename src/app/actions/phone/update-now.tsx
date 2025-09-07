@@ -1,8 +1,7 @@
 "use server";
 
-import { PrismaClient } from "@prisma/client";
 import moment from "moment";
-const prisma = new PrismaClient();
+import prisma from "@/lib/prisma";
 
 export async function ActionUpdateCode(id: number) {
   try {

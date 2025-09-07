@@ -1,10 +1,8 @@
 "use server";
 import bcrypt from "bcrypt";
 
-import { PrismaClient } from "@prisma/client";
 import { encryptData } from "@/utils/helpers";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/prisma";
 
 export async function UserLogin(login: string, password: string) {
   try {
