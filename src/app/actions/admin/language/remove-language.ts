@@ -42,7 +42,5 @@ export async function DeleteLanguage(id: string) {
       data: [],
       error,
     };
-  } finally {
-    await prisma.$disconnect();
   }
 }

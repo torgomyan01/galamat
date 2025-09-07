@@ -22,7 +22,5 @@ export async function GetUsers() {
       data: [],
       error,
     };
-  } finally {
-    await prisma.$disconnect();
   }
 }

@@ -13,7 +13,5 @@ export async function ActionUpdateSliderSort(id: number, index: number) {
   } catch (error) {
     console.error(error);
     return { status: 0, error };
-  } finally {
-    await prisma.$disconnect();
   }
 }

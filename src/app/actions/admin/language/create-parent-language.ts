@@ -37,7 +37,5 @@ export async function CreateParentLanguage(name: string) {
       data: [],
       error,
     };
-  } finally {
-    await prisma.$disconnect();
   }
 }

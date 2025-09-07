@@ -48,7 +48,5 @@ export async function CreateLanguage(
       data: [],
       error,
     };
-  } finally {
-    await prisma.$disconnect();
   }
 }

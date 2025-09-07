@@ -24,7 +24,5 @@ export async function ActionUpdatePromocode(id: number, value: string) {
       data: [],
       error,
     };
-  } finally {
-    await prisma.$disconnect();
   }
 }

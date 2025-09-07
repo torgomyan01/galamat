@@ -26,7 +26,5 @@ export async function ActionRemoveObject(objectId: number) {
       data: [],
       error,
     };
-  } finally {
-    await prisma.$disconnect();
   }
 }

@@ -24,7 +24,5 @@ export async function ActionUpdateStatus(id: number, value: string) {
       data: [],
       error,
     };
-  } finally {
-    await prisma.$disconnect();
   }
 }

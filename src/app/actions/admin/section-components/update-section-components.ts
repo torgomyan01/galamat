@@ -24,7 +24,5 @@ export async function ActionUpdatePageSection(id: number, data: any) {
       data: [],
       error,
     };
-  } finally {
-    await prisma.$disconnect();
   }
 }

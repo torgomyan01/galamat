@@ -31,7 +31,5 @@ export async function CreateUser(
       data: [],
       error,
     };
-  } finally {
-    await prisma.$disconnect();
   }
 }

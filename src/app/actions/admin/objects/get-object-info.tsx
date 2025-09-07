@@ -38,7 +38,5 @@ export async function ActionGetObjectInfo(projectId: number, api_url: string) {
       data: [],
       error,
     };
-  } finally {
-    await prisma.$disconnect();
   }
 }

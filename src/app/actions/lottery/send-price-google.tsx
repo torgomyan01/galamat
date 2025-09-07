@@ -24,7 +24,5 @@ export async function ActionSendNumberGoogle(id: number) {
     return getAxios.data;
   } catch (error: any) {
     return error;
-  } finally {
-    await prisma.$disconnect();
   }
 }

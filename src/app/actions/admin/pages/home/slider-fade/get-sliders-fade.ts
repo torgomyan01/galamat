@@ -51,7 +51,5 @@ export async function ActionGetSlidersFade(slider_name: string) {
       data: [],
       error,
     };
-  } finally {
-    await prisma.$disconnect();
   }
 }

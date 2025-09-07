@@ -72,7 +72,5 @@ export async function ActionSendMessage(number: string, name: string) {
       data: [],
       error: error?.response?.data || error.message,
     };
-  } finally {
-    await prisma.$disconnect();
   }
 }

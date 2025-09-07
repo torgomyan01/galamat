@@ -17,7 +17,5 @@ export async function ActionGetProbabilities() {
       data: [],
       error: error?.response?.data || error.message,
     };
-  } finally {
-    await prisma.$disconnect();
   }
 }

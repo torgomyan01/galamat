@@ -20,7 +20,5 @@ export async function RemoveUser(id: number) {
       data: [],
       error,
     };
-  } finally {
-    await prisma.$disconnect();
   }
 }

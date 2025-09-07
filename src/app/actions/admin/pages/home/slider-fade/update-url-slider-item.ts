@@ -24,7 +24,5 @@ export async function ActionCUpdateSliderFade(id: number, url: string) {
       data: {},
       error,
     };
-  } finally {
-    await prisma.$disconnect();
   }
 }

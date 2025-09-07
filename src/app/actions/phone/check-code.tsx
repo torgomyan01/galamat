@@ -39,7 +39,5 @@ export async function ActionCheckCode(number: string, code: number) {
       data: [],
       error: error?.response?.data || error.message,
     };
-  } finally {
-    await prisma.$disconnect();
   }
 }

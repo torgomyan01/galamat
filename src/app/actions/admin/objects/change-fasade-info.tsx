@@ -28,7 +28,5 @@ export async function ActionUpdateFasadeInfo(
       data: [],
       error,
     };
-  } finally {
-    await prisma.$disconnect();
   }
 }

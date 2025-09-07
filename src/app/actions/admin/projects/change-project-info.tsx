@@ -29,7 +29,5 @@ export async function ActionUpdateProjectInfo(
       data: [],
       error,
     };
-  } finally {
-    await prisma.$disconnect();
   }
 }

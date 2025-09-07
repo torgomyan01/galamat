@@ -17,7 +17,5 @@ export async function ActionGetPlayers() {
       data: [],
       error,
     };
-  } finally {
-    await prisma.$disconnect();
   }
 }
