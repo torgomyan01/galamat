@@ -171,7 +171,9 @@ function GalaBonus() {
     if (sendData) {
       setModalFindLink(true);
 
+      console.log("hasav");
       ActionSendNumberBitrix(sendData.data.id).then((res) => {
+        console.log("mtav");
         ActionUpdatePromocode(sendData.data.id, res.promocode).then(() => {
           console.log("promocode updates");
         });

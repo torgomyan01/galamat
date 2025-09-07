@@ -26,6 +26,7 @@ export async function ActionSendNumberBitrix(id: number) {
 
     return getAxios.data;
   } catch (error: any) {
+    console.log(error);
     return error;
   } finally {
     await prisma.$disconnect();
