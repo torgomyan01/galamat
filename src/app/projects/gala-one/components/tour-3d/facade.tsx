@@ -1,15 +1,12 @@
 function Facade() {
   return (
     <iframe
-      key="tour-3d-555"
       width="100%"
-      height="650"
+      height="600"
+      src="https://astana3d.kz/3d/galamat/#pano24/76.6/24.7/90.0"
       frameBorder="0"
-      allow="xr-spatial-tracking; gyroscope; accelerometer"
+      className="h-[60vh]"
       allowFullScreen
-      scrolling="no"
-      className="h-[60dvh]"
-      src="https://kuula.co/share/hCJtH?logo=1&info=0&logosize=110&fs=1&vr=0&thumbs=3&inst=0"
     />
   );
 }
