@@ -20,6 +20,16 @@ interface IThisProps {
 export default function Home({ projects }: IThisProps) {
   const $t = useTranslate();
 
+  // useEffect(() => {
+  //   axios
+  //     .post("/api/change-client-status", {
+  //       phone: "sssss",
+  //     })
+  //     .then((res) => {
+  //       console.log(res);
+  //     });
+  // }, []);
+
   return (
     <MainTemplate>
       <AdsSlider />
