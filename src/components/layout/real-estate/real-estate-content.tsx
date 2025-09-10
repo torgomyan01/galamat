@@ -5,14 +5,9 @@ import "./real-estate.scss";
 import MainTemplate from "@/components/common/main-template/main-template";
 import HorizontalFilter from "@/components/common/horizontal-filter/horizontal-filter";
 import React, { useEffect, useState } from "react";
-import IconFosad from "@/components/common/icons/icon-fosad";
-import IconPlans from "@/components/common/icons/icon-plans";
 import clsx from "clsx";
 import TableEstate from "@/app/real-estate/table-estate";
-import RealEstatePlans from "@/app/real-estate/real-estate-plans";
 import "react-photo-view/dist/react-photo-view.css";
-import Houses from "@/app/real-estate/houses";
-import Facade from "@/app/real-estate/facade";
 import CanvasViewHouse from "@/app/real-estate/canvas-view-house";
 import { useDispatch, useSelector } from "react-redux";
 import { setHouse, setObjectInfo } from "@/redux/modals";
@@ -51,21 +46,21 @@ function RealEstateContent({ projects }: IThisProps) {
   const projectIds = projects.map((project) => project.project_id);
 
   const tabItems = [
-    {
-      name: $t("facades"),
-      icon: <i className="fa-regular fa-map mr-2 text-[18px] sm:text-[23px]" />,
-      content: <Facade projects={projects} />,
-    },
-    {
-      name: $t("objects_"),
-      icon: <IconFosad />,
-      content: <Houses projectsIds={projectIds} />,
-    },
-    {
-      name: $t("layout"),
-      icon: <IconPlans />,
-      content: <RealEstatePlans projectsIds={projectIds} />,
-    },
+    // {
+    //   name: $t("facades"),
+    //   icon: <i className="fa-regular fa-map mr-2 text-[18px] sm:text-[23px]" />,
+    //   content: <Facade projects={projects} />,
+    // },
+    // {
+    //   name: $t("objects_"),
+    //   icon: <IconFosad />,
+    //   content: <Houses projectsIds={projectIds} />,
+    // },
+    // {
+    //   name: $t("layout"),
+    //   icon: <IconPlans />,
+    //   content: <RealEstatePlans projectsIds={projectIds} />,
+    // },
     {
       name: $t("premises"),
       icon: (
