@@ -119,7 +119,7 @@ function TableEstate({ projectsIds }: IThisProps) {
         <TableColumn key="number-place">Номер помещения</TableColumn>
         <TableColumn key="count-place">Площадь, м²</TableColumn>
         <TableColumn key="entrance">Подъезд</TableColumn>
-        <TableColumn key="price">Цена</TableColumn>
+        {/*<TableColumn key="price">Цена</TableColumn>*/}
         <TableColumn key="floor">Этаж</TableColumn>
       </TableHeader>
       <TableBody
@@ -139,7 +139,7 @@ function TableEstate({ projectsIds }: IThisProps) {
             <TableCell>{plan.number}</TableCell>
             <TableCell>{plan.area.area_total} м²</TableCell>
             <TableCell>{plan.sectionName}</TableCell>
-            <TableCell>{formatKzt(plan.price.value)}</TableCell>
+            {/*<TableCell>{formatKzt(plan.price.value)}</TableCell>*/}
             <TableCell>{plan.floor}</TableCell>
           </TableRow>
         ))}

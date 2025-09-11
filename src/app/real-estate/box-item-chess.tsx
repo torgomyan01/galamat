@@ -149,18 +149,17 @@ function BoxItemChess({ property }: IThisProps) {
                 </div>
                 <b>№{property.number}</b>
               </div>
-              <div className="mt-4 text-[25px] font-medium">
-                {formatKzt(property.price.value)}
-              </div>
+              {/*<div className="mt-4 text-[25px] font-medium">*/}
+              {/*  {formatKzt(property.price.value)}*/}
+              {/*</div>*/}
               <div className="flex-js-c gap-2 mt-2">
                 <span className="text-[13px]">
                   {property.area.area_total}/м²
                 </span>
-                |{" "}
-                <span className="text-[13px]">
-                  {formatKzt(property.price.value / property.area.area_total)}{" "}
-                  м²
-                </span>
+                {/*| /!*<span className="text-[13px]">*!/*/}
+                {/*  {formatKzt(property.price.value / property.area.area_total)}{" "}*/}
+                {/*  м²*/}
+                {/*</span>*/}
               </div>
             </div>
           }
