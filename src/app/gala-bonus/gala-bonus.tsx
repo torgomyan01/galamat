@@ -182,6 +182,8 @@ function GalaBonus() {
           .then((res) => {
             const platform = getDevicePlatform();
 
+            console.log(res);
+
             if (platform === "android") {
               setUserBonusLink(res.card_gpay_url);
             } else if (platform === "ios") {
