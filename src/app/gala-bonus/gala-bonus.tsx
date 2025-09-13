@@ -178,21 +178,25 @@ function GalaBonus() {
           console.log("promocode updates");
         });
 
-        ActionSendNumberGoogle(sendData.data.id).then((res) => {
-          const platform = getDevicePlatform();
+        ActionSendNumberGoogle(sendData.data.id)
+          .then((res) => {
+            const platform = getDevicePlatform();
 
-          if (platform === "android") {
-            setUserBonusLink(res.card_gpay_url);
-          } else if (platform === "ios") {
-            setUserBonusLink(res.card_url);
-          } else if (platform === "windows") {
-            setUserBonusLink(res.card_gpay_url);
-          } else if (platform === "mac") {
-            setUserBonusLink(res.card_url);
-          } else {
-            setUserBonusLink(res.card_gpay_url);
-          }
-        });
+            if (platform === "android") {
+              setUserBonusLink(res.card_gpay_url);
+            } else if (platform === "ios") {
+              setUserBonusLink(res.card_url);
+            } else if (platform === "windows") {
+              setUserBonusLink(res.card_gpay_url);
+            } else if (platform === "mac") {
+              setUserBonusLink(res.card_url);
+            } else {
+              setUserBonusLink(res.card_gpay_url);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       });
     } else {
       addToast({
