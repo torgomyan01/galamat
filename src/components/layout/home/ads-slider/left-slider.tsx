@@ -9,6 +9,7 @@ import { ActionGetSlidersFade } from "@/app/actions/admin/pages/home/slider-fade
 import { filesLink } from "@/utils/consts";
 import { useSelector } from "react-redux";
 import { Skeleton } from "@heroui/react";
+import Link from "next/link";
 
 function LeftSlider() {
   const activeLang = useSelector(
@@ -16,6 +17,8 @@ function LeftSlider() {
   );
 
   const [items, setItems] = useState<ISliderItem[] | null>(null);
+
+  console.log(items);
 
   useEffect(getSliders, []);
 
@@ -46,7 +49,11 @@ function LeftSlider() {
             <>
               {item.children?.map((sliderItem) => (
                 <SwiperSlide key={`home-slider-ads-${sliderItem.id}`}>
-                  <div className="w-full h-full rounded-[20px] overflow-hidden">
+                  <Link
+                    href={sliderItem.url || "/"}
+                    className="w-full h-full rounded-[20px] overflow-hidden"
+                    target="_blank"
+                  >
                     <Image
                       src={`${filesLink}${sliderItem.children?.find((_child) => _child.lang_key === activeLang)?.image_path}`}
                       alt="ads-for-map.png"
@@ -54,7 +61,7 @@ function LeftSlider() {
                       height={600}
                       className="w-full lg:h-[510px] object-cover"
                     />
-                  </div>
+                  </Link>
                 </SwiperSlide>
               ))}
             </>

@@ -11,7 +11,7 @@ import React from "react";
 import { useTranslate } from "@/hooks/useTranslate";
 import { motion } from "framer-motion";
 import { motionOptionText } from "@/utils/consts";
-import ProductItem from "@/components/common/product-item/product-item";
+import Filter from "./filter/filter";
 
 interface IThisProps {
   projects: IProjectMerged[];
@@ -50,15 +50,15 @@ export default function Home({ projects }: IThisProps) {
         </div>
       </motion.div>
 
-      <div className="wrapper !mt-6">
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {projects.map((project: IProjectMerged) => (
-            <ProductItem key={`complex-${project.id}`} project={project} />
-          ))}
-        </div>
-      </div>
+      {/*<div className="wrapper !mt-6">*/}
+      {/*  <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">*/}
+      {/*    {projects.map((project: IProjectMerged) => (*/}
+      {/*      <ProductItem key={`complex-${project.id}`} project={project} />*/}
+      {/*    ))}*/}
+      {/*  </div>*/}
+      {/*</div>*/}
 
-      {/*<Filter projects={projects} />*/}
+      <Filter projects={projects} />
       <Objects />
       <LeaveRequest />
       <WhyUs />

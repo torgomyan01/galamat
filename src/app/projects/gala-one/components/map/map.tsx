@@ -1,46 +1,68 @@
-"use client";
-
 import { useEffect, useRef } from "react";
 
 function Map() {
-  const elem = useRef<HTMLDivElement | null>(null);
+  const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // script load
-    const script = document.createElement("script");
-    script.src = "https://mapgl.2gis.com/api/js/v1";
-    script.async = true;
-    script.onload = () => {
-      const mapgl = window.mapgl;
-      if (!mapgl) {
-        return;
-      }
+    const scriptId = "objects-office";
 
-      const map = new mapgl.Map(elem.current, {
-        center: [71.380607, 51.09944],
+    const initMap = () => {
+      const ymaps = window.ymaps;
+
+      const map = new ymaps.Map(mapRef.current, {
+        center: [51.099676, 71.381358],
         zoom: 13,
-        key: "422234e1-fa2a-469b-a009-f6ec1c32ec9d",
+        controls: [],
       });
 
-      new mapgl.Marker(map, {
-        coordinates: [71.380607, 51.09944],
-        // icon: "https://galamat.kz/img/icons/map-icon.svg",
-      });
+      // ✅ Initial Small Icon Placemark
+      const smallPlacemark = new ymaps.Placemark(
+        [51.099676, 71.381358],
+        {
+          hintContent: "ЖК Gala One",
+        },
+        {
+          iconLayout: "default#image",
+          iconImageHref: "/img/icons/map-icon.svg",
+          iconImageSize: [40, 70],
+        },
+      );
+
+      map.geoObjects.add(smallPlacemark);
     };
-    document.body.appendChild(script);
 
-    // return () => {
-    //   // Cleanup if component unmounts
-    //   // elem.current?.remove();
-    //   script.remove();
-    // };
-  }, [elem.current]);
+    const loadScript = () => {
+      const script = document.createElement("script");
+      script.id = scriptId;
+      script.src =
+        "https://api-maps.yandex.ru/2.1/?apikey=2eb83824-2f70-443e-ae10-085950e599f1&lang=ru_RU";
+      script.type = "text/javascript";
+      script.onload = () => {
+        if (window.ymaps) {
+          window.ymaps.ready(initMap);
+        }
+      };
+      document.body.appendChild(script);
+    };
+
+    if (typeof window !== "undefined") {
+      if (!document.getElementById(scriptId)) {
+        loadScript();
+      } else {
+        const interval = setInterval(() => {
+          if (window.ymaps && window.ymaps.ready) {
+            clearInterval(interval);
+            window.ymaps.ready(initMap);
+          }
+        }, 100);
+      }
+    }
+  }, []);
 
   return (
     <div className="wrapper !mt-10">
       <div
-        ref={elem}
-        id="container"
+        ref={mapRef}
         style={{ width: "100%" }}
         className="rounded-[27px] overflow-hidden h-[400px] sm:h-[617px]"
       />
