@@ -22,6 +22,7 @@ interface IThisProps {
   footer?: boolean;
   headerInfo?: boolean;
   bodyColor?: string;
+  className?: string;
 }
 
 function MainTemplate({
@@ -30,6 +31,7 @@ function MainTemplate({
   footer = true,
   headerInfo = true,
   bodyColor = "#e8eaef",
+  className,
 }: IThisProps) {
   const dispatch = useDispatch();
   const getLanguage = useSelector(
@@ -87,10 +89,10 @@ function MainTemplate({
       ) : (
         <>
           {words ? (
-            <>
+            <div className={className}>
               {children}
               {footer ? <Footer /> : null}
-            </>
+            </div>
           ) : (
             <Preloader />
           )}

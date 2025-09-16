@@ -33,7 +33,7 @@ function GalaOne({ projects }: IThisProps) {
   }, [projects]);
 
   return (
-    <MainTemplate>
+    <MainTemplate className="gala-one-page">
       <div className="pt-6 md:!pt-10">
         <div className="wrapper">
           <Breadcrumbs className="mb-6 md:mb-10 text-[14px]">
